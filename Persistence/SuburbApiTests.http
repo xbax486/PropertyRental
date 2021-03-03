@@ -1,0 +1,32 @@
+## Suburb API
+
+### GET Suburbs
+GET https://localhost:5001/api/suburbs HTTP/1.1
+
+### GET Suburb
+GET https://localhost:5001/api/suburbs/1 HTTP/1.1
+
+### POST Suburb
+POST https://localhost:5001/api/suburbs HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Burwood",
+    "postcode": 2134,
+    "state": "New South Wales",
+    "abbreviation": "NSW"
+}
+
+### PUT Suburb
+PUT https://localhost:5001/api/suburbs/11 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Burwood",
+    "postcode": 2134,
+    "state": "New South Wales",
+    "abbreviation": "NSW"
+}
+
+### DELETE Suburb
+DELETE https://localhost:5001/api/suburbs/9 HTTP/1.1

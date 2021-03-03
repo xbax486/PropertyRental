@@ -1,0 +1,194 @@
+<h1>Property details</h1>
+<form *ngIf="selectedProperty.suburb" class="mt-3">
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Address</legend>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="unit">Unit</label>
+        <input
+          type="text"
+          class="form-control"
+          id="unit"
+          placeholder="Unit"
+          name="unit"
+          [(ngModel)]="selectedProperty.unit"
+        />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="street">Street</label>
+        <input
+          type="text"
+          class="form-control"
+          id="street"
+          placeholder="Street"
+          name="street"
+          [(ngModel)]="selectedProperty.street"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="suburb">Suburb</label>
+        <select
+          name="suburb"
+          id="suburb"
+          class="form-control custom-select"
+          placeholder="Suburb"
+          [(ngModel)]="selectedProperty.suburb.id"
+          (change)="onSuburbChange(selectedProperty.suburb.id)"
+        >
+          <option value="{{ suburb.id }}" *ngFor="let suburb of suburbs">
+            {{ suburb.name }} {{ suburb.postcode }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="state">State</label>
+        <input
+          type="text"
+          class="form-control"
+          id="state"
+          placeholder="State"
+          name="state"
+          disabled
+          [(ngModel)]="selectedProperty.suburb.state"
+        />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Rooms</legend>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="bedroom">Bedroom</label>
+        <input
+          type="range"
+          class="form-control"
+          id="bedroom"
+          placeholder="Please enter at least one bedroom"
+          name="bedroom"
+          [(ngModel)]="selectedProperty.bedroom"
+          min="0"
+          max="10"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="bathroom">Bathroom</label>
+        <input
+          type="range"
+          class="form-control"
+          id="bathroom"
+          placeholder="Please enter at least one bathroom"
+          name="bathroom"
+          [(ngModel)]="selectedProperty.bathroom"
+          min="0"
+          max="10"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="parking">Parking</label>
+        <input
+          type="range"
+          class="form-control"
+          id="parking"
+          placeholder="Please enter at least one parking"
+          name="parking"
+          [(ngModel)]="selectedProperty.parking"
+          min="0"
+          max="10"
+        />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Features</legend>
+    <div class="form-row">
+      <div class="form-check form-check-inline col-md-5">
+        <input
+          class="form-check-input mr-3"
+          type="checkbox"
+          id="petsAllowed"
+          value="petsAllowed"
+          name="petsAllowed"
+          [(ngModel)]="selectedProperty.petsAllowed"
+        />
+        <label class="form-check-label" for="petsAllowed">Pets Allowed</label>
+      </div>
+      <div class="form-check form-check-inline col-md-5">
+        <input
+          class="form-check-input mr-3"
+          type="checkbox"
+          id="builtInWardrobe"
+          value="builtInWardrobe"
+          name="builtInWardrobe"
+          [(ngModel)]="selectedProperty.builtInWardrobe"
+        />
+        <label class="form-check-label" for="builtInWardrobe">
+          Built-in Wardrobe
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-5">
+        <input
+          class="form-check-input mr-3"
+          type="checkbox"
+          id="gasAvailable"
+          value="gasAvailable"
+          name="gasAvailable"
+          [(ngModel)]="selectedProperty.gasAvailable"
+        />
+        <label class="form-check-label" for="gasAvailable">Gas Available</label>
+      </div>
+      <div class="form-check form-check-inline col-md-5">
+        <input
+          class="form-check-input mr-3"
+          type="checkbox"
+          id="hasStudyRoom"
+          value="hasStudyRoom"
+          name="hasStudyRoom"
+          [(ngModel)]="selectedProperty.hasStudyRoom"
+        />
+        <label class="form-check-label" for="hasStudyRoom">
+          Has Study Room
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-5">
+        <input
+          class="form-check-input mr-3"
+          type="checkbox"
+          id="furnished"
+          value="furnished"
+          name="furnished"
+          [(ngModel)]="selectedProperty.furnished"
+        />
+        <label class="form-check-label" for="furnished"> Furnished </label>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Other informations</legend>
+    <div class="form-row">
+      <div class="form-group col-12">
+        <label for="propertyType">Property Type</label>
+        <select
+          name="propertyType"
+          id="propertyType"
+          class="form-control custom-select"
+          placeholder="Property Type"
+          [(ngModel)]="selectedProperty.propertyType.id"
+          (change)="onPropertyTypeChange(selectedProperty.propertyType.id)"
+        >
+          <option
+            value="{{ propertyType.id }}"
+            *ngFor="let propertyType of propertyTypes"
+          >
+            {{ propertyType.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()">
+    Submit
+  </button>
+</form>
+<h2 *ngIf="!selectedProperty.suburb">Property details loading...</h2>

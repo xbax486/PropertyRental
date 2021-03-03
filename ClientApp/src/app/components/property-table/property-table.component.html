@@ -1,0 +1,51 @@
+<h1>Properties</h1>
+<table class="table table-hover table-striped" *ngIf="propertiesLoaded">
+  <thead>
+    <tr>
+      <th scope="col">Suburb</th>
+      <th scope="col">Postcode</th>
+      <!-- <th scope="col">Unit</th>
+      <th scope="col" colspan="2">Street</th>
+      <th scope="col">State</th>
+      <th scope="col">Abbreviation</th>
+      <th scope="col">Type</th> -->
+      <th scope="col">Bedroom</th>
+      <th scope="col">Bathroom</th>
+      <th scope="col">Parking</th>
+      <th scope="col">Pets Allowed</th>
+      <th scope="col">Built-in Wardrobe</th>
+      <th scope="col">Gas Available</th>
+      <th scope="col">Has Study Room</th>
+      <th scope="col">Furnished</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let property of properties">
+      <td scope="row">{{ property.suburb.name }}</td>
+      <td scope="row">{{ property.suburb.postcode }}</td>
+      <!-- <td scope="row">{{ property.unit }}</td>
+      <td colspan="2">{{ property.street }}</td>
+      <td scope="row">{{ property.suburb.state }}</td>
+      <td scope="row">{{ property.suburb.abbreviation }}</td>
+      <td scope="row">{{ property.propertyType.name }}</td> -->
+      <td scope="row">{{ property.bedroom }}</td>
+      <td scope="row">{{ property.bathroom }}</td>
+      <td scope="row">{{ property.parking }}</td>
+      <td scope="row">{{ property.petsAllowed }}</td>
+      <td scope="row">{{ property.builtInWardrobe }}</td>
+      <td scope="row">{{ property.gasAvailable }}</td>
+      <td scope="row">{{ property.hasStudyRoom }}</td>
+      <td scope="row">{{ property.furnished }}</td>
+      <td scope="row">
+        <a
+          [routerLink]="['/property', property.suburb.id]"
+          (click)="onEditProperty(property)"
+        >
+          Edit
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 *ngIf="!propertiesLoaded">Properties loading...</h2>
