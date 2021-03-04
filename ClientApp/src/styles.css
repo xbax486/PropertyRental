@@ -14,3 +14,15 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.title {
+  margin: 0;
+}
+
+.btn-create {
+  line-height: 34px;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid #e01a76;
+}

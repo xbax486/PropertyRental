@@ -16,6 +16,10 @@ export class SuburbService {
   }
 
   public createSuburb(suburb: Suburb) {
-    return this._httpClient.post<Suburb[]>('/api/suburbs', suburb);
+    return this._httpClient.post<Suburb>('/api/suburbs', suburb);
+  }
+
+  public updateSuburb(suburb: Suburb) {
+    return this._httpClient.put<Suburb>('/api/suburbs/' + suburb.id, suburb);
   }
 }

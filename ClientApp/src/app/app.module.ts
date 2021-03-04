@@ -51,6 +51,9 @@ import { PropertyService } from "./services/property.service";
         path: 'suburbs', component: SuburbTableComponent
       },
       {
+        path: 'suburb/new', component: SuburbFormComponent
+      },
+      {
         path: 'suburb/:id', component: SuburbFormComponent
       },
       {

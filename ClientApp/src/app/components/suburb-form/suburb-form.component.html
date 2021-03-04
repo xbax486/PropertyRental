@@ -1,5 +1,10 @@
-<h1>Suburb details</h1>
-<form *ngIf="selectedSuburb" class="mt-3">
+<h1 class="title">Suburb details</h1>
+<form
+  *ngIf="selectedSuburb"
+  class="mt-3"
+  (ngSubmit)="onSubmit(suburbForm)"
+  #suburbForm="ngForm"
+>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="name">Name</label>
@@ -10,17 +15,20 @@
         placeholder="Name"
         name="name"
         [(ngModel)]="selectedSuburb.name"
+        required
       />
     </div>
     <div class="form-group col-md-6">
       <label for="postcode">Postcode</label>
       <input
-        type="text"
+        type="number"
         class="form-control"
         id="postcode"
         placeholder="Postcode"
         name="postcode"
         [(ngModel)]="selectedSuburb.postcode"
+        required
+        pattern="^[0-9]{4}$"
       />
     </div>
   </div>
@@ -34,6 +42,7 @@
         placeholder="State"
         name="state"
         [(ngModel)]="selectedSuburb.state"
+        required
       />
     </div>
     <div class="form-group col-md-6">
@@ -45,11 +54,44 @@
         placeholder="Abbreviation"
         name="abbreviation"
         [(ngModel)]="selectedSuburb.abbreviation"
+        required
+        minlength="3"
+        maxlength="3"
+        pattern="[A-Z]*"
       />
     </div>
   </div>
-  <button type="button" class="btn btn-primary" (click)="onSubmitSuburb()">
-    Submit
-  </button>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        id="id"
+        name="id"
+        [(ngModel)]="selectedSuburb.id"
+        hidden
+      />
+    </div>
+  </div>
+  <div class="form-row d-flex flex-row justify-content-between">
+    <div class="form-group col-md-3">
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="suburbForm.form.invalid"
+      >
+        Submit
+      </button>
+    </div>
+    <div class="form-group col-md-3">
+      <button
+        type="button"
+        class="btn btn-primary btn-block"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
 </form>
 <h2 *ngIf="!selectedSuburb">Suburb details loading...</h2>

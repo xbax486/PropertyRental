@@ -11,10 +11,10 @@ POST https://localhost:5001/api/suburbs HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Burwood",
-    "postcode": 2134,
-    "state": "New South Wales",
-    "abbreviation": "NSW"
+    "name": "Test Suburb",
+    "postcode": 1,
+    "state": "Test State",
+    "abbreviation": "TS2"
 }
 
 ### PUT Suburb

@@ -1,5 +1,10 @@
-<h1>Properties</h1>
-<table class="table table-hover table-striped">
+<div class="d-flex flex-row justify-content-between">
+  <h1 class="title">Suburbs</h1>
+  <a [routerLink]="['/suburb/new']" class="btn btn-primary btn-create">
+    Create Suburb
+  </a>
+</div>
+<table class="table table-hover table-striped mt-3" *ngIf="suburbsLoaded">
   <thead>
     <tr>
       <th scope="col">Suburb</th>
@@ -23,4 +28,4 @@
     </tr>
   </tbody>
 </table>
-<h2>Suburbs loading...</h2>
+<h2 *ngIf="!suburbsLoaded">Suburbs loading...</h2>
