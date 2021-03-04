@@ -24,7 +24,9 @@ namespace PropertyRental.Controllers
         [HttpGet]
         public async Task<IEnumerable<SuburbResource>> GetSuburbs()
         {
-            var suburbs = await context.Suburbs.ToListAsync();
+            var suburbs = await context.Suburbs
+                .Include(suburb => suburb.State)
+                .ToListAsync();
             return mapper.Map<List<Suburb>, List<SuburbResource>>(suburbs);
         }
 
@@ -36,6 +38,7 @@ namespace PropertyRental.Controllers
             {
                 return NotFound();
             }
+            context.Entry(suburb).Reference(s => s.State).Load();
             var suburbResource = mapper.Map<Suburb, SuburbResource>(suburb);
             return Ok(suburbResource);
         }
@@ -47,7 +50,7 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var suburbExisted = await context.Suburbs.AnyAsync(record => record.Postcode == suburbResource.Postcode && record.Name == suburbResource.Name);
+            var suburbExisted = await context.Suburbs.AnyAsync(record => record.Postcode == suburbResource.Postcode && record.StateId == suburbResource.State.Id);
             if (suburbExisted)
             {
                 ModelState.AddModelError("Message", "Sorry, this suburb already exists!");

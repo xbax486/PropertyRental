@@ -9,12 +9,15 @@ namespace PropertyRental.Mapping
         public MappingProfile()
         {
             // Domain class to API resource
+            CreateMap<State, StateResource>();
             CreateMap<Suburb, SuburbResource>();
-            CreateMap<Owner, OwnerResource>();
-            CreateMap<Property, PropertyResource>();
-            CreateMap<PropertyType, PropertyTypeResource>();
+            // CreateMap<Owner, OwnerResource>();
+            // CreateMap<Property, PropertyResource>();
+            // CreateMap<PropertyType, PropertyTypeResource>();
 
             // API resource to domain class
+            // CreateMap<StateResource, State>()
+            //     .ForMember(suburbResource => suburbResource.Id, suburb => suburb.Ignore());
             CreateMap<SuburbResource, Suburb>()
                 .ForMember(suburbResource => suburbResource.Id, suburb => suburb.Ignore());
         }

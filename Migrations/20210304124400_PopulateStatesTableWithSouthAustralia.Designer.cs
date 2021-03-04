@@ -9,8 +9,8 @@ using PropertyRental.Persistence;
 namespace PropertyRental.Migrations
 {
     [DbContext(typeof(PropertyRentalContext))]
-    [Migration("20210228124139_AddStates")]
-    partial class AddStates
+    [Migration("20210304124400_PopulateStatesTableWithSouthAustralia")]
+    partial class PopulateStatesTableWithSouthAustralia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,7 @@ namespace PropertyRental.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code")
+                    b.Property<string>("Acronym")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -54,8 +54,8 @@ namespace PropertyRental.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("Postcode")
-                        .HasColumnType("int");
+                    b.Property<short>("Postcode")
+                        .HasColumnType("smallint");
 
                     b.Property<int>("StateId")
                         .HasColumnType("int");
@@ -70,17 +70,12 @@ namespace PropertyRental.Migrations
             modelBuilder.Entity("PropertyRental.Models.Suburb", b =>
                 {
                     b.HasOne("PropertyRental.Models.State", "State")
-                        .WithMany("Suburbs")
+                        .WithMany()
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("State");
-                });
-
-            modelBuilder.Entity("PropertyRental.Models.State", b =>
-                {
-                    b.Navigation("Suburbs");
                 });
 #pragma warning restore 612, 618
         }

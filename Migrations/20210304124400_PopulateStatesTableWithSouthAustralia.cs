@@ -2,16 +2,16 @@
 
 namespace PropertyRental.Migrations
 {
-    public partial class UpdatePropertySuburb : Migration
+    public partial class PopulateStatesTableWithSouthAustralia : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("UPDATE Properties SET SuburbId = 3 WHERE Id = 3");
+            migrationBuilder.Sql("INSERT INTO States (Name, Acronym) VALUES ('South Australia', 'SA')");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("UPDATE Properties SET SuburbId = 1 WHERE Id = 3");
+            migrationBuilder.Sql("DELETE FROM States WHERE Acronym = 'SA')");
         }
     }
 }

@@ -12,9 +12,8 @@ content-type: application/json
 
 {
     "name": "Test Suburb",
-    "postcode": 1,
-    "state": "Test State",
-    "abbreviation": "TS2"
+    "postcode": 1000,
+    "stateid": 1
 }
 
 ### PUT Suburb
@@ -24,8 +23,7 @@ content-type: application/json
 {
     "name": "Burwood",
     "postcode": 2134,
-    "state": "New South Wales",
-    "abbreviation": "NSW"
+    "stateid": 2
 }
 
 ### DELETE Suburb

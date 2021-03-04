@@ -2,7 +2,7 @@
 
 namespace PropertyRental.Migrations
 {
-    public partial class AddStates : Migration
+    public partial class AddStateAndSuburb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace PropertyRental.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Acronym = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,7 +27,7 @@ namespace PropertyRental.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Postcode = table.Column<int>(type: "int", nullable: false),
+                    Postcode = table.Column<short>(type: "smallint", nullable: false),
                     StateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
