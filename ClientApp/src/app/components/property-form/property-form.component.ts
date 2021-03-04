@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { PropertyService } from './../../services/property.service';
+import { SuburbService } from './../../services/suburb.service';
 import { Property } from './../../models/property';
 import { Suburb } from "./../../models/suburb";
 import { PropertyType } from "./../../models/propertyType";
@@ -20,7 +21,9 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   private _suburbsSubscription = new Subscription();
   private _propertyTypesSubscription = new Subscription();
 
-  constructor(private _propertyService: PropertyService) { }
+  constructor(
+    private _propertyService: PropertyService, 
+    private _suburbService: SuburbService) { }
 
   ngOnInit() {
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
@@ -31,7 +34,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         }
       );
     
-    this._suburbsSubscription = this._propertyService.getSuburbs()
+    this._suburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => this.suburbs = suburbs,
         (error) => {

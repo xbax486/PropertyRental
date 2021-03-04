@@ -17,14 +17,6 @@ export class PropertyService {
     return this._httpClient.get<Property[]>('/api/properties');
   }
 
-  public getSuburbs() {
-    return this._httpClient.get<Suburb[]>('/api/suburbs');
-  }
-
-  public createSuburb(suburb: Suburb) {
-    return this._httpClient.post<Suburb[]>('/api/suburbs', suburb);
-  }
-
   public getPropertyTypes() {
     return this._httpClient.get<PropertyType[]>('/api/propertytypes');
   }
