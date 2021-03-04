@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from "rxjs";
 import { Property } from "../models/property";
-import { Suburb } from "../models/suburb";
 import { PropertyType } from "../models/propertyType";
 
 @Injectable({

@@ -28,25 +28,19 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
       .subscribe(
         (selectedProperty: Property) => this.selectedProperty = selectedProperty,
-        (error) => {
-          console.log('Selected property fetching error', error);
-        }
+        (error) => console.log('Selected property fetching error', error)
       );
     
     this._suburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => this.suburbs = suburbs,
-        (error) => {
-          console.log('Suburbs fetching error', error);
-        }
+        (error) => console.log('Suburbs fetching error', error)
       );
 
     this._propertyTypesSubscription = this._propertyService.getPropertyTypes()
       .subscribe(
         (propertyTypes: PropertyType[]) => this.propertyTypes = propertyTypes,
-        (error) => {
-          console.log('Property types fetching error', error);
-        }
+        (error) => console.log('Property types fetching error', error)
       );
   }
 
@@ -64,7 +58,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.selectedProperty.propertyType = Object.assign({}, this.propertyTypes.find(propertyType => propertyType.id == propertyTypeId));
   }
 
-  onSubmit() {
-
+  onSubmitProperty() {
+    
   }
 }

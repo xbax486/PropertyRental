@@ -13,6 +13,7 @@ import { FetchDataComponent } from './components/fetch-data/fetch-data.component
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { PropertyFormComponent } from './components/property-form/property-form.component';
 import { SuburbTableComponent } from './components/suburb-table/suburb-table.component';
+import { SuburbFormComponent } from "./components/suburb-form/suburb-form.component";
 
 /* Services */
 import { PropertyService } from "./services/property.service";
@@ -27,6 +28,7 @@ import { PropertyService } from "./services/property.service";
     PropertyTableComponent,
     PropertyFormComponent,
     SuburbTableComponent,
+    SuburbFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -47,6 +49,9 @@ import { PropertyService } from "./services/property.service";
       },
       {
         path: 'suburbs', component: SuburbTableComponent
+      },
+      {
+        path: 'suburb/:id', component: SuburbFormComponent
       },
       {
         path: '', component: HomeComponent, pathMatch: 'full'

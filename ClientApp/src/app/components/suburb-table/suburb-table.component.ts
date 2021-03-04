@@ -20,7 +20,6 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
     this._subscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => {
-          console.log('Suburbs', suburbs);
           this.suburbs = suburbs;
           this.suburbsLoaded = true;
         },
@@ -33,6 +32,6 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
   }
 
   onEditSuburb(suburb) {
-    console.log('onEditSuburb', suburb);
+    this._suburbService.selectedSuburbSubject.next(suburb);
   }
 }

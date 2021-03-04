@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject } from "rxjs";
 import { Suburb } from "../models/suburb";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuburbService {
+  public selectedSuburbSubject = new BehaviorSubject({});
 
   constructor(private _httpClient: HttpClient) { }
 
