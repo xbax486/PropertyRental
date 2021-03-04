@@ -12,6 +12,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { PropertyFormComponent } from './components/property-form/property-form.component';
+import { SuburbTableComponent } from './components/suburb-table/suburb-table.component';
 
 /* Services */
 import { PropertyService } from "./services/property.service";
@@ -25,6 +26,7 @@ import { PropertyService } from "./services/property.service";
     FetchDataComponent,
     PropertyTableComponent,
     PropertyFormComponent,
+    SuburbTableComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,16 +34,19 @@ import { PropertyService } from "./services/property.service";
     FormsModule,
     RouterModule.forRoot([
       {
+        path: 'counter', component: CounterComponent
+      },
+      {
+        path: 'fetch-data', component: FetchDataComponent
+      },
+      {
         path: 'properties', component: PropertyTableComponent
       },
       {
         path: 'property/:id', component: PropertyFormComponent
       },
       {
-        path: 'counter', component: CounterComponent
-      },
-      {
-        path: 'fetch-data', component: FetchDataComponent
+        path: 'suburbs', component: SuburbTableComponent
       },
       {
         path: '', component: HomeComponent, pathMatch: 'full'
