@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
 import { SuburbService } from './../../services/suburb.service';
 import { Property } from './../../models/property';
-import { Suburb } from "./../../models/suburb";
-import { PropertyType } from "./../../models/propertyType";
+import { Suburb } from './../../models/suburb';
+import { PropertyType } from './../../models/propertyType';
 
 @Component({
   selector: 'app-property-form',
@@ -30,7 +29,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedProperty: Property) => this.selectedProperty = selectedProperty,
         (error) => {
-          console.log("Selected property fetching error", error);
+          console.log('Selected property fetching error', error);
         }
       );
     
@@ -38,7 +37,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
       .subscribe(
         (suburbs: Suburb[]) => this.suburbs = suburbs,
         (error) => {
-          console.log("Suburbs fetching error", error);
+          console.log('Suburbs fetching error', error);
         }
       );
 
@@ -46,7 +45,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
       .subscribe(
         (propertyTypes: PropertyType[]) => this.propertyTypes = propertyTypes,
         (error) => {
-          console.log("Property types fetching error", error);
+          console.log('Property types fetching error', error);
         }
       );
   }

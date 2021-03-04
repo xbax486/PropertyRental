@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 
 import { PropertyService } from './../../services/property.service';
 import { Property } from './../../models/property';
@@ -24,9 +24,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           this.properties = properties;
           this.propertiesLoaded = true;
         },
-        (error) => {
-          console.log("Addresses fetching error", error);
-        }
+        (error) => console.log('Addresses fetching error', error)
       );
   }
 
