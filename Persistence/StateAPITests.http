@@ -1,0 +1,4 @@
+## Suburb API
+
+### Get all states
+GET https://localhost:5001/api/states HTTP/1.1

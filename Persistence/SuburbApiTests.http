@@ -1,12 +1,12 @@
 ## Suburb API
 
-### GET Suburbs
+### Get all suburbs
 GET https://localhost:5001/api/suburbs HTTP/1.1
 
-### GET Suburb
+### GET a single suburb
 GET https://localhost:5001/api/suburbs/1 HTTP/1.1
 
-### POST Suburb
+### Create a suburb
 POST https://localhost:5001/api/suburbs HTTP/1.1
 content-type: application/json
 
@@ -16,7 +16,7 @@ content-type: application/json
     "stateid": 1
 }
 
-### PUT Suburb
+### Update a suburb
 PUT https://localhost:5001/api/suburbs/11 HTTP/1.1
 content-type: application/json
 
@@ -26,5 +26,5 @@ content-type: application/json
     "stateid": 2
 }
 
-### DELETE Suburb
+### Delete a suburb
 DELETE https://localhost:5001/api/suburbs/9 HTTP/1.1
