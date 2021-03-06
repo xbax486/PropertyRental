@@ -76,7 +76,7 @@ namespace PropertyRental.Controllers
             {
                 return NotFound();
             }
-            suburb = mapper.Map<SuburbResource, Suburb>(suburbResource);
+            mapper.Map<SuburbResource, Suburb>(suburbResource, suburb);
             suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburb.StateId);
             await context.SaveChangesAsync();
             return Ok(suburb);
