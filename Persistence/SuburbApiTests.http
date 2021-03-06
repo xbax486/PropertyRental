@@ -4,20 +4,20 @@
 GET https://localhost:5001/api/suburbs HTTP/1.1
 
 ### GET a single suburb
-GET https://localhost:5001/api/suburbs/1 HTTP/1.1
+GET https://localhost:5001/api/suburbs/6 HTTP/1.1
 
 ### Create a suburb
 POST https://localhost:5001/api/suburbs HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Test Suburb",
-    "postcode": 1000,
+    "name": "Test Suburb 15",
+    "postcode": 1015,
     "stateid": 1
 }
 
 ### Update a suburb
-PUT https://localhost:5001/api/suburbs/11 HTTP/1.1
+PUT https://localhost:5001/api/suburbs/3 HTTP/1.1
 content-type: application/json
 
 {
@@ -27,4 +27,4 @@ content-type: application/json
 }
 
 ### Delete a suburb
-DELETE https://localhost:5001/api/suburbs/9 HTTP/1.1
+DELETE https://localhost:5001/api/suburbs/26 HTTP/1.1

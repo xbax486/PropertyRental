@@ -16,8 +16,8 @@ namespace PropertyRental.Mapping
             // CreateMap<PropertyType, PropertyTypeResource>();
 
             // API resource to domain class
-            // CreateMap<StateResource, State>()
-            //     .ForMember(suburbResource => suburbResource.Id, suburb => suburb.Ignore());
+            CreateMap<StateResource, State>()
+                .ForMember(stateResource => stateResource.Id, state => state.Ignore());
             CreateMap<SuburbResource, Suburb>()
                 .ForMember(suburbResource => suburbResource.Id, suburb => suburb.Ignore());
         }
