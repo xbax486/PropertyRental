@@ -7,6 +7,7 @@ namespace PropertyRental.Models
     public class PropertyType
     {
         [Required]
+        [StringLength(255)]
         public string Name { get; set; }
 
         public int Id { get; set; }
