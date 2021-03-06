@@ -16,7 +16,9 @@ import { SuburbTableComponent } from './components/suburb-table/suburb-table.com
 import { SuburbFormComponent } from "./components/suburb-form/suburb-form.component";
 
 /* Services */
-import { PropertyService } from "./services/property.service";
+//import { PropertyService } from "./services/property.service";
+import { SuburbService } from "./services/suburb.service";
+import { StateService } from "./services/state.service";
 
 @NgModule({
   declarations: [
@@ -41,12 +43,12 @@ import { PropertyService } from "./services/property.service";
       {
         path: 'fetch-data', component: FetchDataComponent
       },
-      {
-        path: 'properties', component: PropertyTableComponent
-      },
-      {
-        path: 'property/:id', component: PropertyFormComponent
-      },
+      // {
+      //   path: 'properties', component: PropertyTableComponent
+      // },
+      // {
+      //   path: 'property/:id', component: PropertyFormComponent
+      // },
       {
         path: 'suburbs', component: SuburbTableComponent
       },
@@ -62,7 +64,9 @@ import { PropertyService } from "./services/property.service";
     ])
   ],
   providers: [
-    PropertyService
+    SuburbService,
+    StateService,
+    //PropertyService
   ],
   bootstrap: [AppComponent]
 })

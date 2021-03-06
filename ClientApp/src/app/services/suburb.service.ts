@@ -22,4 +22,8 @@ export class SuburbService {
   public updateSuburb(suburb: Suburb) {
     return this._httpClient.put<Suburb>('/api/suburbs/' + suburb.id, suburb);
   }
+
+  public deleteSuburb(id: number) {
+    return this._httpClient.delete<Suburb>('/api/suburbs/' + id);
+  }
 }

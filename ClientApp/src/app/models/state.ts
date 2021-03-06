@@ -3,6 +3,6 @@ import { Suburb } from "./suburb";
 export interface State
 {
     name: string;
-    code: string;
+    acronym: string;
     id: number;
 }

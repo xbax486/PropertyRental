@@ -4,7 +4,7 @@ export interface Suburb
 {
     name: string;
     postcode: number;
-    state: string;
-    abbreviation: string;
+    state: State;
+    stateId: number;
     id: number;
 }

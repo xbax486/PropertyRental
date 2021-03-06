@@ -18,12 +18,25 @@
     <tr *ngFor="let suburb of suburbs">
       <td scope="row">{{ suburb.name }}</td>
       <td scope="row">{{ suburb.postcode }}</td>
-      <td scope="row">{{ suburb.state }}</td>
-      <td scope="row">{{ suburb.abbreviation }}</td>
-      <td scope="row">
-        <a [routerLink]="['/suburb', suburb.id]" (click)="onEditSuburb(suburb)">
-          Edit
-        </a>
+      <td scope="row">{{ suburb.state.name }}</td>
+      <td scope="row">{{ suburb.state.acronym }}</td>
+      <td scope="row" class="actions">
+        <div class="d-flex flex-row justify-content-between">
+          <a
+            [routerLink]="['/suburb', suburb.id]"
+            (click)="onEditSuburb(suburb)"
+            class="btn btn-primary"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteSuburb(suburb)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>

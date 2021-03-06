@@ -11,13 +11,14 @@ import { SuburbService } from 'src/app/services/suburb.service';
 export class SuburbTableComponent implements OnInit, OnDestroy {
   public suburbs: Suburb[] = [];
   public suburbsLoaded = false;
-  private _subscription = new Subscription();
+  private _getSuburbsSubscription = new Subscription();
+  private _deleteSuburbSubscription = new Subscription();
 
   constructor(private _suburbService: SuburbService) { }
 
   ngOnInit() {
     this.suburbsLoaded = false;
-    this._subscription = this._suburbService.getSuburbs()
+    this._getSuburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => {
           this.suburbs = suburbs;
@@ -28,10 +29,24 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this._getSuburbsSubscription.unsubscribe();
+    this._deleteSuburbSubscription.unsubscribe();
   }
 
   onEditSuburb(suburb) {
     this._suburbService.selectedSuburbSubject.next(suburb);
+  }
+
+  onDeleteSuburb(deletedSuburb: Suburb) {
+    if(window.confirm("Do you really want to delete this suburb?")) {
+      this._deleteSuburbSubscription = this._suburbService.deleteSuburb(deletedSuburb.id)
+        .subscribe(
+          () => {
+            var index = this.suburbs.findIndex(suburb => suburb.postcode == deletedSuburb.postcode);
+            this.suburbs.splice(index, 1);
+          },
+          (error) => console.log('Suburb deletion error', error)
+        );
+    }
   }
 }

@@ -6,7 +6,7 @@
   #suburbForm="ngForm"
 >
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="name">Name</label>
       <input
         type="text"
@@ -18,7 +18,7 @@
         required
       />
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="postcode">Postcode</label>
       <input
         type="number"
@@ -31,46 +31,22 @@
         pattern="^[0-9]{4}$"
       />
     </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="state">State</label>
-      <input
-        type="text"
+      <select
         class="form-control"
         id="state"
         placeholder="State"
-        name="state"
-        [(ngModel)]="selectedSuburb.state"
+        name="stateId"
+        [(ngModel)]="selectedSuburb.stateId"
         required
-      />
-    </div>
-    <div class="form-group col-md-6">
-      <label for="abbreviation">Abbreviation</label>
-      <input
-        type="text"
-        class="form-control"
-        id="abbreviation"
-        placeholder="Abbreviation"
-        name="abbreviation"
-        [(ngModel)]="selectedSuburb.abbreviation"
-        required
-        minlength="3"
-        maxlength="3"
-        pattern="[A-Z]*"
-      />
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <input
-        type="text"
-        class="form-control"
-        id="id"
-        name="id"
-        [(ngModel)]="selectedSuburb.id"
-        hidden
-      />
+        pattern="^[1-8]$"
+      >
+        <option value="0"></option>
+        <option [value]="state.id" *ngFor="let state of states">
+          {{ state.name }}
+        </option>
+      </select>
     </div>
   </div>
   <div class="form-row d-flex flex-row justify-content-between">
@@ -95,3 +71,4 @@
   </div>
 </form>
 <h2 *ngIf="!selectedSuburb">Suburb details loading...</h2>
+<h2>{{ selectedSuburb | json }}</h2>
