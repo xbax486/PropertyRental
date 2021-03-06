@@ -1,0 +1,4 @@
+## PropertyType API
+
+### Get all property types
+GET https://localhost:5001/api/propertytypes HTTP/1.1
