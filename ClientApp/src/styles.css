@@ -6,7 +6,7 @@ a {
 }
 
 code {
-  color: #e01a76;
+  color: #dc3545;
 }
 
 .btn-primary {
@@ -23,6 +23,11 @@ code {
   line-height: 34px;
 }
 
-input.ng-invalid.ng-touched {
-  border: 1px solid #e01a76;
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: 1px solid #dc3545;
+}
+
+span.error {
+  color: #dc3545;
 }
