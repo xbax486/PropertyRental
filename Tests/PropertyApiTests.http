@@ -1,0 +1,4 @@
+## Property API
+
+### Get all properties
+GET https://localhost:5001/api/properties HTTP/1.1

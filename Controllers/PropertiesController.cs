@@ -22,14 +22,15 @@ namespace PropertyRental.Controllers
             this.mapper = mapper;
         }
 
-        // [HttpGet("/api/properties")]
-        // public async Task<IEnumerable<PropertyResource>> GetProperties()
-        // {
-        //     var properties = await context.Properties
-        //         .Include(property => property.Suburb)
-        //         .Include(property => property.PropertyType)
-        //         .ToListAsync();
-        //     return mapper.Map<List<Property>, List<PropertyResource>>(properties);
-        // }
+        [HttpGet("/api/properties")]
+        public async Task<IEnumerable<PropertyResource>> GetProperties()
+        {
+            var properties = await context.Properties
+                .Include(property => property.Suburb)
+                    .ThenInclude(suburb => suburb.State)
+                .Include(property => property.PropertyType)
+                .ToListAsync();
+            return mapper.Map<List<Property>, List<PropertyResource>>(properties);
+        }
     }
 }
