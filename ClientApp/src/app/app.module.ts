@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 /* Components */
 import { AppComponent } from './components/app.component';
@@ -36,6 +37,7 @@ import { PropertyService } from "./services/property.service";
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
     RouterModule.forRoot([
       {
         path: 'counter', component: CounterComponent

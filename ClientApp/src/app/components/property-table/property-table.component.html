@@ -1,5 +1,8 @@
 <h1 class="title">Properties</h1>
-<table class="table table-hover table-striped mt-3" *ngIf="propertiesLoaded">
+<table
+  class="table table-hover table-striped mt-3 text-center"
+  *ngIf="propertiesLoaded"
+>
   <thead>
     <tr>
       <th scope="col">Suburb</th>
@@ -22,11 +25,86 @@
       <td scope="row">{{ property.bedroom }}</td>
       <td scope="row">{{ property.bathroom }}</td>
       <td scope="row">{{ property.parking }}</td>
-      <td scope="row">{{ property.petsAllowed }}</td>
-      <td scope="row">{{ property.builtInWardrobe }}</td>
-      <td scope="row">{{ property.gasAvailable }}</td>
-      <td scope="row">{{ property.hasStudyRoom }}</td>
-      <td scope="row">{{ property.furnished }}</td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.petsAllowed"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.petsAllowed"
+        >
+        </fa-icon>
+      </td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.builtInWardrobe"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.builtInWardrobe"
+        >
+        </fa-icon>
+      </td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.gasAvailable"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.gasAvailable"
+        >
+        </fa-icon>
+      </td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.hasStudyRoom"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.hasStudyRoom"
+        >
+        </fa-icon>
+      </td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.furnished"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.furnished"
+        >
+        </fa-icon>
+      </td>
       <!-- <td scope="row">
         <a
           [routerLink]="['/property', property.suburb.id]"

@@ -31,3 +31,11 @@ select.ng-invalid.ng-touched {
 span.error {
   color: #dc3545;
 }
+
+fa-icon[ng-reflect-classes="icon-true"] svg {
+  color: #28a745;
+}
+
+fa-icon[ng-reflect-classes="icon-false"] svg {
+  color: #dc3545;
+}

@@ -4,7 +4,10 @@
     Create Suburb
   </a>
 </div>
-<table class="table table-hover table-striped mt-3" *ngIf="suburbsLoaded">
+<table
+  class="table table-hover table-striped mt-3 text-center"
+  *ngIf="suburbsLoaded"
+>
   <thead>
     <tr>
       <th scope="col">Suburb</th>
@@ -21,22 +24,20 @@
       <td scope="row">{{ suburb.state.name }}</td>
       <td scope="row">{{ suburb.state.acronym }}</td>
       <td scope="row" class="actions">
-        <div class="d-flex flex-row justify-content-between">
-          <a
-            [routerLink]="['/suburb', suburb.id]"
-            (click)="onEditSuburb(suburb)"
-            class="btn btn-primary"
-          >
-            Edit
-          </a>
-          <button
-            (click)="onDeleteSuburb(suburb)"
-            class="btn btn-danger"
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
+        <a
+          [routerLink]="['/suburb', suburb.id]"
+          (click)="onEditSuburb(suburb)"
+          class="btn btn-primary mr-5"
+        >
+          Edit
+        </a>
+        <button
+          (click)="onDeleteSuburb(suburb)"
+          class="btn btn-danger"
+          type="button"
+        >
+          Delete
+        </button>
       </td>
     </tr>
   </tbody>

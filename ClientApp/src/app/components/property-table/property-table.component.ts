@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
 import { Property } from './../../models/property';
+import { faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-property-table',
@@ -12,6 +13,8 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   public properties: Property[] = [];
   public propertiesLoaded = false;
   private _subscription = new Subscription();
+  public faCheckCircle = faCheckCircle;
+  public faTimesCircle = faTimesCircle;
 
   constructor(private _propertyService: PropertyService) { }
 
