@@ -5,8 +5,8 @@ namespace PropertyRental.Persistence
 {
     public class PropertyRentalContext : DbContext
     {
-        // public DbSet<Owner> Owners { get; set; }
-        //public DbSet<Property> Properties { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Property> Properties { get; set; }
 
         public DbSet<State> States { get; set; }
 

@@ -11,6 +11,13 @@ namespace PropertyRental.Controllers.Resources
 
         public string Mobile { get; set; }
 
+        public IEnumerable<PropertyResource> Properties { get; set; }
+
         public int Id { get; set; }
+
+        public OwnerResource()
+        {
+            this.Properties = new Collection<PropertyResource>();
+        }
     }
 }
