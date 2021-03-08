@@ -4,6 +4,8 @@ namespace PropertyRental.Controllers.Resources
 {
     public class PropertyResource
     {
+        public int OwnerId { get; set; }
+
         public string Unit { get; set; }
 
         public string Street { get; set; }
