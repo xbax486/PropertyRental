@@ -8,6 +8,8 @@ namespace PropertyRental.Controllers.Resources
 
         public StateResource State { get; set; }
 
+        public int StateId { get; set; }
+
         public int Id { get; set; }
     }
 }

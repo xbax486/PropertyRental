@@ -33,14 +33,14 @@ namespace PropertyRental.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuburb(int id)
         {
-            var suburb = await context.Suburbs.FindAsync(id);
+            var suburb = await context.Suburbs
+                .Include(suburb => suburb.State)
+                .SingleOrDefaultAsync(suburb => suburb.Id == id);
             if (suburb == null)
             {
                 return NotFound();
             }
             var suburbResource = mapper.Map<Suburb, SuburbResource>(suburb);
-            var state = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.State.Id);
-            suburbResource.State = mapper.Map<State, StateResource>(state);
             return Ok(suburbResource);
         }
 
@@ -58,7 +58,7 @@ namespace PropertyRental.Controllers
                 return BadRequest(ModelState);
             }
             suburb = mapper.Map<SuburbResource, Suburb>(suburbResource);
-            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.State.Id);
+            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.StateId);
             context.Suburbs.Add(suburb);
             await context.SaveChangesAsync();
             return Ok(suburb);
