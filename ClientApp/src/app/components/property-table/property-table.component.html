@@ -15,7 +15,7 @@
       <th scope="col">Gas Available</th>
       <th scope="col">Has Study Room</th>
       <th scope="col">Furnished</th>
-      <!-- <th scope="col">Actions</th> -->
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -105,14 +105,22 @@
         >
         </fa-icon>
       </td>
-      <!-- <td scope="row">
+      <td scope="row" class="actions">
         <a
-          [routerLink]="['/property', property.suburb.id]"
+          [routerLink]="['/property', property.id]"
           (click)="onEditProperty(property)"
+          class="btn btn-primary mr-2"
         >
           Edit
         </a>
-      </td> -->
+        <button
+          (click)="onDeleteProperty(property)"
+          class="btn btn-danger"
+          type="button"
+        >
+          Delete
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>

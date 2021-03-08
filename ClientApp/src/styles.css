@@ -39,3 +39,8 @@ fa-icon[ng-reflect-classes="icon-true"] svg {
 fa-icon[ng-reflect-classes="icon-false"] svg {
   color: #dc3545;
 }
+
+.actions a,
+.actions button {
+  width: 75px;
+}
