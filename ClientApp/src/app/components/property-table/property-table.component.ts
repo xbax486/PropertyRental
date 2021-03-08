@@ -46,7 +46,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
       this._deletePropertySubscription = this._propertyService.deleteProperty(selectedProperty.id)
         .subscribe(
           () => {
-            var index = this.properties.findIndex(property => property.id == selectedProperty.id);
+            let index = this.properties.findIndex(property => property.id == selectedProperty.id);
             this.properties.splice(index, 1);
           },
           (error) => console.log('Property deletion error', error)

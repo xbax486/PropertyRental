@@ -48,7 +48,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(suburbForm: NgForm) {
-    var suburbDetails = suburbForm.form.value;
+    let suburbDetails = suburbForm.form.value;
     suburbDetails.stateId = +suburbDetails.stateId;
     suburbDetails.id = this.selectedSuburb.id;
     
