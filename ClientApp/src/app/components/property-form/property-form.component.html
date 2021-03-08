@@ -35,12 +35,12 @@
       <div class="form-group col-md-6">
         <label for="suburb">Suburb</label>
         <select
-          name="suburb"
+          name="suburbId"
           id="suburb"
           class="form-control custom-select"
           placeholder="Please select the suburb of the property"
-          [(ngModel)]="selectedProperty.suburb.id"
-          (change)="onSuburbChange(selectedProperty.suburb.id)"
+          [(ngModel)]="selectedProperty.suburbId"
+          (change)="onSuburbChange(selectedProperty.suburbId)"
         >
           <option value="{{ suburb.id }}" *ngFor="let suburb of suburbs">
             {{ suburb.name }} {{ suburb.postcode }}
@@ -162,7 +162,7 @@
           name="furnished"
           [(ngModel)]="selectedProperty.furnished"
         />
-        <label class="form-check-label" for="furnished"> Furnished </label>
+        <label class="form-check-label" for="furnished">Furnished</label>
       </div>
     </div>
   </fieldset>
@@ -172,12 +172,12 @@
       <div class="form-group col-12">
         <label for="propertyType">Property Type</label>
         <select
-          name="propertyType"
+          name="propertyTypeId"
           id="propertyType"
           class="form-control custom-select"
           placeholder="Property Type"
-          [(ngModel)]="selectedProperty.propertyType.id"
-          (change)="onPropertyTypeChange(selectedProperty.propertyType.id)"
+          [(ngModel)]="selectedProperty.propertyTypeId"
+          (change)="onPropertyTypeChange(selectedProperty.propertyTypeId)"
         >
           <option
             value="{{ propertyType.id }}"

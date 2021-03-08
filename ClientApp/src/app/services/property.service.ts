@@ -17,7 +17,7 @@ export class PropertyService {
   }
 
   public updateProperty(property: Property) {
-    return this._httpClient.put<Property[]>('/api/properties' + property.id, property);
+    return this._httpClient.put<Property[]>('/api/properties/' + property.id, property);
   }
 
   public deleteProperty(id: number) {

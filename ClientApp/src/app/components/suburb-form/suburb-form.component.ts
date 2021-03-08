@@ -13,13 +13,13 @@ import { State } from './../../models/state';
   styleUrls: ['./suburb-form.component.css']
 })
 export class SuburbFormComponent implements OnInit, OnDestroy {
+  public selectedSuburb:Suburb = { name: '', postcode: -1, state: { name: '', acronym: '', id: -1 }, stateId: -1, id: -1 };
+  public states: State[] = [];
+
   private _selectedSuburbSubscription = new Subscription();
   private _getAllStatesSubscription = new Subscription();
   private _createSuburbSubscription = new Subscription();
   private _updateSuburbSubscription = new Subscription();
-
-  public selectedSuburb:Suburb = { name: '', postcode: -1, state: { name: '', acronym: '', id: -1 }, stateId: -1, id: -1 };
-  public states: State[] = [];
 
   constructor(
     private _suburbService: SuburbService, 
@@ -49,9 +49,8 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
 
   public onSubmit(suburbForm: NgForm) {
     let suburbDetails = suburbForm.form.value;
-    suburbDetails.stateId = +suburbDetails.stateId;
     suburbDetails.id = this.selectedSuburb.id;
-    
+    suburbDetails.stateId = +suburbDetails.stateId;
     if(suburbDetails.id == -1) {
       this._createSuburbSubscription = this._suburbService.createSuburb(suburbDetails)
         .subscribe(

@@ -39,6 +39,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   private _selectedPropertySubscription = new Subscription();
   private _suburbsSubscription = new Subscription();
   private _propertyTypesSubscription = new Subscription();
+  private _updatePropertySubscription = new Subscription();
 
   constructor(
     private _propertyService: PropertyService, 
@@ -66,9 +67,11 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.clearFields();
     this._selectedPropertySubscription.unsubscribe();
     this._suburbsSubscription.unsubscribe();
     this._propertyTypesSubscription.unsubscribe();
+    this._updatePropertySubscription.unsubscribe();
   }
 
   public onSuburbChange(suburbId) {
@@ -108,6 +111,29 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(propertyForm: NgForm) {
-    console.log('onSubmit', propertyForm);
+    let propertyDetails = propertyForm.form.value;
+    propertyDetails.id = this.selectedProperty.id;
+    propertyDetails.ownerId = +this.selectedProperty.ownerId;
+    propertyDetails.suburbId = +this.selectedProperty.suburbId;
+    propertyDetails.propertyTypeId = +this.selectedProperty.propertyTypeId;
+    
+    this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
+      .subscribe(
+        (message) => {
+          console.log('Successfully updated a property', message);
+          this.navigateToSuburbs(propertyForm);
+        },
+        (error) => console.log('Update a suburb fails', error)
+      );
+  }
+
+  private navigateToSuburbs(propertyForm) {
+    propertyForm.reset();
+    this._router.navigate(['properties']);
+  }
+
+  private clearFields() {
+    this.selectedProperty.id = -1;
+    this.onClear();
   }
 }
