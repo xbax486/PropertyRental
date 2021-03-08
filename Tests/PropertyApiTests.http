@@ -3,8 +3,8 @@
 ### Get all properties
 GET https://localhost:5001/api/properties HTTP/1.1
 
-### GET a single property
-GET https://localhost:5001/api/properties/2 HTTP/1.1
+### GET a property
+GET https://localhost:5001/api/properties/7 HTTP/1.1
 
 ### Create a property
 POST https://localhost:5001/api/properties HTTP/1.1
@@ -25,3 +25,26 @@ content-type: application/json
     "hasStudyRoom": false,
     "furnished": false
 }
+
+### Update a property
+PUT https://localhost:5001/api/properties/7 HTTP/1.1
+content-type: application/json
+
+{
+    "ownerId": 3,
+    "unit": "55",
+    "street": "33 Burwodd Rd",
+    "suburbid": 4,
+    "propertytypeid": 3,
+    "bedroom": 2,
+    "bathroom": 1,
+    "parking": 1,
+    "petsAllowed": false,
+    "builtInWardrobe": true,
+    "gasAvailable": true,
+    "hasStudyRoom": false,
+    "furnished": false
+}
+
+### Delete a property
+DELETE https://localhost:5001/api/properties/8 HTTP/1.1

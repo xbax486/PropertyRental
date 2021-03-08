@@ -66,5 +66,37 @@ namespace PropertyRental.Controllers
             await context.SaveChangesAsync();
             return Ok(property);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProperty(int id, [FromBody] PropertyResource propertyResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var property = await context.Properties.FindAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+            mapper.Map<PropertyResource, Property>(propertyResource, property);
+            property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
+            property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
+            await context.SaveChangesAsync();
+            return Ok(property);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProperty(int id)
+        {
+            var property = await context.Properties.FindAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+            context.Properties.Remove(property);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

@@ -3,7 +3,7 @@
 ### Get all suburbs
 GET https://localhost:5001/api/suburbs HTTP/1.1
 
-### GET a single suburb
+### GET a suburb
 GET https://localhost:5001/api/suburbs/6 HTTP/1.1
 
 ### Create a suburb
