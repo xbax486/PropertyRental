@@ -2,3 +2,26 @@
 
 ### Get all properties
 GET https://localhost:5001/api/properties HTTP/1.1
+
+### GET a single property
+GET https://localhost:5001/api/properties/2 HTTP/1.1
+
+### Create a property
+POST https://localhost:5001/api/properties HTTP/1.1
+content-type: application/json
+
+{
+    "ownerId": 1,
+    "unit": "22",
+    "street": "44 Kent Street",
+    "suburbid": 3,
+    "propertytypeid": 1,
+    "bedroom": 1,
+    "bathroom": 1,
+    "parking": 0,
+    "petsAllowed": true,
+    "builtInWardrobe": true,
+    "gasAvailable": true,
+    "hasStudyRoom": false,
+    "furnished": false
+}

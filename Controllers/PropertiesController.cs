@@ -27,29 +27,44 @@ namespace PropertyRental.Controllers
         public async Task<IEnumerable<PropertyResource>> GetProperties()
         {
             var properties = await context.Properties
+                .Include(property => property.Owner)
                 .Include(property => property.Suburb)
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
                 .ToListAsync();
-            // foreach(var property in properties) 
-            // {
-            //     property.OwnerId
-            // }
             return mapper.Map<List<Property>, List<PropertyResource>>(properties);
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> GetProperty(int id)
-        // {
-        //     var property = await context.Properties.FindAsync(id);
-        //     if (property == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     var propertyResource = mapper.Map<Property, PropertyResource>(property);
-        //     var suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.Suburb.Id);
-        //     var suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.Suburb.Id);
-        //     var suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.Suburb.Id);
-        // }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProperty(int id)
+        {
+            var property = await context.Properties
+                .Include(property => property.Owner)
+                .Include(property => property.Suburb)
+                    .ThenInclude(suburb => suburb.State)
+                .Include(property => property.PropertyType)
+                .SingleOrDefaultAsync(property => property.Id == id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+            var propertyResource = mapper.Map<Property, PropertyResource>(property);
+            return Ok(propertyResource);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProperty([FromBody] PropertyResource propertyResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var property = mapper.Map<PropertyResource, Property>(propertyResource);
+            property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
+            property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
+            context.Properties.Add(property);
+            await context.SaveChangesAsync();
+            return Ok(property);
+        }
     }
 }

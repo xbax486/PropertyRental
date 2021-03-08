@@ -4,6 +4,7 @@ namespace PropertyRental.Controllers.Resources
 {
     public class PropertyResource
     {
+        public OwnerResource Owner { get; set; }
         public int OwnerId { get; set; }
 
         public string Unit { get; set; }
@@ -12,7 +13,11 @@ namespace PropertyRental.Controllers.Resources
 
         public SuburbResource Suburb { get; set; }
 
+        public int SuburbId { get; set; }
+
         public PropertyTypeResource PropertyType { get; set; }
+
+        public int PropertyTypeId { get; set; }
 
         public byte Bedroom { get; set; }
 
@@ -29,6 +34,7 @@ namespace PropertyRental.Controllers.Resources
         public bool HasStudyRoom { get; set; }
 
         public bool Furnished { get; set; }
+
         public int Id { get; set; }
     }
 }
