@@ -39,7 +39,7 @@ namespace PropertyRental.Controllers
                 return NotFound();
             }
             var suburbResource = mapper.Map<Suburb, SuburbResource>(suburb);
-            var state = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.StateId);
+            var state = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.State.Id);
             suburbResource.State = mapper.Map<State, StateResource>(state);
             return Ok(suburbResource);
         }
@@ -58,7 +58,7 @@ namespace PropertyRental.Controllers
                 return BadRequest(ModelState);
             }
             suburb = mapper.Map<SuburbResource, Suburb>(suburbResource);
-            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.StateId);
+            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.State.Id);
             context.Suburbs.Add(suburb);
             await context.SaveChangesAsync();
             return Ok(suburb);
