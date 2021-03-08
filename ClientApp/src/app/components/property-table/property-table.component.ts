@@ -33,11 +33,11 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._getPropertiesSubscription.unsubscribe();
+    this._deletePropertySubscription.unsubscribe();
   }
 
   onEditProperty(selectedProperty: Property) {
-    //this._propertyService.selectedPropertySubject.next(selectedProperty);
-    console.log('onEditProperty');
+    this._propertyService.selectedPropertySubject.next(selectedProperty);
     
   }
 

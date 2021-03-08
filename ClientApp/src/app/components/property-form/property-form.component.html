@@ -1,5 +1,10 @@
 <h1 class="title">Property details</h1>
-<form *ngIf="selectedProperty.suburb" class="mt-3">
+<form
+  *ngIf="selectedProperty.suburb"
+  class="mt-3"
+  (ngSubmit)="onSubmit(propertyForm)"
+  #propertyForm="ngForm"
+>
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Address</legend>
     <div class="form-row">
@@ -9,7 +14,7 @@
           type="text"
           class="form-control"
           id="unit"
-          placeholder="Unit"
+          placeholder="Please enter the unit of the property"
           name="unit"
           [(ngModel)]="selectedProperty.unit"
         />
@@ -20,7 +25,7 @@
           type="text"
           class="form-control"
           id="street"
-          placeholder="Street"
+          placeholder="Please enter the street of the property"
           name="street"
           [(ngModel)]="selectedProperty.street"
         />
@@ -33,7 +38,7 @@
           name="suburb"
           id="suburb"
           class="form-control custom-select"
-          placeholder="Suburb"
+          placeholder="Please select the suburb of the property"
           [(ngModel)]="selectedProperty.suburb.id"
           (change)="onSuburbChange(selectedProperty.suburb.id)"
         >
@@ -51,7 +56,7 @@
           placeholder="State"
           name="state"
           disabled
-          [(ngModel)]="selectedProperty.suburb.state"
+          [(ngModel)]="selectedProperty.suburb.state.name"
         />
       </div>
     </div>
@@ -60,12 +65,11 @@
     <legend class="w-auto">Rooms</legend>
     <div class="form-row">
       <div class="form-group col-md-4">
-        <label for="bedroom">Bedroom</label>
+        <label for="bedroom">Bedroom: {{ selectedProperty.bedroom }}</label>
         <input
           type="range"
           class="form-control"
           id="bedroom"
-          placeholder="Please enter at least one bedroom"
           name="bedroom"
           [(ngModel)]="selectedProperty.bedroom"
           min="0"
@@ -73,12 +77,11 @@
         />
       </div>
       <div class="form-group col-md-4">
-        <label for="bathroom">Bathroom</label>
+        <label for="bathroom">Bathroom: {{ selectedProperty.bathroom }}</label>
         <input
           type="range"
           class="form-control"
           id="bathroom"
-          placeholder="Please enter at least one bathroom"
           name="bathroom"
           [(ngModel)]="selectedProperty.bathroom"
           min="0"
@@ -86,12 +89,11 @@
         />
       </div>
       <div class="form-group col-md-4">
-        <label for="parking">Parking</label>
+        <label for="parking">Parking: {{ selectedProperty.parking }}</label>
         <input
           type="range"
           class="form-control"
           id="parking"
-          placeholder="Please enter at least one parking"
           name="parking"
           [(ngModel)]="selectedProperty.parking"
           min="0"
@@ -187,8 +189,37 @@
       </div>
     </div>
   </fieldset>
-  <button type="button" class="btn btn-primary" (click)="onSubmitProperty()">
-    Submit
-  </button>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Actions</legend>
+    <div class="form-row">
+      <div class="form-group col-xl-4">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="propertyForm.form.invalid"
+        >
+          Submit
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-block"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-danger btn-block"
+          (click)="onClear()"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </fieldset>
 </form>
 <h2 *ngIf="!selectedProperty.suburb">Property details loading...</h2>

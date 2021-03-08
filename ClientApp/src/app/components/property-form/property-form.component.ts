@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
 import { SuburbService } from './../../services/suburb.service';
@@ -12,7 +14,25 @@ import { PropertyType } from './../../models/propertyType';
   styleUrls: ['./property-form.component.css']
 })
 export class PropertyFormComponent implements OnInit, OnDestroy {
-  public selectedProperty = { suburb: {}, propertyType: {} };
+  public selectedProperty = { 
+    owner: {}, 
+    ownerId: -1,
+    suburb: {},  
+    suburbId: -1,
+    propertyType: {},
+    propertyTypeId: -1,
+    bedroom: 0,
+    bathroom: 0,
+    parking: 0,
+    petsAllowed: false,
+    builtInWardrobe: false,
+    gasAvailable: false,
+    hasStudyRoom: false,
+    furnished: false,
+    street: "",
+    unit: '',
+    id: -1
+  };
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
 
@@ -22,7 +42,8 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private _propertyService: PropertyService, 
-    private _suburbService: SuburbService) { }
+    private _suburbService: SuburbService,
+    private _router: Router) { }
 
   ngOnInit() {
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
@@ -50,15 +71,43 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this._propertyTypesSubscription.unsubscribe();
   }
 
-  onSuburbChange(suburbId) {
+  public onSuburbChange(suburbId) {
     this.selectedProperty.suburb = Object.assign({}, this.suburbs.find(suburb => suburb.id == suburbId));
   }
 
-  onPropertyTypeChange(propertyTypeId) {
+  public onPropertyTypeChange(propertyTypeId) {
     this.selectedProperty.propertyType = Object.assign({}, this.propertyTypes.find(propertyType => propertyType.id == propertyTypeId));
   }
 
-  onSubmitProperty() {
-    
+  public onCancel() {
+    this._router.navigate(['properties']);
+  }
+
+  public onClear() {
+    this.selectedProperty.owner = {};
+    this.selectedProperty.ownerId = -1;
+    this.selectedProperty.suburb = { state: { name: '' } };
+    this.selectedProperty.suburbId = -1;
+    this.selectedProperty.propertyType = {};
+    this.selectedProperty.propertyTypeId = -1;
+
+    this.selectedProperty.unit = '';
+    this.selectedProperty.street = '';
+
+    this.selectedProperty.bedroom = 0;
+    this.selectedProperty.bathroom = 0;
+    this.selectedProperty.parking = 0;
+
+    this.selectedProperty.petsAllowed = false;
+    this.selectedProperty.builtInWardrobe = false;
+    this.selectedProperty.gasAvailable = false;
+    this.selectedProperty.hasStudyRoom = false;
+    this.selectedProperty.furnished = false;
+
+    this.selectedProperty.id = -1;
+  }
+
+  public onSubmit(propertyForm: NgForm) {
+    console.log('onSubmit', propertyForm);
   }
 }

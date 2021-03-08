@@ -16,6 +16,10 @@ export class PropertyService {
     return this._httpClient.get<Property[]>('/api/properties');
   }
 
+  public updateProperty(property: Property) {
+    return this._httpClient.put<Property[]>('/api/properties' + property.id, property);
+  }
+
   public deleteProperty(id: number) {
     return this._httpClient.delete<Property>('/api/properties/' + id);
   }

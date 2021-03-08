@@ -48,9 +48,9 @@ import { PropertyService } from "./services/property.service";
       {
         path: 'properties', component: PropertyTableComponent
       },
-      // {
-      //   path: 'property/:id', component: PropertyFormComponent
-      // },
+      {
+        path: 'property/:id', component: PropertyFormComponent
+      },
       {
         path: 'suburbs', component: SuburbTableComponent
       },
