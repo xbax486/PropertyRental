@@ -16,6 +16,10 @@ export class PropertyService {
     return this._httpClient.get<Property[]>('/api/properties');
   }
 
+  public deleteProperty(id: number) {
+    return this._httpClient.delete<Property>('/api/properties/' + id);
+  }
+
   public getPropertyTypes() {
     return this._httpClient.get<PropertyType[]>('/api/propertytypes');
   }

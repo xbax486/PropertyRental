@@ -12,15 +12,16 @@ import { faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 export class PropertyTableComponent implements OnInit, OnDestroy {
   public properties: Property[] = [];
   public propertiesLoaded = false;
-  private _subscription = new Subscription();
   public faCheckCircle = faCheckCircle;
   public faTimesCircle = faTimesCircle;
+  private _getPropertiesSubscription = new Subscription();
+  private _deletePropertySubscription = new Subscription();
 
   constructor(private _propertyService: PropertyService) { }
 
   ngOnInit() {
     this.propertiesLoaded = false;
-    this._subscription = this._propertyService.getProperties()
+    this._getPropertiesSubscription = this._propertyService.getProperties()
       .subscribe(
         (properties) => {
           this.properties = properties;
@@ -31,7 +32,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this._getPropertiesSubscription.unsubscribe();
   }
 
   onEditProperty(selectedProperty: Property) {
@@ -41,8 +42,15 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onDeleteProperty(selectedProperty: Property) {
-    //this._propertyService.selectedPropertySubject.next(selectedProperty);
-    console.log('onDeleteProperty');
-    
+    if(window.confirm("Do you really want to delete this property?")) {
+      this._deletePropertySubscription = this._propertyService.deleteProperty(selectedProperty.id)
+        .subscribe(
+          () => {
+            var index = this.properties.findIndex(property => property.id == selectedProperty.id);
+            this.properties.splice(index, 1);
+          },
+          (error) => console.log('Property deletion error', error)
+        );
+    }
   }
 }
