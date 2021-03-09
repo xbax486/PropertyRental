@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { PropertyService } from './../../services/property.service';
-import { SuburbService } from './../../services/suburb.service';
+import { Subscription, throwError } from 'rxjs';
+import { switchMap, catchError } from "rxjs/operators";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { PropertyType } from './../../models/propertyType';
+import { Owner } from 'src/app/models/owner';
+import { PropertyService } from './../../services/property.service';
+import { SuburbService } from './../../services/suburb.service';
+import { OwnerService } from './../../services/owner.service';
 
 @Component({
   selector: 'app-property-form',
@@ -35,22 +38,35 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   };
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
+  public ownerOfProperty: Owner = null;
 
   private _selectedPropertySubscription = new Subscription();
+  private _updatePropertySubscription = new Subscription();
   private _suburbsSubscription = new Subscription();
   private _propertyTypesSubscription = new Subscription();
-  private _updatePropertySubscription = new Subscription();
 
   constructor(
     private _propertyService: PropertyService, 
     private _suburbService: SuburbService,
+    private _ownerService: OwnerService,
     private _router: Router) { }
 
   ngOnInit() {
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
+      .pipe(
+        switchMap(
+          (selectedProperty: Property) => {
+            this.selectedProperty = selectedProperty;
+            return this._ownerService.getOwner(this.selectedProperty.ownerId)
+              .pipe(
+                catchError(error => throwError(error))
+              );
+          }
+        )
+      )
       .subscribe(
-        (selectedProperty: Property) => this.selectedProperty = selectedProperty,
-        (error) => console.log('Selected property fetching error', error)
+        (owner: Owner) => this.ownerOfProperty = owner,
+        (error) => console.log('Owner fetching error', error)
       );
     
     this._suburbsSubscription = this._suburbService.getSuburbs()
@@ -69,9 +85,9 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clearFields();
     this._selectedPropertySubscription.unsubscribe();
+    this._updatePropertySubscription.unsubscribe();
     this._suburbsSubscription.unsubscribe();
     this._propertyTypesSubscription.unsubscribe();
-    this._updatePropertySubscription.unsubscribe();
   }
 
   public onSuburbChange(suburbId) {

@@ -38,7 +38,6 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   onEditProperty(selectedProperty: Property) {
     this._propertyService.selectedPropertySubject.next(selectedProperty);
-    
   }
 
   onDeleteProperty(selectedProperty: Property) {
