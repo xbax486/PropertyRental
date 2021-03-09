@@ -1,4 +1,9 @@
-<h1 class="title">Properties</h1>
+<div class="d-flex flex-row justify-content-between">
+  <h1 class="title">Properties</h1>
+  <a [routerLink]="['/property/new']" class="btn btn-primary btn-create">
+    Create Property
+  </a>
+</div>
 <table
   class="table table-hover table-striped mt-3 text-center"
   *ngIf="propertiesLoaded"

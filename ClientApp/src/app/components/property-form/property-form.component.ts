@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Subscription, throwError } from 'rxjs';
+import { Subscription, throwError, of } from 'rxjs';
 import { switchMap, catchError } from "rxjs/operators";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
@@ -57,10 +57,13 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         switchMap(
           (selectedProperty: Property) => {
             this.selectedProperty = selectedProperty;
-            return this._ownerService.getOwner(this.selectedProperty.ownerId)
-              .pipe(
-                catchError(error => throwError(error))
-              );
+            if(this.selectedProperty.id != -1) {
+              return this._ownerService.getOwner(this.selectedProperty.ownerId)
+                .pipe(
+                  catchError(error => throwError(error))
+                );
+            }
+            return of({});
           }
         )
       )
@@ -132,15 +135,16 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     propertyDetails.ownerId = +this.selectedProperty.ownerId;
     propertyDetails.suburbId = +this.selectedProperty.suburbId;
     propertyDetails.propertyTypeId = +this.selectedProperty.propertyTypeId;
+    console.log('propertyDetails', propertyDetails);
     
-    this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
-      .subscribe(
-        (message) => {
-          console.log('Successfully updated a property', message);
-          this.navigateToSuburbs(propertyForm);
-        },
-        (error) => console.log('Update a suburb fails', error)
-      );
+    // this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
+    //   .subscribe(
+    //     (message) => {
+    //       console.log('Successfully updated a property', message);
+    //       this.navigateToSuburbs(propertyForm);
+    //     },
+    //     (error) => console.log('Update a suburb fails', error)
+    //   );
   }
 
   private navigateToSuburbs(propertyForm) {
