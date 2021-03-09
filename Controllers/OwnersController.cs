@@ -22,11 +22,11 @@ namespace PropertyRental.Controllers
             this.mapper = mapper;
         }
 
-        // [HttpGet("/api/owners")]
-        // public async Task<IEnumerable<OwnerResource>> GetOwners()
-        // {
-        //     var owners = await context.Owners.ToListAsync();
-        //     return mapper.Map<List<Owner>, List<OwnerResource>>(owners);
-        // }
+        [HttpGet("/api/owners")]
+        public async Task<IEnumerable<OwnerResource>> GetOwners()
+        {
+            var owners = await context.Owners.ToListAsync();
+            return mapper.Map<List<Owner>, List<OwnerResource>>(owners);
+        }
     }
 }

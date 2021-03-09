@@ -4,7 +4,7 @@
 GET https://localhost:5001/api/properties HTTP/1.1
 
 ### GET a property
-GET https://localhost:5001/api/properties/7 HTTP/1.1
+GET https://localhost:5001/api/properties/1 HTTP/1.1
 
 ### Create a property
 POST https://localhost:5001/api/properties HTTP/1.1
