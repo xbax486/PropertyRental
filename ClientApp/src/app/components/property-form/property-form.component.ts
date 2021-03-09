@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription, throwError, of } from 'rxjs';
-import { switchMap, catchError } from "rxjs/operators";
+import { switchMap, catchError } from 'rxjs/operators';
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { PropertyType } from './../../models/propertyType';
@@ -20,9 +20,9 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   public selectedProperty = { 
     owner: {}, 
     ownerId: -1,
-    suburb: {},  
+    suburb: { state: { name: '' } },  
     suburbId: -1,
-    propertyType: {},
+    propertyType: { name: ''},
     propertyTypeId: -1,
     bedroom: 0,
     bathroom: 0,
@@ -32,18 +32,21 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
-    street: "",
+    street: '',
     unit: '',
     id: -1
   };
+  public state = '';
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
-  public ownerOfProperty: Owner = null;
-
+  public owners: Owner[] = [];
+  
   private _selectedPropertySubscription = new Subscription();
+  private _createPropertySubscription = new Subscription();
   private _updatePropertySubscription = new Subscription();
   private _suburbsSubscription = new Subscription();
   private _propertyTypesSubscription = new Subscription();
+  private _ownersSubscription = new Subscription();
 
   constructor(
     private _propertyService: PropertyService, 
@@ -57,7 +60,8 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         switchMap(
           (selectedProperty: Property) => {
             this.selectedProperty = selectedProperty;
-            if(this.selectedProperty.id != -1) {
+            this.state = this.selectedProperty.suburb.state.name;
+            if(this.selectedProperty.id && this.selectedProperty.id != -1) {
               return this._ownerService.getOwner(this.selectedProperty.ownerId)
                 .pipe(
                   catchError(error => throwError(error))
@@ -68,7 +72,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(
-        (owner: Owner) => this.ownerOfProperty = owner,
+        (owner: Owner) => this.selectedProperty.owner = owner,
         (error) => console.log('Owner fetching error', error)
       );
     
@@ -83,50 +87,43 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         (propertyTypes: PropertyType[]) => this.propertyTypes = propertyTypes,
         (error) => console.log('Property types fetching error', error)
       );
+
+    this._ownersSubscription = this._ownerService.getOwners()
+      .subscribe(
+        (owners: Owner[]) => this.owners = owners,
+        (error) => console.log('Owners fetching error', error)
+      );
   }
 
   ngOnDestroy() {
-    this.clearFields();
+    this.clearForm();
     this._selectedPropertySubscription.unsubscribe();
+    this._createPropertySubscription.unsubscribe();
     this._updatePropertySubscription.unsubscribe();
     this._suburbsSubscription.unsubscribe();
     this._propertyTypesSubscription.unsubscribe();
+    this._ownersSubscription.unsubscribe();
   }
 
   public onSuburbChange(suburbId) {
     this.selectedProperty.suburb = Object.assign({}, this.suburbs.find(suburb => suburb.id == suburbId));
+    this.state = this.selectedProperty.suburb.state.name;
   }
 
   public onPropertyTypeChange(propertyTypeId) {
     this.selectedProperty.propertyType = Object.assign({}, this.propertyTypes.find(propertyType => propertyType.id == propertyTypeId));
   }
 
+  public onOwnerChange(ownerId) {
+    this.selectedProperty.owner = Object.assign({}, this.owners.find(owner => owner.id == ownerId));
+  }
+
   public onCancel() {
     this._router.navigate(['properties']);
   }
 
-  public onClear() {
-    this.selectedProperty.owner = {};
-    this.selectedProperty.ownerId = -1;
-    this.selectedProperty.suburb = { state: { name: '' } };
-    this.selectedProperty.suburbId = -1;
-    this.selectedProperty.propertyType = {};
-    this.selectedProperty.propertyTypeId = -1;
-
-    this.selectedProperty.unit = '';
-    this.selectedProperty.street = '';
-
-    this.selectedProperty.bedroom = 0;
-    this.selectedProperty.bathroom = 0;
-    this.selectedProperty.parking = 0;
-
-    this.selectedProperty.petsAllowed = false;
-    this.selectedProperty.builtInWardrobe = false;
-    this.selectedProperty.gasAvailable = false;
-    this.selectedProperty.hasStudyRoom = false;
-    this.selectedProperty.furnished = false;
-
-    this.selectedProperty.id = -1;
+  public onClear(propertyForm: NgForm) {
+    propertyForm.reset();
   }
 
   public onSubmit(propertyForm: NgForm) {
@@ -135,25 +132,50 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     propertyDetails.ownerId = +this.selectedProperty.ownerId;
     propertyDetails.suburbId = +this.selectedProperty.suburbId;
     propertyDetails.propertyTypeId = +this.selectedProperty.propertyTypeId;
-    console.log('propertyDetails', propertyDetails);
-    
-    // this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
-    //   .subscribe(
-    //     (message) => {
-    //       console.log('Successfully updated a property', message);
-    //       this.navigateToSuburbs(propertyForm);
-    //     },
-    //     (error) => console.log('Update a suburb fails', error)
-    //   );
+    if(propertyDetails.id == -1) {
+      this._createPropertySubscription = this._propertyService.createProperty(propertyDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully created a property', message);
+            this.navigateToSuburbs(propertyForm);
+          },
+          (error) => console.log('Create a property fails', error)
+        );
+    }
+    else {
+      this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully updated a property', message);
+            this.navigateToSuburbs(propertyForm);
+          },
+          (error) => console.log('Update a suburb fails', error)
+        );
+    }
   }
 
-  private navigateToSuburbs(propertyForm) {
+  private navigateToSuburbs(propertyForm: NgForm) {
     propertyForm.reset();
     this._router.navigate(['properties']);
   }
 
-  private clearFields() {
+  private clearForm() {
     this.selectedProperty.id = -1;
-    this.onClear();
+    this.selectedProperty.owner= {}; 
+    this.selectedProperty.ownerId = -1;
+    this.selectedProperty.suburb = { state: { name: '' } };  
+    this.selectedProperty.suburbId = -1;
+    this.selectedProperty.propertyType = { name: ''};
+    this.selectedProperty.propertyTypeId = -1;
+    this.selectedProperty.bedroom = 0;
+    this.selectedProperty.bathroom = 0;
+    this.selectedProperty.parking = 0;
+    this.selectedProperty.petsAllowed = false;
+    this.selectedProperty.builtInWardrobe = false;
+    this.selectedProperty.gasAvailable = false;
+    this.selectedProperty.hasStudyRoom = false;
+    this.selectedProperty.furnished = false;
+    this.selectedProperty.street = '';
+    this.selectedProperty.unit = '';
   }
 }

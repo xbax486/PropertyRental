@@ -40,7 +40,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.clearFields();
+    this.clearForm();
     this._selectedSuburbSubscription.unsubscribe();
     this._getAllStatesSubscription.unsubscribe();
     this._createSuburbSubscription.unsubscribe();
@@ -77,10 +77,8 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
     this._router.navigate(['suburbs']);
   }
 
-  public onClear() {
-    this.selectedSuburb.name = '';
-    this.selectedSuburb.postcode = 0;
-    this.selectedSuburb.stateId = 0;
+  public onClear(suburbForm: NgForm) {
+    suburbForm.reset();
   }
 
   private navigateToSuburbs(suburbForm) {
@@ -88,8 +86,10 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
     this._router.navigate(['suburbs']);
   }
 
-  private clearFields() {
+  private clearForm() {
     this.selectedSuburb.id = -1;
-    this.onClear();
+    this.selectedSuburb.name = '';
+    this.selectedSuburb.postcode = -1;
+    this.selectedSuburb.stateId = -1;
   }
 }

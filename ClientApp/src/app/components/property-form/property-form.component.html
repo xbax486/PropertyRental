@@ -56,7 +56,7 @@
           placeholder="State"
           name="state"
           disabled
-          [(ngModel)]="selectedProperty.suburb.state.name"
+          [(ngModel)]="state"
         />
       </div>
     </div>
@@ -187,17 +187,20 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-6" *ngIf="ownerOfProperty">
+      <div class="form-group col-md-6">
         <label for="owner">Owner</label>
-        <input
-          type="text"
-          class="form-control"
+        <select
+          name="ownerId"
           id="owner"
+          class="form-control custom-select"
           placeholder="Owner"
-          name="owner"
-          disabled
-          [(ngModel)]="ownerOfProperty.name"
-        />
+          [(ngModel)]="selectedProperty.ownerId"
+          (change)="onOwnerChange(selectedProperty.ownerId)"
+        >
+          <option value="{{ owner.id }}" *ngFor="let owner of owners">
+            {{ owner.name }}
+          </option>
+        </select>
       </div>
     </div>
   </fieldset>
@@ -226,7 +229,7 @@
         <button
           type="button"
           class="btn btn-danger btn-block"
-          (click)="onClear()"
+          (click)="onClear(propertyForm)"
         >
           Clear
         </button>

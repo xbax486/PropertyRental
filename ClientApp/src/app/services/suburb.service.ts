@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject } from "rxjs";
-import { Suburb } from "../models/suburb";
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { Suburb } from '../models/suburb';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuburbService {
-  public selectedSuburbSubject = new BehaviorSubject({});
+  public selectedSuburbSubject = new BehaviorSubject({ 
+    name: '', 
+    postcode: -1, 
+    state: { 
+      name: '', 
+      acronym: '', 
+      id: -1 
+    }, 
+    stateId: -1, 
+    id: -1 
+  });
 
   constructor(private _httpClient: HttpClient) { }
 

@@ -38,7 +38,7 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSuburb(deletedSuburb: Suburb) {
-    if(window.confirm("Do you really want to delete this suburb?")) {
+    if(window.confirm('Do you really want to delete this suburb?')) {
       this._deleteSuburbSubscription = this._suburbService.deleteSuburb(deletedSuburb.id)
         .subscribe(
           () => {

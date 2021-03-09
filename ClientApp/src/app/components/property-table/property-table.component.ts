@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
 import { Property } from './../../models/property';
-import { faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-property-table',
@@ -41,7 +41,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onDeleteProperty(selectedProperty: Property) {
-    if(window.confirm("Do you really want to delete this property?")) {
+    if(window.confirm('Do you really want to delete this property?')) {
       this._deletePropertySubscription = this._propertyService.deleteProperty(selectedProperty.id)
         .subscribe(
           () => {
