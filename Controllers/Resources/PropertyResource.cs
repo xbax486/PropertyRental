@@ -4,7 +4,7 @@ namespace PropertyRental.Controllers.Resources
 {
     public class PropertyResource
     {
-        public OwnerResource Owner { get; set; }
+        //public OwnerResource Owner { get; set; }
         public int OwnerId { get; set; }
 
         public string Unit { get; set; }

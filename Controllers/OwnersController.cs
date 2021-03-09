@@ -11,6 +11,7 @@ using PropertyRental.Controllers.Resources;
 
 namespace PropertyRental.Controllers
 {
+    [Route("/api/owners")]
     public class OwnersController : Controller
     {
         private readonly PropertyRentalContext context;
@@ -22,11 +23,24 @@ namespace PropertyRental.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("/api/owners")]
+        [HttpGet]
         public async Task<IEnumerable<OwnerResource>> GetOwners()
         {
             var owners = await context.Owners.ToListAsync();
             return mapper.Map<List<Owner>, List<OwnerResource>>(owners);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOwner(int id)
+        {
+            var owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+            owner.Properties = await context.Properties.Where(property => property.OwnerId == owner.Id).ToListAsync();
+            var ownerResource = mapper.Map<Owner, OwnerResource>(owner);
+            return Ok(ownerResource);
         }
     }
 }

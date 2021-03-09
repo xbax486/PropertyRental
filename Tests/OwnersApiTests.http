@@ -2,3 +2,6 @@
 
 ### Get all owners
 GET https://localhost:5001/api/owners HTTP/1.1
+
+### GET a owner
+GET https://localhost:5001/api/owners/1 HTTP/1.1
