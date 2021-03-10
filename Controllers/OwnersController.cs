@@ -72,5 +72,18 @@ namespace PropertyRental.Controllers
             await context.SaveChangesAsync();
             return Ok(owner);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOwner(int id)
+        {
+            var owner = await context.Owners.FindAsync(id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+            context.Owners.Remove(owner);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

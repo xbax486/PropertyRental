@@ -25,3 +25,6 @@ content-type: application/json
     "email": "tester11@example.com",
     "mobile": "0441234569"
 }
+
+### Delete an owner
+DELETE https://localhost:5001/api/owners/4 HTTP/1.1
