@@ -55,5 +55,22 @@ namespace PropertyRental.Controllers
             await context.SaveChangesAsync();
             return Ok(owner);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerResource ownerResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var owner = await context.Owners.FindAsync(id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+            mapper.Map<OwnerResource, Owner>(ownerResource, owner);
+            await context.SaveChangesAsync();
+            return Ok(owner);
+        }
     }
 }

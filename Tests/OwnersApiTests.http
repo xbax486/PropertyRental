@@ -3,10 +3,10 @@
 ### Get all owners
 GET https://localhost:5001/api/owners HTTP/1.1
 
-### GET a owner
+### GET an owner
 GET https://localhost:5001/api/owners/1 HTTP/1.1
 
-### Create a owner
+### Create an owner
 POST https://localhost:5001/api/owners HTTP/1.1
 content-type: application/json
 
@@ -14,4 +14,14 @@ content-type: application/json
     "name": "Tester 1",
     "email": "tester1@example.com",
     "mobile": "0441234567"
+}
+
+### update an owner
+PUT https://localhost:5001/api/owners/4 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Tester 11",
+    "email": "tester11@example.com",
+    "mobile": "0441234569"
 }

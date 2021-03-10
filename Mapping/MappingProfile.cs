@@ -22,6 +22,8 @@ namespace PropertyRental.Mapping
                 .ForMember(suburb => suburb.Id, opt => opt.Ignore());
             CreateMap<PropertyResource, Property>()
                 .ForMember(property => property.Id, opt => opt.Ignore());
+            CreateMap<OwnerResource, Owner>()
+                .ForMember(owner => owner.Id, opt => opt.Ignore());
         }
     }
 }
