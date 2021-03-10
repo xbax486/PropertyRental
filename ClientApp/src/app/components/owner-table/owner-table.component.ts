@@ -34,9 +34,7 @@ export class OwnerTableComponent implements OnInit {
   }
 
   onEditOwner(owner) {
-    //this._ownerService.selectedOwnerSubject.next(owner);
-    console.log('onEditOwner');
-    
+    this._ownerService.selectedOwnerSubject.next(owner);
   }
 
   onDeleteOwner(deletedOwner: Owner) {

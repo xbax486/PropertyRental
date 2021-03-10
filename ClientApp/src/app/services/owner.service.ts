@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject } from 'rxjs';
 import { Owner } from "../models/owner";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OwnerService {
+  public selectedOwnerSubject = new BehaviorSubject({
+    name: '',
+    email: '',
+    mobile: '',
+    id: -1
+  });
 
   constructor(private _httpClient: HttpClient) { }
 

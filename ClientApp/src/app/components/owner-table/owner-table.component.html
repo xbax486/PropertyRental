@@ -24,13 +24,13 @@
       <td scope="row">{{ owner.mobile }}</td>
       <!-- <td scope="row">{{ owner.state.acronym }}</td> -->
       <td scope="row" class="actions">
-        <!-- <a
+        <a
           [routerLink]="['/owner', owner.id]"
           (click)="onEditOwner(owner)"
           class="btn btn-primary mr-5"
         >
           Edit
-        </a> -->
+        </a>
         <button
           (click)="onDeleteOwner(owner)"
           class="btn btn-danger"

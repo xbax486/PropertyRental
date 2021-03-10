@@ -16,6 +16,7 @@ import { PropertyFormComponent } from './components/property-form/property-form.
 import { SuburbTableComponent } from './components/suburb-table/suburb-table.component';
 import { SuburbFormComponent } from './components/suburb-form/suburb-form.component';
 import { OwnerTableComponent } from './components/owner-table/owner-table.component';
+import { OwnerFormComponent } from './components/owner-form/owner-form.component';
 
 /* Services */
 import { SuburbService } from './services/suburb.service';
@@ -33,7 +34,8 @@ import { PropertyService } from './services/property.service';
     PropertyFormComponent,
     SuburbTableComponent,
     SuburbFormComponent,
-    OwnerTableComponent
+    OwnerTableComponent,
+    OwnerFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -49,6 +51,9 @@ import { PropertyService } from './services/property.service';
       },
       {
         path: 'owners', component: OwnerTableComponent
+      },
+      {
+        path: 'owner/:id', component: OwnerFormComponent
       },
       {
         path: 'properties', component: PropertyTableComponent
