@@ -5,3 +5,13 @@ GET https://localhost:5001/api/owners HTTP/1.1
 
 ### GET a owner
 GET https://localhost:5001/api/owners/1 HTTP/1.1
+
+### Create a owner
+POST https://localhost:5001/api/owners HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Tester 1",
+    "email": "tester1@example.com",
+    "mobile": "0441234567"
+}

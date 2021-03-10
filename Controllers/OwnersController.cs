@@ -42,5 +42,18 @@ namespace PropertyRental.Controllers
             var ownerResource = mapper.Map<Owner, OwnerResource>(owner);
             return Ok(ownerResource);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOwner([FromBody] OwnerResource ownerResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var owner = mapper.Map<OwnerResource, Owner>(ownerResource);
+            context.Owners.Add(owner);
+            await context.SaveChangesAsync();
+            return Ok(owner);
+        }
     }
 }
