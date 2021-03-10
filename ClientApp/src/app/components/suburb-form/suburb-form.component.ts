@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SuburbService } from './../../services/suburb.service';
-import { StateService } from './../../services/state.service';
 import { Suburb } from './../../models/suburb';
 import { State } from './../../models/state';
 
@@ -22,8 +21,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   private _updateSuburbSubscription = new Subscription();
 
   constructor(
-    private _suburbService: SuburbService, 
-    private _stateService: StateService,
+    private _suburbService: SuburbService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -32,7 +30,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
         (selectedSuburb: Suburb) => this.selectedSuburb = selectedSuburb,
         (error) => console.log('Selected suburb fetching error', error)
       );
-    this._getAllStatesSubscription = this._stateService.getStates()
+    this._getAllStatesSubscription = this._suburbService.getStates()
       .subscribe(
         (states: State[]) => this.states = states,
         (error) => console.log('States fetching error', error)

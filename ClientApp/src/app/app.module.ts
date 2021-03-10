@@ -18,7 +18,7 @@ import { SuburbFormComponent } from './components/suburb-form/suburb-form.compon
 
 /* Services */
 import { SuburbService } from './services/suburb.service';
-import { StateService } from './services/state.service';
+import { OwnerService } from './services/owner.service';
 import { PropertyService } from './services/property.service';
 
 @NgModule({
@@ -69,8 +69,8 @@ import { PropertyService } from './services/property.service';
     ])
   ],
   providers: [
+    OwnerService,
     SuburbService,
-    StateService,
     PropertyService
   ],
   bootstrap: [AppComponent]

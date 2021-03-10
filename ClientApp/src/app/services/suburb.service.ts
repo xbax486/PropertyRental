@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Suburb } from '../models/suburb';
+import { State } from '../models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,9 @@ export class SuburbService {
 
   public deleteSuburb(id: number) {
     return this._httpClient.delete<Suburb>('/api/suburbs/' + id);
+  }
+
+  public getStates() {
+    return this._httpClient.get<State[]>('/api/states');
   }
 }
