@@ -1,0 +1,45 @@
+<div class="d-flex flex-row justify-content-between">
+  <h1 class="title">Owners</h1>
+  <!-- <a [routerLink]="['/owner/new']" class="btn btn-primary btn-create">
+      Create Owner
+    </a> -->
+</div>
+<table
+  class="table table-hover table-striped mt-3 text-center"
+  *ngIf="ownersLoaded"
+>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Mobile</th>
+      <!-- <th scope="col">Properties</th> -->
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let owner of owners">
+      <td scope="row">{{ owner.name }}</td>
+      <td scope="row">{{ owner.email }}</td>
+      <td scope="row">{{ owner.mobile }}</td>
+      <!-- <td scope="row">{{ owner.state.acronym }}</td> -->
+      <td scope="row" class="actions">
+        <!-- <a
+          [routerLink]="['/owner', owner.id]"
+          (click)="onEditOwner(owner)"
+          class="btn btn-primary mr-5"
+        >
+          Edit
+        </a> -->
+        <button
+          (click)="onDeleteOwner(owner)"
+          class="btn btn-danger"
+          type="button"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 *ngIf="!ownersLoaded">Owners loading...</h2>
