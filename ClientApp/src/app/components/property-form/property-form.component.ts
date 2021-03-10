@@ -137,7 +137,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (message) => {
             console.log('Successfully created a property', message);
-            this.navigateToSuburbs(propertyForm);
+            this.navigateToTable(propertyForm);
           },
           (error) => console.log('Create a property fails', error)
         );
@@ -147,14 +147,14 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (message) => {
             console.log('Successfully updated a property', message);
-            this.navigateToSuburbs(propertyForm);
+            this.navigateToTable(propertyForm);
           },
           (error) => console.log('Update a suburb fails', error)
         );
     }
   }
 
-  private navigateToSuburbs(propertyForm: NgForm) {
+  private navigateToTable(propertyForm: NgForm) {
     propertyForm.reset();
     this._router.navigate(['properties']);
   }

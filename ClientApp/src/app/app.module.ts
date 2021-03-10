@@ -53,6 +53,9 @@ import { PropertyService } from './services/property.service';
         path: 'owners', component: OwnerTableComponent
       },
       {
+        path: 'owner/new', component: OwnerFormComponent
+      },
+      {
         path: 'owner/:id', component: OwnerFormComponent
       },
       {

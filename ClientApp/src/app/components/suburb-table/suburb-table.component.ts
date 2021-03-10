@@ -44,6 +44,7 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.suburbs.findIndex(suburb => suburb.id == deletedSuburb.id);
             this.suburbs.splice(index, 1);
+            console.log('Successfully delete a suburb');
           },
           (error) => console.log('Suburb deletion error', error)
         );

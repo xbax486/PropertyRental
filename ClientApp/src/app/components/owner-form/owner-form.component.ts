@@ -14,6 +14,8 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
   public selectedOwner = { name: '', email: '', mobile: '', id: -1 };
 
   private _selectedOwnerSubscription = new Subscription();
+  private _createOwnerSubscription = new Subscription();
+  private _updateOwnerSubscription = new Subscription();
 
   constructor(private _ownerService: OwnerService, private _router: Router) { }
 
@@ -28,13 +30,33 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clearForm();
     this._selectedOwnerSubscription.unsubscribe();
+    this._createOwnerSubscription.unsubscribe();
+    this._updateOwnerSubscription.unsubscribe();
   }
 
   public onSubmit(ownerForm: NgForm) {
     let ownerDetails = ownerForm.form.value;
     ownerDetails.id = this.selectedOwner.id;
-    console.log('ownerDetails', ownerDetails);
-    
+    if(ownerDetails.id == -1) {
+      this._createOwnerSubscription = this._ownerService.createOwner(ownerDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully created an owner', message);
+            this.navigateToTable(ownerForm);
+          },
+          (error) => console.log('Create an owner fails', error)
+        );
+    }
+    else {
+      this._updateOwnerSubscription = this._ownerService.updateOwner(ownerDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully updated an owner', message);
+            this.navigateToTable(ownerForm);
+          },
+          (error) => console.log('Update an owner fails', error)
+        );
+    }
   }
 
   public onCancel() {
@@ -45,7 +67,7 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
     ownerForm.reset();
   }
 
-  private navigateToOwners(ownerForm) {
+  private navigateToTable(ownerForm) {
     ownerForm.reset();
     this._router.navigate(['owners']);
   }

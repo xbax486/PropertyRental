@@ -11,6 +11,7 @@ import { OwnerService } from 'src/app/services/owner.service';
 export class OwnerTableComponent implements OnInit {
   public owners: Owner[] = [];
   public ownersLoaded = false;
+  
   private _getOwnersSubscription = new Subscription();
   private _deleteOwnerSubscription = new Subscription();
 
@@ -44,6 +45,7 @@ export class OwnerTableComponent implements OnInit {
           () => {
             let index = this.owners.findIndex(owner => owner.id == owner.id);
             this.owners.splice(index, 1);
+            console.log('Successfully delete an owner');
           },
           (error) => console.log('Owner deletion error', error)
         );

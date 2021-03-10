@@ -20,9 +20,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   private _createSuburbSubscription = new Subscription();
   private _updateSuburbSubscription = new Subscription();
 
-  constructor(
-    private _suburbService: SuburbService,
-    private _router: Router) { }
+  constructor(private _suburbService: SuburbService, private _router: Router) { }
 
   ngOnInit() {
     this._selectedSuburbSubscription = this._suburbService.selectedSuburbSubject
@@ -54,7 +52,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (message) => {
             console.log('Successfully created a suburb', message);
-            this.navigateToSuburbs(suburbForm);
+            this.navigateToTable(suburbForm);
           },
           (error) => console.log('Create a suburb fails', error)
         );
@@ -64,7 +62,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (message) => {
             console.log('Successfully updated a suburb', message);
-            this.navigateToSuburbs(suburbForm);
+            this.navigateToTable(suburbForm);
           },
           (error) => console.log('Update a suburb fails', error)
         );
@@ -79,7 +77,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
     suburbForm.reset();
   }
 
-  private navigateToSuburbs(suburbForm) {
+  private navigateToTable(suburbForm) {
     suburbForm.reset();
     this._router.navigate(['suburbs']);
   }
