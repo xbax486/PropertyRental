@@ -8,10 +8,6 @@ namespace PropertyRental.Models
     [Table("Properties")]
     public class Property
     {
-        public Owner Owner { get; set; }
-
-        public int OwnerId { get; set; }
-
         [Required]
         [StringLength(255)]
         public string Unit { get; set; }

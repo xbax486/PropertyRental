@@ -1,10 +1,7 @@
-import { Owner } from "./owner";
 import { Suburb } from './suburb';
 import { PropertyType } from "./propertyType";
 
 export interface Property {
-    owner: Owner;
-    ownerId: number;
     unit: string;
     street: string;
     suburb: Suburb;

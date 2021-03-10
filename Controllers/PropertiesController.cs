@@ -27,7 +27,6 @@ namespace PropertyRental.Controllers
         public async Task<IEnumerable<PropertyResource>> GetProperties()
         {
             var properties = await context.Properties
-                .Include(property => property.Owner)
                 .Include(property => property.Suburb)
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
@@ -39,7 +38,6 @@ namespace PropertyRental.Controllers
         public async Task<IActionResult> GetProperty(int id)
         {
             var property = await context.Properties
-                .Include(property => property.Owner)
                 .Include(property => property.Suburb)
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)

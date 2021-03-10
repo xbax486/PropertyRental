@@ -38,7 +38,6 @@ namespace PropertyRental.Controllers
             {
                 return NotFound();
             }
-            owner.Properties = await context.Properties.Where(property => property.OwnerId == owner.Id).ToListAsync();
             var ownerResource = mapper.Map<Owner, OwnerResource>(owner);
             return Ok(ownerResource);
         }
