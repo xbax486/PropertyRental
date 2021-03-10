@@ -14,6 +14,10 @@ namespace PropertyRental.Persistence
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
 
+        public DbSet<Tenant> Tenants { get; set; }
+
+        public DbSet<Rental> Rentals { get; set; }
+
         public PropertyRentalContext(DbContextOptions<PropertyRentalContext> options)
             : base(options)
         {

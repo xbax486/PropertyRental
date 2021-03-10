@@ -10,14 +10,23 @@ namespace PropertyRental.Models
     public class Rental
     {
         public Owner Owner { get; set; }
+
         public int OwnerId { get; set; }
-        public ICollection<Tenant> Tenants { get; set; }
+
         public Property Property { get; set; }
+
         public int PropertyId { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
+
         public short Payment { get; set; }
+
         public int Id { get; set; }
+
+        public ICollection<Tenant> Tenants { get; set; }
+
         private const int DAYS_PER_WEEK = 7;
 
         public Rental()
