@@ -1,0 +1,30 @@
+## Tenant API
+
+### Get all tenants
+GET https://localhost:5001/api/tenants HTTP/1.1
+
+### Get a tenant
+GET https://localhost:5001/api/tenants/1 HTTP/1.1
+
+### Create a tenant
+POST https://localhost:5001/api/tenants HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test tenant 3",
+    "email": "testtenant3@example.com",
+    "mobile": "0412345673"
+}
+
+### Update a tenant
+PUT https://localhost:5001/api/tenants/8 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test new tenant",
+    "email": "testnewtenant@example.com",
+    "mobile": "0412345679"
+}
+
+### Delete a tenant
+DELETE https://localhost:5001/api/tenants/8 HTTP/1.1
