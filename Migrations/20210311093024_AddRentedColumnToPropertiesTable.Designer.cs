@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyRental.Persistence;
 
 namespace PropertyRental.Migrations
 {
     [DbContext(typeof(PropertyRentalContext))]
-    partial class PropertyRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20210311093024_AddRentedColumnToPropertiesTable")]
+    partial class AddRentedColumnToPropertiesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

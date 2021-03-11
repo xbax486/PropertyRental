@@ -11,19 +11,19 @@ POST https://localhost:5001/api/tenants HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Test tenant 3",
-    "email": "testtenant3@example.com",
-    "mobile": "0412345674"
+    "name": "Test tenant 5",
+    "email": "testtenant5@example.com",
+    "mobile": "0412345685"
 }
 
 ### Update a tenant
-PUT https://localhost:5001/api/tenants/8 HTTP/1.1
+PUT https://localhost:5001/api/tenants/15 HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Test new tenant",
-    "email": "testnewtenant@example.com",
-    "mobile": "0412345679"
+    "name": "Test tenant 2",
+    "email": "testtenant2@example.com",
+    "mobile": "0412345672"
 }
 
 ### Delete a tenant

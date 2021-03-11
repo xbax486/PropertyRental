@@ -12,11 +12,11 @@ content-type: application/json
 
 {
     "ownerid": 1,
-    "propertyid": 16,
+    "propertyid": 12,
     "startdate": "2018-01-05",
     "enddate": "2018-10-05",
     "payment": 550,
-    "tenantid": 15
+    "tenantid": 16
 }
 
 ### Update a rental
@@ -25,9 +25,12 @@ content-type: application/json
 
 {
     "ownerid": 2,
-    "propertyid": 9,
+    "propertyid": 11,
     "startdate": "2018-01-15",
     "enddate": "2018-10-25",
     "payment": 560,
-    "tenantid": 7
+    "tenantid": 15
 }
+
+### Delete a rental
+DELETE https://localhost:5001/api/rentals/9 HTTP/1.1

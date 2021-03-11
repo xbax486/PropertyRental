@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Subscription, throwError, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { PropertyType } from './../../models/propertyType';
@@ -30,11 +29,13 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
+    rented: false,
     street: '',
     unit: '',
     id: -1
   };
   public state = '';
+  public rented = '';
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
   public owners: Owner[] = [];
@@ -55,7 +56,10 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
         .subscribe(
-          (selectedProperty: Property) => this.selectedProperty = selectedProperty,
+          (selectedProperty: Property) => {
+            this.selectedProperty = selectedProperty;
+            this.rented = this.selectedProperty.rented ? 'TRUE' : 'FALSE';
+          },
           (error) => console.log('Selected property fetching error', error)
       );
     

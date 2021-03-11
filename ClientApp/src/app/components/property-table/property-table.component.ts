@@ -12,10 +12,12 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 export class PropertyTableComponent implements OnInit, OnDestroy {
   public properties: Property[] = [];
   public propertiesLoaded = false;
-  public faCheckCircle = faCheckCircle;
-  public faTimesCircle = faTimesCircle;
+  
   private _getPropertiesSubscription = new Subscription();
   private _deletePropertySubscription = new Subscription();
+
+  public faCheckCircle = faCheckCircle;
+  public faTimesCircle = faTimesCircle;
 
   constructor(private _propertyService: PropertyService) { }
 

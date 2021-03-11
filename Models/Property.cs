@@ -40,6 +40,8 @@ namespace PropertyRental.Models
 
         public bool Furnished { get; set; }
 
+        public bool Rented { get; set; }
+
         public int Id { get; set; }
     }
 }

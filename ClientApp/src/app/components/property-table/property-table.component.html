@@ -20,6 +20,7 @@
       <th scope="col">Gas Available</th>
       <th scope="col">Has Study Room</th>
       <th scope="col">Furnished</th>
+      <th scope="col">Rented</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -107,6 +108,22 @@
           [classes]="['icon-false']"
           size="lg"
           *ngIf="!property.furnished"
+        >
+        </fa-icon>
+      </td>
+      <td scope="row">
+        <fa-icon
+          [icon]="faCheckCircle"
+          [classes]="['icon-true']"
+          size="lg"
+          *ngIf="property.rented"
+        >
+        </fa-icon>
+        <fa-icon
+          [icon]="faTimesCircle"
+          [classes]="['icon-false']"
+          size="lg"
+          *ngIf="!property.rented"
         >
         </fa-icon>
       </td>
