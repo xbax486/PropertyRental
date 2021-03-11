@@ -9,14 +9,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppComponent } from './components/app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
-import { CounterComponent } from './components/counter/counter.component';
-import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { PropertyFormComponent } from './components/property-form/property-form.component';
 import { SuburbTableComponent } from './components/suburb-table/suburb-table.component';
 import { SuburbFormComponent } from './components/suburb-form/suburb-form.component';
 import { OwnerTableComponent } from './components/owner-table/owner-table.component';
 import { OwnerFormComponent } from './components/owner-form/owner-form.component';
+import { TenantTableComponent } from './components/tenant-table/tenant-table.component';
+import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
 
 /* Services */
 import { SuburbService } from './services/suburb.service';
@@ -28,14 +28,14 @@ import { PropertyService } from './services/property.service';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     PropertyTableComponent,
     PropertyFormComponent,
     SuburbTableComponent,
     SuburbFormComponent,
     OwnerTableComponent,
-    OwnerFormComponent
+    OwnerFormComponent,
+    TenantTableComponent,
+    TenantFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,12 +44,6 @@ import { PropertyService } from './services/property.service';
     FontAwesomeModule,
     RouterModule.forRoot([
       {
-        path: 'counter', component: CounterComponent
-      },
-      {
-        path: 'fetch-data', component: FetchDataComponent
-      },
-      {
         path: 'owners', component: OwnerTableComponent
       },
       {
@@ -57,6 +51,15 @@ import { PropertyService } from './services/property.service';
       },
       {
         path: 'owner/:id', component: OwnerFormComponent
+      },
+      {
+        path: 'tenants', component: TenantTableComponent
+      },
+      {
+        path: 'tenant/new', component: TenantFormComponent
+      },
+      {
+        path: 'tenant/:id', component: TenantFormComponent
       },
       {
         path: 'properties', component: PropertyTableComponent
