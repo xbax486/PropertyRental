@@ -78,6 +78,9 @@ import { TenantFormComponent } from '../components/tenant-form/tenant-form.compo
       {
         path: '', component: HomeComponent, pathMatch: 'full'
       },
+      {
+        path: '**', redirectTo: ''
+      }
     ])
   ],
   providers: [],
