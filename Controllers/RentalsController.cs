@@ -41,6 +41,8 @@ namespace RentalRental.Controllers
                 .Include(rental => rental.Owner)
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
+                    .ThenInclude(property => property.Suburb)
+                        .ThenInclude(suburb => suburb.State)
                 .SingleOrDefaultAsync(rental => rental.Id == id);
             if (rental == null)
             {
