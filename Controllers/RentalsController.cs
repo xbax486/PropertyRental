@@ -30,7 +30,6 @@ namespace RentalRental.Controllers
                 .Include(rental => rental.Owner)
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
-                    .ThenInclude(property => property.Suburb)
                 .ToListAsync();
             return mapper.Map<List<Rental>, List<RentalResource>>(rentals);
         }
@@ -42,7 +41,6 @@ namespace RentalRental.Controllers
                 .Include(rental => rental.Owner)
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
-                    .ThenInclude(property => property.Suburb)
                 .SingleOrDefaultAsync(rental => rental.Id == id);
             if (rental == null)
             {
@@ -52,19 +50,52 @@ namespace RentalRental.Controllers
             return Ok(rentalResource);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> CreateRental([FromBody] RentalResource rentalResource)
-        // {
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return BadRequest(ModelState);
-        //     }
-        //     var rental = mapper.Map<RentalResource, Rental>(rentalResource);
-        //     rental.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rentalResource.OwnerId);
-        //     rental.Property = await context.Properties.SingleOrDefaultAsync(property => property.Id == rentalResource.PropertyId);
-        //     context.Rentals.Add(rental);
-        //     await context.SaveChangesAsync();
-        //     return Ok(rental);
-        // }
+        [HttpPost]
+        public async Task<IActionResult> CreateRental([FromBody] RentalResource rentalResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var rental = await context.Rentals.SingleOrDefaultAsync(record =>
+                record.PropertyId == rentalResource.PropertyId ||
+                record.TenantId == rentalResource.TenantId);
+            if (rental != null)
+            {
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, this rental record already exists!");
+                return BadRequest(ModelState);
+            }
+            rental = mapper.Map<RentalResource, Rental>(rentalResource);
+            rental.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rentalResource.OwnerId);
+            rental.Property = await context.Properties.SingleOrDefaultAsync(property => property.Id == rentalResource.PropertyId);
+            context.Rentals.Add(rental);
+            await context.SaveChangesAsync();
+            return Ok(rental);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateRental(int id, [FromBody] RentalResource rentalResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var rental = await context.Rentals.FindAsync(id);
+            if (rental == null)
+            {
+                return NotFound();
+            }
+            var existingRental = await context.Rentals.SingleOrDefaultAsync(record =>
+                record.PropertyId == rentalResource.PropertyId &&
+                record.TenantId == rentalResource.TenantId);
+            if (existingRental != null)
+            {
+                ModelState.AddModelError("Message", "Rental update error. Sorry, this rental already exists!");
+                return BadRequest(ModelState);
+            }
+            mapper.Map<RentalResource, Rental>(rentalResource, rental);
+            await context.SaveChangesAsync();
+            return Ok(rental);
+        }
     }
 }

@@ -6,15 +6,28 @@ GET https://localhost:5001/api/rentals HTTP/1.1
 ### GET a rental
 GET https://localhost:5001/api/rentals/1 HTTP/1.1
 
-### Create a property
+### Create a rental
 POST https://localhost:5001/api/rentals HTTP/1.1
 content-type: application/json
 
 {
     "ownerid": 1,
-    "propertyid": 1,
+    "propertyid": 16,
     "startdate": "2018-01-05",
     "enddate": "2018-10-05",
     "payment": 550,
-    "tenants": 1
+    "tenantid": 15
+}
+
+### Update a rental
+PUT https://localhost:5001/api/rentals/7 HTTP/1.1
+content-type: application/json
+
+{
+    "ownerid": 2,
+    "propertyid": 9,
+    "startdate": "2018-01-15",
+    "enddate": "2018-10-25",
+    "payment": 560,
+    "tenantid": 7
 }

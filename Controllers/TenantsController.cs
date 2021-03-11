@@ -55,7 +55,7 @@ namespace PropertyRental.Controllers
                 record.Mobile == tenantResource.Mobile);
             if (tenant != null)
             {
-                ModelState.AddModelError("Message", "Tenant creation error.Sorry, this tenant already exists!");
+                ModelState.AddModelError("Message", "Tenant creation error. Sorry, this tenant already exists!");
                 return BadRequest(ModelState);
             }
             tenant = mapper.Map<TenantResource, Tenant>(tenantResource);

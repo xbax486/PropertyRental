@@ -54,7 +54,7 @@ namespace PropertyRental.Controllers
             var suburb = await context.Suburbs.SingleOrDefaultAsync(record => record.Postcode == suburbResource.Postcode && record.Name == suburbResource.Name);
             if (suburb != null)
             {
-                ModelState.AddModelError("Message", "Suburb creation error.Sorry, this suburb already exists!");
+                ModelState.AddModelError("Message", "Suburb creation error. Sorry, this suburb already exists!");
                 return BadRequest(ModelState);
             }
             suburb = mapper.Map<SuburbResource, Suburb>(suburbResource);
