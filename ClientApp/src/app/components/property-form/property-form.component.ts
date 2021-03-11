@@ -53,27 +53,6 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     private _router: Router) { }
 
   ngOnInit() {
-    // this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
-    //   .pipe(
-    //     switchMap(
-    //       (selectedProperty: Property) => {
-    //         this.selectedProperty = selectedProperty;
-    //         this.state = this.selectedProperty.suburb.state.name;
-    //         if(this.selectedProperty.id && this.selectedProperty.id != -1) {
-    //           return this._ownerService.getOwner(this.selectedProperty.ownerId)
-    //             .pipe(
-    //               catchError(error => throwError(error))
-    //             );
-    //         }
-    //         return of({});
-    //       }
-    //     )
-    //   )
-    //   .subscribe(
-    //     (owner: Owner) => this.selectedProperty.owner = owner,
-    //     (error) => console.log('Owner fetching error', error)
-    //   );
-
     this._selectedPropertySubscription = this._propertyService.selectedPropertySubject
         .subscribe(
           (selectedProperty: Property) => this.selectedProperty = selectedProperty,
