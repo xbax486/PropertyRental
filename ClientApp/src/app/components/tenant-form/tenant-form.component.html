@@ -1,1 +1,92 @@
-<p>tenant-form works!</p>
+<h1 class="title text-center">Tenant details</h1>
+<form
+  *ngIf="selectedTenant"
+  class="mt-3"
+  (ngSubmit)="onSubmit(tenantForm)"
+  #tenantForm="ngForm"
+>
+  <div class="form-row">
+    <div class="form-group col-xl-4">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        placeholder="Please enter the name of the tenant"
+        name="name"
+        [(ngModel)]="selectedTenant.name"
+        required
+        #name="ngModel"
+      />
+      <span class="error" *ngIf="name.touched && name.invalid">
+        Please enter the name of the tenant!
+      </span>
+    </div>
+    <div class="form-group col-xl-4">
+      <label for="postcode">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="Please enter the email of the tenant"
+        name="email"
+        [(ngModel)]="selectedTenant.email"
+        required
+        email
+        #email="ngModel"
+      />
+      <span class="error" *ngIf="email.touched && email.invalid">
+        Please enter the valid email of the tenant!
+      </span>
+    </div>
+    <div class="form-group col-xl-4">
+      <label for="state">Mobile</label>
+      <input
+        type="text"
+        class="form-control"
+        id="mobile"
+        placeholder="Please enter the mobile of the tenant"
+        name="mobile"
+        [(ngModel)]="selectedTenant.mobile"
+        required
+        #mobile="ngModel"
+      />
+      <span class="error" *ngIf="mobile.touched && mobile.invalid">
+        Please choose the mobile of the tenant!
+      </span>
+    </div>
+  </div>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Actions</legend>
+    <div class="form-row">
+      <div class="form-group col-xl-4">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="tenantForm.form.invalid"
+        >
+          Submit
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-block"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-danger btn-block"
+          (click)="onClear(tenantForm)"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<h2 *ngIf="!selectedTenant">Tenant details loading...</h2>
