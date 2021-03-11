@@ -97,5 +97,18 @@ namespace RentalRental.Controllers
             await context.SaveChangesAsync();
             return Ok(rental);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRental(int id)
+        {
+            var rental = await context.Rentals.FindAsync(id);
+            if (rental == null)
+            {
+                return NotFound();
+            }
+            context.Rentals.Remove(rental);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
