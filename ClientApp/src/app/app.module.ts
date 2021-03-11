@@ -1,9 +1,10 @@
+/* Modules */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RoutingModule } from "./modules/routing.module";
 
 /* Components */
 import { AppComponent } from './components/app.component';
@@ -43,47 +44,7 @@ import { PropertyService } from './services/property.service';
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
-    RouterModule.forRoot([
-      {
-        path: 'owners', component: OwnerTableComponent
-      },
-      {
-        path: 'owner/new', component: OwnerFormComponent
-      },
-      {
-        path: 'owner/:id', component: OwnerFormComponent
-      },
-      {
-        path: 'tenants', component: TenantTableComponent
-      },
-      {
-        path: 'tenant/new', component: TenantFormComponent
-      },
-      {
-        path: 'tenant/:id', component: TenantFormComponent
-      },
-      {
-        path: 'properties', component: PropertyTableComponent
-      },
-      {
-        path: 'property/new', component: PropertyFormComponent
-      },
-      {
-        path: 'property/:id', component: PropertyFormComponent
-      },
-      {
-        path: 'suburbs', component: SuburbTableComponent
-      },
-      {
-        path: 'suburb/new', component: SuburbFormComponent
-      },
-      {
-        path: 'suburb/:id', component: SuburbFormComponent
-      },
-      {
-        path: '', component: HomeComponent, pathMatch: 'full'
-      },
-    ])
+    RoutingModule
   ],
   providers: [
     OwnerService,
