@@ -8,7 +8,7 @@ import { OwnerService } from 'src/app/services/owner.service';
   templateUrl: './owner-table.component.html',
   styleUrls: ['./owner-table.component.css']
 })
-export class OwnerTableComponent implements OnInit {
+export class OwnerTableComponent implements OnInit, OnDestroy {
   public owners: Owner[] = [];
   public ownersLoaded = false;
   
@@ -38,12 +38,12 @@ export class OwnerTableComponent implements OnInit {
     this._ownerService.selectedOwnerSubject.next(owner);
   }
 
-  onDeleteOwner(deletedOwner: Owner) {
+  onDeleteOwner(selectedOwner: Owner) {
     if(window.confirm('Do you really want to delete this suburb?')) {
-      this._deleteOwnerSubscription = this._ownerService.deleteOwner(deletedOwner.id)
+      this._deleteOwnerSubscription = this._ownerService.deleteOwner(selectedOwner.id)
         .subscribe(
           () => {
-            let index = this.owners.findIndex(owner => owner.id == owner.id);
+            let index = this.owners.findIndex(owner => owner.id == selectedOwner.id);
             this.owners.splice(index, 1);
             console.log('Successfully delete an owner');
           },

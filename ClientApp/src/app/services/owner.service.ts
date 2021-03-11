@@ -7,12 +7,7 @@ import { Owner } from "../models/owner";
   providedIn: 'root'
 })
 export class OwnerService {
-  public selectedOwnerSubject = new BehaviorSubject({
-    name: '',
-    email: '',
-    mobile: '',
-    id: -1
-  });
+  public selectedOwnerSubject = new BehaviorSubject({ name: '', email: '', mobile: '', id: -1 });
 
   constructor(private _httpClient: HttpClient) { }
 

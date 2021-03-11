@@ -13,7 +13,7 @@ content-type: application/json
 {
     "name": "Test tenant 3",
     "email": "testtenant3@example.com",
-    "mobile": "0412345673"
+    "mobile": "0412345674"
 }
 
 ### Update a tenant

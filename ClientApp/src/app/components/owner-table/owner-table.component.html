@@ -13,7 +13,6 @@
       <th scope="col">Name</th>
       <th scope="col">Email</th>
       <th scope="col">Mobile</th>
-      <!-- <th scope="col">Properties</th> -->
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -22,7 +21,6 @@
       <td scope="row">{{ owner.name }}</td>
       <td scope="row">{{ owner.email }}</td>
       <td scope="row">{{ owner.mobile }}</td>
-      <!-- <td scope="row">{{ owner.state.acronym }}</td> -->
       <td scope="row" class="actions">
         <a
           [routerLink]="['/owner', owner.id]"

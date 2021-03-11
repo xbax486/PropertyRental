@@ -19,8 +19,9 @@ import { TenantTableComponent } from './components/tenant-table/tenant-table.com
 import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
 
 /* Services */
-import { SuburbService } from './services/suburb.service';
 import { OwnerService } from './services/owner.service';
+import { TenantService } from './services/tenant.service';
+import { SuburbService } from './services/suburb.service';
 import { PropertyService } from './services/property.service';
 
 @NgModule({
@@ -86,6 +87,7 @@ import { PropertyService } from './services/property.service';
   ],
   providers: [
     OwnerService,
+    TenantService,
     SuburbService,
     PropertyService
   ],

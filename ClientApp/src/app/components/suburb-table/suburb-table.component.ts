@@ -37,12 +37,12 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
     this._suburbService.selectedSuburbSubject.next(suburb);
   }
 
-  onDeleteSuburb(deletedSuburb: Suburb) {
+  onDeleteSuburb(selectedSuburb: Suburb) {
     if(window.confirm('Do you really want to delete this suburb?')) {
-      this._deleteSuburbSubscription = this._suburbService.deleteSuburb(deletedSuburb.id)
+      this._deleteSuburbSubscription = this._suburbService.deleteSuburb(selectedSuburb.id)
         .subscribe(
           () => {
-            let index = this.suburbs.findIndex(suburb => suburb.id == deletedSuburb.id);
+            let index = this.suburbs.findIndex(suburb => suburb.id == selectedSuburb.id);
             this.suburbs.splice(index, 1);
             console.log('Successfully delete a suburb');
           },
