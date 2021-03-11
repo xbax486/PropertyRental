@@ -11,7 +11,6 @@ POST https://localhost:5001/api/properties HTTP/1.1
 content-type: application/json
 
 {
-    "ownerId": 1,
     "unit": "22",
     "street": "44 Kent Street",
     "suburbid": 3,
@@ -31,7 +30,6 @@ PUT https://localhost:5001/api/properties/7 HTTP/1.1
 content-type: application/json
 
 {
-    "ownerId": 3,
     "unit": "55",
     "street": "33 Burwodd Rd",
     "suburbid": 4,

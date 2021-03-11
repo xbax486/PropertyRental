@@ -1,6 +1,6 @@
-﻿namespace PropertyRental.Controllers.Resources
+namespace PropertyRental.Controllers.Resources
 {
-    public class OwnerResource
+    public class TenantResource
     {
         public string Name { get; set; }
 

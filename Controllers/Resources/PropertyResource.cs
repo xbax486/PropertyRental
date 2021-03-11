@@ -1,6 +1,4 @@
-﻿using PropertyRental.Models;
-
-namespace PropertyRental.Controllers.Resources
+﻿namespace PropertyRental.Controllers.Resources
 {
     public class PropertyResource
     {

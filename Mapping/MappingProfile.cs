@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Models;
+using System.Linq;
 
 namespace PropertyRental.Mapping
 {
@@ -14,6 +15,8 @@ namespace PropertyRental.Mapping
             CreateMap<Owner, OwnerResource>();
             CreateMap<Property, PropertyResource>();
             CreateMap<PropertyType, PropertyTypeResource>();
+            CreateMap<Rental, RentalResource>();
+            CreateMap<Tenant, TenantResource>();
 
             // API resource to domain class
             CreateMap<StateResource, State>()
@@ -24,6 +27,10 @@ namespace PropertyRental.Mapping
                 .ForMember(property => property.Id, opt => opt.Ignore());
             CreateMap<OwnerResource, Owner>()
                 .ForMember(owner => owner.Id, opt => opt.Ignore());
+            CreateMap<RentalResource, Rental>()
+                .ForMember(rental => rental.Id, opt => opt.Ignore());
+            CreateMap<TenantResource, Tenant>()
+                .ForMember(tenant => tenant.Id, opt => opt.Ignore());
         }
     }
 }

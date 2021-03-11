@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyRental.Persistence;
 
 namespace PropertyRental.Migrations
 {
     [DbContext(typeof(PropertyRentalContext))]
-    partial class PropertyRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20210310101815_MakePaymentTypeToIntegerInRentalsTable")]
+    partial class MakePaymentTypeToIntegerInRentalsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,16 +143,11 @@ namespace PropertyRental.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
                     b.HasIndex("PropertyId");
-
-                    b.HasIndex("TenantId");
 
                     b.ToTable("Rentals");
                 });
@@ -224,7 +221,12 @@ namespace PropertyRental.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("RentalId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RentalId");
 
                     b.ToTable("Tenants");
                 });
@@ -262,17 +264,9 @@ namespace PropertyRental.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PropertyRental.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Owner");
 
                     b.Navigation("Property");
-
-                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("PropertyRental.Models.Suburb", b =>
@@ -284,6 +278,22 @@ namespace PropertyRental.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("PropertyRental.Models.Tenant", b =>
+                {
+                    b.HasOne("PropertyRental.Models.Rental", "Rental")
+                        .WithMany("Tenants")
+                        .HasForeignKey("RentalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rental");
+                });
+
+            modelBuilder.Entity("PropertyRental.Models.Rental", b =>
+                {
+                    b.Navigation("Tenants");
                 });
 #pragma warning restore 612, 618
         }

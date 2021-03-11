@@ -18,10 +18,6 @@ namespace PropertyRental.Models
         [StringLength(255)]
         public string Mobile { get; set; }
 
-        public Rental Rental { get; set; }
-
-        public int RentalId { get; set; }
-
         public int Id { get; set; }
     }
 }
