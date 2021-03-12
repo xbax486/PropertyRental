@@ -17,7 +17,7 @@ content-type: application/json
 }
 
 ### update an owner
-PUT https://localhost:5001/api/owners/4 HTTP/1.1
+PUT https://localhost:5001/api/owners/9 HTTP/1.1
 content-type: application/json
 
 {

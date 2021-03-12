@@ -15,6 +15,7 @@ content-type: application/json
     "street": "44 Kent Street",
     "suburbid": 3,
     "propertytypeid": 1,
+    "ownerid": 1,
     "bedroom": 1,
     "bathroom": 1,
     "parking": 0,
@@ -22,11 +23,12 @@ content-type: application/json
     "builtInWardrobe": true,
     "gasAvailable": true,
     "hasStudyRoom": false,
+    "available": true,
     "furnished": false
 }
 
 ### Update a property
-PUT https://localhost:5001/api/properties/7 HTTP/1.1
+PUT https://localhost:5001/api/properties/17 HTTP/1.1
 content-type: application/json
 
 {
@@ -34,6 +36,7 @@ content-type: application/json
     "street": "33 Burwodd Rd",
     "suburbid": 4,
     "propertytypeid": 3,
+    "ownerid": 3,
     "bedroom": 2,
     "bathroom": 1,
     "parking": 1,
@@ -41,8 +44,9 @@ content-type: application/json
     "builtInWardrobe": true,
     "gasAvailable": true,
     "hasStudyRoom": false,
+    "available": false,
     "furnished": false
 }
 
 ### Delete a property
-DELETE https://localhost:5001/api/properties/8 HTTP/1.1
+DELETE https://localhost:5001/api/properties/1 HTTP/1.1

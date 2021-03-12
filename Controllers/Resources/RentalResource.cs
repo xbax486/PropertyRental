@@ -6,10 +6,6 @@ namespace PropertyRental.Controllers.Resources
 {
     public class RentalResource
     {
-        public OwnerResource Owner { get; set; }
-
-        public int OwnerId { get; set; }
-
         public TenantResource Tenant { get; set; }
 
         public int TenantId { get; set; }

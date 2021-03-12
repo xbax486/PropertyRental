@@ -9,10 +9,6 @@ namespace PropertyRental.Models
     [Table("Rentals")]
     public class Rental
     {
-        public Owner Owner { get; set; }
-
-        public int OwnerId { get; set; }
-
         public Tenant Tenant { get; set; }
 
         public int TenantId { get; set; }
@@ -28,12 +24,5 @@ namespace PropertyRental.Models
         public int Payment { get; set; }
 
         public int Id { get; set; }
-
-        private const int DAYS_PER_WEEK = 7;
-
-        public int GetRentalWeeks()
-        {
-            return (EndDate - StartDate).Days / DAYS_PER_WEEK;
-        }
     }
 }

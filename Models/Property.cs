@@ -24,6 +24,10 @@ namespace PropertyRental.Models
 
         public int PropertyTypeId { get; set; }
 
+        public Owner Owner { get; set; }
+
+        public int? OwnerId { get; set; }
+
         public byte Bedroom { get; set; }
 
         public byte Bathroom { get; set; }
@@ -40,7 +44,7 @@ namespace PropertyRental.Models
 
         public bool Furnished { get; set; }
 
-        public bool Rented { get; set; }
+        public bool Available { get; set; }
 
         public int Id { get; set; }
     }

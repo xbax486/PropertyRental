@@ -27,6 +27,7 @@ namespace PropertyRental.Controllers
         public async Task<IEnumerable<PropertyResource>> GetProperties()
         {
             var properties = await context.Properties
+                .Include(property => property.Owner)
                 .Include(property => property.Suburb)
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
@@ -38,6 +39,7 @@ namespace PropertyRental.Controllers
         public async Task<IActionResult> GetProperty(int id)
         {
             var property = await context.Properties
+                .Include(property => property.Owner)
                 .Include(property => property.Suburb)
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
@@ -58,6 +60,7 @@ namespace PropertyRental.Controllers
                 return BadRequest(ModelState);
             }
             var property = mapper.Map<PropertyResource, Property>(propertyResource);
+            property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
             property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
             property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
             context.Properties.Add(property);
@@ -78,6 +81,7 @@ namespace PropertyRental.Controllers
                 return NotFound();
             }
             mapper.Map<PropertyResource, Property>(propertyResource, property);
+            property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
             property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
             property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
             await context.SaveChangesAsync();

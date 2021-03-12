@@ -14,6 +14,10 @@
 
         public int PropertyTypeId { get; set; }
 
+        public OwnerResource Owner { get; set; }
+
+        public int? OwnerId { get; set; }
+
         public byte Bedroom { get; set; }
 
         public byte Bathroom { get; set; }
@@ -30,7 +34,7 @@
 
         public bool Furnished { get; set; }
 
-        public bool Rented { get; set; }
+        public bool Available { get; set; }
 
         public int Id { get; set; }
     }

@@ -11,7 +11,6 @@ POST https://localhost:5001/api/rentals HTTP/1.1
 content-type: application/json
 
 {
-    "ownerid": 1,
     "propertyid": 12,
     "startdate": "2018-01-05",
     "enddate": "2018-10-05",
@@ -24,7 +23,6 @@ PUT https://localhost:5001/api/rentals/7 HTTP/1.1
 content-type: application/json
 
 {
-    "ownerid": 2,
     "propertyid": 11,
     "startdate": "2018-01-15",
     "enddate": "2018-10-25",

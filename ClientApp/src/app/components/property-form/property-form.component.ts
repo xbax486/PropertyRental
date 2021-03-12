@@ -29,13 +29,13 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
-    rented: false,
+    available: false,
     street: '',
     unit: '',
     id: -1
   };
   public state = '';
-  public rented = '';
+  public available = '';
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
   public owners: Owner[] = [];
@@ -58,7 +58,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (selectedProperty: Property) => {
             this.selectedProperty = selectedProperty;
-            this.rented = this.selectedProperty.rented ? 'TRUE' : 'FALSE';
+            this.available = this.selectedProperty.available ? 'TRUE' : 'FALSE';
           },
           (error) => console.log('Selected property fetching error', error)
       );

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyRental.Persistence;
 
 namespace PropertyRental.Migrations
 {
     [DbContext(typeof(PropertyRentalContext))]
-    partial class PropertyRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20210312064912_RemoveOwnerColumnFromRentalsTable")]
+    partial class RemoveOwnerColumnFromRentalsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,9 +76,6 @@ namespace PropertyRental.Migrations
                     b.Property<bool>("HasStudyRoom")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("int");
-
                     b.Property<byte>("Parking")
                         .HasColumnType("tinyint");
 
@@ -100,8 +99,6 @@ namespace PropertyRental.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("PropertyTypeId");
 
@@ -234,10 +231,6 @@ namespace PropertyRental.Migrations
 
             modelBuilder.Entity("PropertyRental.Models.Property", b =>
                 {
-                    b.HasOne("PropertyRental.Models.Owner", "Owner")
-                        .WithMany("Properties")
-                        .HasForeignKey("OwnerId");
-
                     b.HasOne("PropertyRental.Models.PropertyType", "PropertyType")
                         .WithMany()
                         .HasForeignKey("PropertyTypeId")
@@ -249,8 +242,6 @@ namespace PropertyRental.Migrations
                         .HasForeignKey("SuburbId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Owner");
 
                     b.Navigation("PropertyType");
 
@@ -285,11 +276,6 @@ namespace PropertyRental.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
-                });
-
-            modelBuilder.Entity("PropertyRental.Models.Owner", b =>
-                {
-                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

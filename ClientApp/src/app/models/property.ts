@@ -16,6 +16,6 @@ export interface Property {
     gasAvailable: boolean;
     hasStudyRoom: boolean;
     furnished: boolean;
-    rented: boolean;
+    available: boolean;
     id: number;
 }

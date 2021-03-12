@@ -21,7 +21,7 @@ export class PropertyService {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
-    rented: false,
+    available: false,
     street: '',
     unit: '',
     id: -1

@@ -27,7 +27,6 @@ namespace RentalRental.Controllers
         public async Task<IEnumerable<RentalResource>> GetRentals()
         {
             var rentals = await context.Rentals
-                .Include(rental => rental.Owner)
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
                 .ToListAsync();
@@ -38,7 +37,6 @@ namespace RentalRental.Controllers
         public async Task<IActionResult> GetRental(int id)
         {
             var rental = await context.Rentals
-                .Include(rental => rental.Owner)
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
                     .ThenInclude(property => property.Suburb)
@@ -68,7 +66,6 @@ namespace RentalRental.Controllers
                 return BadRequest(ModelState);
             }
             rental = mapper.Map<RentalResource, Rental>(rentalResource);
-            rental.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rentalResource.OwnerId);
             rental.Property = await context.Properties.SingleOrDefaultAsync(property => property.Id == rentalResource.PropertyId);
             context.Rentals.Add(rental);
             await context.SaveChangesAsync();
