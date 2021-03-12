@@ -9,6 +9,8 @@ import { PropertyType } from '../models/propertyType';
 })
 export class PropertyService {
   public selectedPropertySubject = new BehaviorSubject({ 
+    owner: { name: '' },
+    ownerId: -1,
     suburb: { state: { name: '' } },  
     suburbId: -1,
     propertyType: { name: ''},

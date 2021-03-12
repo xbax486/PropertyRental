@@ -17,6 +17,8 @@ import { OwnerService } from './../../services/owner.service';
 })
 export class PropertyFormComponent implements OnInit, OnDestroy {
   public selectedProperty = { 
+    owner: { name: '' },
+    ownerId: -1,
     suburb: { state: { name: '' } },  
     suburbId: -1,
     propertyType: { name: ''},
@@ -101,6 +103,10 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.selectedProperty.propertyType = Object.assign({}, this.propertyTypes.find(propertyType => propertyType.id == propertyTypeId));
   }
 
+  public onOwnerChange(ownerId) {
+    this.selectedProperty.owner = Object.assign({}, this.owners.find(owner => owner.id == ownerId));
+  }
+
   public onCancel() {
     this._router.navigate(['properties']);
   }
@@ -112,6 +118,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   public onSubmit(propertyForm: NgForm) {
     let propertyDetails = propertyForm.form.value;
     propertyDetails.id = this.selectedProperty.id;
+    propertyDetails.ownerId = +this.selectedProperty.ownerId;
     propertyDetails.suburbId = +this.selectedProperty.suburbId;
     propertyDetails.propertyTypeId = +this.selectedProperty.propertyTypeId;
     if(propertyDetails.id == -1) {
@@ -143,6 +150,8 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
 
   private clearForm() {
     this.selectedProperty.id = -1;
+    this.selectedProperty.owner = { name: '' };  
+    this.selectedProperty.ownerId = -1;
     this.selectedProperty.suburb = { state: { name: '' } };  
     this.selectedProperty.suburbId = -1;
     this.selectedProperty.propertyType = { name: ''};

@@ -169,7 +169,22 @@
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Other informations</legend>
     <div class="form-row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
+        <label for="owner">Owner</label>
+        <select
+          name="ownerId"
+          id="owner"
+          class="form-control custom-select"
+          placeholder="Please select the owner of the property"
+          [(ngModel)]="selectedProperty.ownerId"
+          (change)="onOwnerChange(selectedProperty.ownerId)"
+        >
+          <option value="{{ owner.id }}" *ngFor="let owner of owners">
+            {{ owner.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
         <label for="propertyType">Property Type</label>
         <select
           name="propertyTypeId"
@@ -187,7 +202,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <label for="available">Available</label>
         <input
           type="text"
