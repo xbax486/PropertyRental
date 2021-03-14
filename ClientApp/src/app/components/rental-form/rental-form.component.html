@@ -1,4 +1,39 @@
 <h1 class="title">Rental record</h1>
+<div class="row" *ngIf="!rentalEditingMode">
+  <div class="col-md-6">
+    <label for="property">Available Properties</label>
+    <select
+      name="property"
+      id="property"
+      class="form-control custom-select"
+      placeholder="Please choose one of the available propertyies"
+      [(ngModel)]="selectedRental.property.id"
+      (change)="onAvailablePropertyChange(selectedRental.property.id)"
+    >
+      <option
+        value="{{ availableProperty.id }}"
+        *ngFor="let availableProperty of availableProperties; index as i"
+      >
+        Property {{ i }}
+      </option>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label for="tenant">All Tenants</label>
+    <select
+      name="tenant"
+      id="tenant"
+      class="form-control custom-select"
+      placeholder="Please choose one of the tenants"
+      [(ngModel)]="selectedRental.tenantId"
+      (change)="onTenantChange(selectedRental.tenantId)"
+    >
+      <option value="{{ tenant.id }}" *ngFor="let tenant of tenants">
+        {{ tenant.name }}
+      </option>
+    </select>
+  </div>
+</div>
 <form
   *ngIf="selectedRental"
   class="mt-3"

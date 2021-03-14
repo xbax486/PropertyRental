@@ -15,6 +15,10 @@ export class TenantService {
     return this._httpClient.get<Tenant[]>('/api/tenants');
   }
 
+  public getAvailableTenants() {
+    return this._httpClient.get<Tenant[]>('/api/tenants?available=true');
+  }
+
   public getTenant(id: number) {
     return this._httpClient.get<Tenant>('/api/tenants/' + id);
   }

@@ -3,6 +3,9 @@
 ### Get all tenants
 GET https://localhost:5001/api/tenants HTTP/1.1
 
+### Get all available tenants
+GET https://localhost:5001/api/tenants?available=true HTTP/1.1
+
 ### Get a tenant
 GET https://localhost:5001/api/tenants/1 HTTP/1.1
 

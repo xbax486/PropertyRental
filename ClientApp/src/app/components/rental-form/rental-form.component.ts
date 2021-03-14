@@ -4,7 +4,10 @@ import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Rental } from "../../models/rental";
 import { Property } from "../../models/property";
+import { Tenant } from "../../models/tenant";
 import { RentalService } from './../../services/rental.service';
+import { PropertyService } from './../../services/property.service';
+import { TenantService } from './../../services/tenant.service';
 
 @Component({
   selector: 'app-rental-form',
@@ -28,14 +31,20 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     id: -1
   };
   public availableProperties: Property[] = [];
+  public tenants: Tenant[] = [];
+  public rentalEditingMode = false;
 
   private _selectedRentalSubscription = new Subscription();
   private _getAllStatesSubscription = new Subscription();
   private _createRentalSubscription = new Subscription();
   private _updateRentalSubscription = new Subscription();
+  private _getAvailablePropertiesSubscription = new Subscription();
+  private _getTenantsSubscription = new Subscription();
 
   constructor(
     private _rentalService: RentalService,
+    private _propertyService: PropertyService,
+    private _tenantService: TenantService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -45,8 +54,22 @@ export class RentalFormComponent implements OnInit, OnDestroy {
           this.selectedRental = selectedRental;
           this.selectedRental.startDate = this.updateDateTimeFormat(this.selectedRental.startDate);
           this.selectedRental.endDate = this.updateDateTimeFormat(this.selectedRental.endDate);
+          this.rentalEditingMode = this.selectedRental.id == -1 ? false : true;
+          console.log('this.rentalEditingMode', this.rentalEditingMode);
         },
         (error) => console.log('Selected rental fetching error', error)
+      );
+    
+    this._getAvailablePropertiesSubscription = this._propertyService.getAvailableProperties()
+      .subscribe(
+        (availableProperties: Property[]) => this.availableProperties = availableProperties,
+        (error) => console.log('Available properties fetching error', error)
+      );
+    
+    this._getTenantsSubscription = this._tenantService.getAvailableTenants()
+      .subscribe(
+        (tenants: Tenant[]) => this.tenants = tenants,
+        (error) => console.log('Tenants fetching error', error)
       );
   }
 
@@ -56,10 +79,17 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     this._getAllStatesSubscription.unsubscribe();
     this._createRentalSubscription.unsubscribe();
     this._updateRentalSubscription.unsubscribe();
+    this._getAvailablePropertiesSubscription.unsubscribe();
+    this._getTenantsSubscription.unsubscribe();
   }
 
   public onAvailablePropertyChange(propertyId) {
     this.selectedRental.property = Object.assign({}, this.availableProperties.find(property => property.id == propertyId));
+  }
+
+  public onTenantChange(tenantId) {
+    this.selectedRental.tenantId = tenantId;
+    this.selectedRental.tenant = Object.assign({}, this.tenants.find(tenant => tenant.id == tenantId));
   }
 
   public onCancel() {

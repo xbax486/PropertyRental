@@ -24,10 +24,27 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TenantResource>> GetTenants()
+        public async Task<IEnumerable<TenantResource>> GetTenants(bool available = false)
         {
-            var tenants = await context.Tenants.ToListAsync();
-            return mapper.Map<List<Tenant>, List<TenantResource>>(tenants);
+            if (!available)
+            {
+                var tenants = await context.Tenants.ToListAsync();
+                return mapper.Map<List<Tenant>, List<TenantResource>>(tenants);
+            }
+            else
+            {
+                var unavailableTenants = new List<int>();
+                var rentals = await context.Rentals
+                    .Include(rental => rental.Tenant)
+                    .ToListAsync();
+                foreach (var rental in rentals)
+                {
+                    unavailableTenants.Add(rental.Tenant.Id);
+                }
+                var tenants = await context.Tenants.ToListAsync();
+                var availableTenants = tenants.Where(tenant => !unavailableTenants.Any(unavailableTenantId => unavailableTenantId == tenant.Id)).ToList();
+                return mapper.Map<List<Tenant>, List<TenantResource>>(availableTenants);
+            }
         }
 
         [HttpGet("{id}")]
