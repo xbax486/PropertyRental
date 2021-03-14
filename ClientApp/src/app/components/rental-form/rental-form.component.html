@@ -1,0 +1,171 @@
+<h1 class="title">Rental record details</h1>
+<form
+  *ngIf="selectedRental"
+  class="mt-3"
+  (ngSubmit)="onSubmit(rentalForm)"
+  #rentalForm="ngForm"
+>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Address</legend>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="unit">Unit</label>
+        <input
+          type="text"
+          class="form-control"
+          id="unit"
+          placeholder="Please enter the unit of the property"
+          name="unit"
+          [(ngModel)]="selectedRental.property.unit"
+          disabled
+        />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="street">Street</label>
+        <input
+          type="text"
+          class="form-control"
+          id="street"
+          placeholder="Please enter the street of the property"
+          name="street"
+          [(ngModel)]="selectedRental.property.street"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="suburb">Suburb</label>
+        <select
+          name="suburbId"
+          id="suburb"
+          class="form-control custom-select"
+          placeholder="Please select the suburb of the property"
+          [(ngModel)]="selectedRental.property.suburbId"
+          (change)="onSuburbChange(selectedRental.property.suburbId)"
+          disabled
+        >
+          <option value="{{ suburb.id }}" *ngFor="let suburb of suburbs">
+            {{ suburb.name }} {{ suburb.postcode }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="state">State</label>
+        <input
+          type="text"
+          class="form-control"
+          id="state"
+          placeholder="State"
+          name="state"
+          [(ngModel)]="state"
+          disabled
+        />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Rent details</legend>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="owner">Owner</label>
+        <select
+          name="ownerId"
+          id="owner"
+          class="form-control custom-select"
+          placeholder="Please select the owner of the property"
+          [(ngModel)]="selectedRental.property.ownerId"
+          (change)="onOwnerChange(selectedRental.property.ownerId)"
+          disabled
+        >
+          <option value="{{ owner.id }}" *ngFor="let owner of owners">
+            {{ owner.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="street">Tenant</label>
+        <select
+          name="tenantId"
+          id="tenant"
+          class="form-control custom-select"
+          placeholder="Please select the tenant of the property"
+          [(ngModel)]="selectedRental.tenantId"
+          (change)="onTenantChange(selectedRental.tenantId)"
+        >
+          <option value="{{ tenant.id }}" *ngFor="let tenant of tenants">
+            {{ tenant.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="payment">Payment per week</label>
+        <input
+          type="number"
+          class="form-control"
+          id="payment"
+          placeholder="Please enter the rent"
+          name="payment"
+          [(ngModel)]="selectedRental.payment"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="startDate">Start Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="startDate"
+          placeholder="Please enter the start date of the rental"
+          name="startDate"
+          [(ngModel)]="selectedRental.startDate"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="endDate">End Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="endDate"
+          placeholder="Please enter the end date of the rental"
+          name="endDate"
+          [(ngModel)]="selectedRental.endDate"
+        />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto">Actions</legend>
+    <div class="form-row">
+      <div class="form-group col-xl-4">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="rentalForm.form.invalid"
+        >
+          Submit
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-block"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+      <div class="form-group col-xl-4">
+        <button
+          type="button"
+          class="btn btn-danger btn-block"
+          (click)="onClear(rentalForm)"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<h2 *ngIf="!selectedRental">Rental details loading...</h2>

@@ -19,6 +19,7 @@ import { OwnerFormComponent } from './components/owner-form/owner-form.component
 import { TenantTableComponent } from './components/tenant-table/tenant-table.component';
 import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
 import { RentalTableComponent } from './components/rental-table/rental-table.component';
+import { RentalFormComponent } from './components/rental-form/rental-form.component';
 
 /* Services */
 import { OwnerService } from './services/owner.service';
@@ -40,7 +41,8 @@ import { RentalService } from "./services/rental.service";
     OwnerFormComponent,
     TenantTableComponent,
     TenantFormComponent,
-    RentalTableComponent
+    RentalTableComponent,
+    RentalFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

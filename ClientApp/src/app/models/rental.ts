@@ -1,14 +1,10 @@
 import { Owner } from "./owner";
+import { Property } from "./property";
 import { Tenant } from "./tenant";
 
 export interface Rental
 {
-    owner: Owner;
-    ownerId: number;
-    // unit: string;
-    // street: string;
-    suburb: string;
-    state: string;
+    property: Property;
     propertyId: number;
     tenant: Tenant;
     tenantId: number;

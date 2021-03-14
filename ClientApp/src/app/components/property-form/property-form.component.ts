@@ -60,6 +60,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         .subscribe(
           (selectedProperty: Property) => {
             this.selectedProperty = selectedProperty;
+            this.state = this.selectedProperty.suburb.state.name;
             this.available = this.selectedProperty.available ? 'TRUE' : 'FALSE';
           },
           (error) => console.log('Selected property fetching error', error)

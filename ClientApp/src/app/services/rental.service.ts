@@ -8,14 +8,14 @@ import { Rental } from '../models/rental';
 })
 export class RentalService {
   public selectedRentalSubject = new BehaviorSubject({ 
-    owner: {},
-    ownerId: -1,
-    // unit: '',
-    // street: '',
-    suburb: '',
-    state: '',
+    property: { 
+      suburb: { state: { name: '' }},
+      suburbId: -1,
+      owner: {},
+      ownerId: -1,
+    },
     propertyId: -1,
-    tenant: {},
+    tenant: { name: '' },
     tenantId: -1,
     startDate: '',
     endDate: '',

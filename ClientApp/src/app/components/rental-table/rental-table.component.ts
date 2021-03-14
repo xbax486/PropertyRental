@@ -36,6 +36,8 @@ export class RentalTableComponent implements OnInit, OnDestroy {
   }
 
   onEditRental(rental) {
+    console.log('rental', rental);
+    
     this._rentalService.selectedRentalSubject.next(rental);
   }
 
