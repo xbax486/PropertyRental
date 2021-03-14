@@ -13,6 +13,7 @@ import { OwnerTableComponent } from '../components/owner-table/owner-table.compo
 import { OwnerFormComponent } from '../components/owner-form/owner-form.component';
 import { TenantTableComponent } from '../components/tenant-table/tenant-table.component';
 import { TenantFormComponent } from '../components/tenant-form/tenant-form.component';
+import { RentalTableComponent } from '../components/rental-table/rental-table.component';
 
 @NgModule({
   declarations: [],
@@ -74,6 +75,9 @@ import { TenantFormComponent } from '../components/tenant-form/tenant-form.compo
             path: ':id', component: SuburbFormComponent
           }
         ]
+      },
+      {
+        path: 'rentals', component: RentalTableComponent
       },
       {
         path: '', component: HomeComponent, pathMatch: 'full'

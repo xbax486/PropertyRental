@@ -18,12 +18,14 @@ import { OwnerTableComponent } from './components/owner-table/owner-table.compon
 import { OwnerFormComponent } from './components/owner-form/owner-form.component';
 import { TenantTableComponent } from './components/tenant-table/tenant-table.component';
 import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
+import { RentalTableComponent } from './components/rental-table/rental-table.component';
 
 /* Services */
 import { OwnerService } from './services/owner.service';
 import { TenantService } from './services/tenant.service';
 import { SuburbService } from './services/suburb.service';
 import { PropertyService } from './services/property.service';
+import { RentalService } from "./services/rental.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { PropertyService } from './services/property.service';
     OwnerTableComponent,
     OwnerFormComponent,
     TenantTableComponent,
-    TenantFormComponent
+    TenantFormComponent,
+    RentalTableComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -50,7 +53,8 @@ import { PropertyService } from './services/property.service';
     OwnerService,
     TenantService,
     SuburbService,
-    PropertyService
+    PropertyService,
+    RentalService
   ],
   bootstrap: [AppComponent]
 })

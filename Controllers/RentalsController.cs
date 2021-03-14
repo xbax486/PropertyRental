@@ -29,6 +29,7 @@ namespace RentalRental.Controllers
             var rentals = await context.Rentals
                 .Include(rental => rental.Tenant)
                 .Include(rental => rental.Property)
+                    .ThenInclude(property => property.Owner)
                 .ToListAsync();
             return mapper.Map<List<Rental>, List<RentalResource>>(rentals);
         }
@@ -46,6 +47,7 @@ namespace RentalRental.Controllers
             {
                 return NotFound();
             }
+            rental.Property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rental.Property.OwnerId);
             var rentalResource = mapper.Map<Rental, RentalResource>(rental);
             return Ok(rentalResource);
         }

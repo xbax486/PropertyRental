@@ -1,0 +1,47 @@
+<div class="d-flex flex-row justify-content-between">
+  <h1 class="title">Rentals</h1>
+  <a [routerLink]="['/rental/new']" class="btn btn-primary btn-create">
+    Create Rental
+  </a>
+</div>
+<table
+  class="table table-hover table-striped mt-3 text-center"
+  *ngIf="rentalsLoaded"
+>
+  <thead>
+    <tr>
+      <th scope="col">Owner</th>
+      <th scope="col">Tenant</th>
+      <th scope="col">Payment</th>
+      <th scope="col">StartDate</th>
+      <th scope="col">EndDate</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rental of rentals">
+      <td scope="row">{{ rental.property.owner?.name }}</td>
+      <td scope="row">{{ rental.tenant.name }}</td>
+      <td scope="row">{{ rental.payment }}</td>
+      <td scope="row">{{ rental.startDate }}</td>
+      <td scope="row">{{ rental.endDate }}</td>
+      <td scope="row" class="actions">
+        <a
+          [routerLink]="['/rental', rental.id]"
+          (click)="onEditRental(rental)"
+          class="btn btn-primary mr-5"
+        >
+          Edit
+        </a>
+        <button
+          (click)="onDeleteRental(rental)"
+          class="btn btn-danger"
+          type="button"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 *ngIf="!rentalsLoaded">Rentals loading...</h2>
