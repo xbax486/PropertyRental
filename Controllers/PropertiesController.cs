@@ -4,6 +4,7 @@ using PropertyRental.Models;
 using PropertyRental.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,15 +25,29 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PropertyResource>> GetProperties()
+        public async Task<IEnumerable<PropertyResource>> GetProperties(bool available = false)
         {
-            var properties = await context.Properties
-                .Include(property => property.Owner)
-                .Include(property => property.Suburb)
-                    .ThenInclude(suburb => suburb.State)
-                .Include(property => property.PropertyType)
-                .ToListAsync();
-            return mapper.Map<List<Property>, List<PropertyResource>>(properties);
+            if (!available)
+            {
+                var allProperties = await context.Properties
+                    .Include(property => property.Owner)
+                    .Include(property => property.Suburb)
+                        .ThenInclude(suburb => suburb.State)
+                    .Include(property => property.PropertyType)
+                    .ToListAsync();
+                return mapper.Map<List<Property>, List<PropertyResource>>(allProperties);
+            }
+            else
+            {
+                var availableProperties = await context.Properties
+                    .Where(property => property.Available == true)
+                    .Include(property => property.Owner)
+                    .Include(property => property.Suburb)
+                        .ThenInclude(suburb => suburb.State)
+                    .Include(property => property.PropertyType)
+                    .ToListAsync();
+                return mapper.Map<List<Property>, List<PropertyResource>>(availableProperties);
+            }
         }
 
         [HttpGet("{id}")]

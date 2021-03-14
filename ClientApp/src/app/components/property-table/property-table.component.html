@@ -10,7 +10,6 @@
 >
   <thead>
     <tr>
-      <th scope="col">Owner</th>
       <th scope="col">Suburb</th>
       <th scope="col">State</th>
       <th scope="col">Bedroom</th>
@@ -27,7 +26,6 @@
   </thead>
   <tbody>
     <tr *ngFor="let property of properties">
-      <td scope="row">{{ property.owner?.name }}</td>
       <td scope="row">{{ property.suburb.name }}</td>
       <td scope="row">{{ property.suburb.state.acronym }}</td>
       <td scope="row">{{ property.bedroom }}</td>

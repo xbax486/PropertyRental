@@ -23,7 +23,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.propertiesLoaded = false;
-    this._getPropertiesSubscription = this._propertyService.getProperties()
+    this._getPropertiesSubscription = this._propertyService.getAllProperties()
       .subscribe(
         (properties) => {
           this.properties = properties;

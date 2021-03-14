@@ -31,8 +31,12 @@ export class PropertyService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public getProperties() {
+  public getAllProperties() {
     return this._httpClient.get<Property[]>('/api/properties');
+  }
+
+  public getAvailableProperties() {
+    return this._httpClient.get<Property[]>('/api/properties?available=true');
   }
 
   public createProperty(property: Property) {

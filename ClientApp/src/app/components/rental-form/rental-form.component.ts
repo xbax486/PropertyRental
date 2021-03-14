@@ -3,13 +3,8 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Rental } from "../../models/rental";
-import { Owner } from "../../models/owner";
-import { Tenant } from "../../models/tenant";
-import { Suburb } from './../../models/suburb';
+import { Property } from "../../models/property";
 import { RentalService } from './../../services/rental.service';
-import { SuburbService } from './../../services/suburb.service';
-import { OwnerService } from './../../services/owner.service';
-import { TenantService } from "../../services/tenant.service";
 
 @Component({
   selector: 'app-rental-form',
@@ -32,24 +27,15 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     payment: -1,
     id: -1
   };
-  public state = '';
-  public suburbs: Suburb[] = [];
-  public owners: Owner[] = [];
-  public tenants: Tenant[] = [];
+  public availableProperties: Property[] = [];
 
   private _selectedRentalSubscription = new Subscription();
   private _getAllStatesSubscription = new Subscription();
   private _createRentalSubscription = new Subscription();
   private _updateRentalSubscription = new Subscription();
-  private _suburbsSubscription = new Subscription();
-  private _ownersSubscription = new Subscription();
-  private _tenantsSubscription = new Subscription();
 
   constructor(
-    private _rentalService: RentalService, 
-    private _suburbService: SuburbService,
-    private _ownerService: OwnerService,
-    private _tenantService: TenantService,
+    private _rentalService: RentalService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -57,29 +43,10 @@ export class RentalFormComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedRental: Rental) => {
           this.selectedRental = selectedRental;
-          this.state = this.selectedRental.property.suburb.state.name;
           this.selectedRental.startDate = this.updateDateTimeFormat(this.selectedRental.startDate);
           this.selectedRental.endDate = this.updateDateTimeFormat(this.selectedRental.endDate);
         },
         (error) => console.log('Selected rental fetching error', error)
-      );
-
-    this._suburbsSubscription = this._suburbService.getSuburbs()
-      .subscribe(
-        (suburbs: Suburb[]) => this.suburbs = suburbs,
-        (error) => console.log('Suburbs fetching error', error)
-      );
-
-    this._ownersSubscription = this._ownerService.getOwners()
-      .subscribe(
-        (owners: Owner[]) => this.owners = owners,
-        (error) => console.log('Owners fetching error', error)
-      );
-
-    this._tenantsSubscription = this._tenantService.getTenants()
-      .subscribe(
-        (tenants: Tenant[]) => this.tenants = tenants,
-        (error) => console.log('Tenants fetching error', error)
       );
   }
 
@@ -89,22 +56,10 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     this._getAllStatesSubscription.unsubscribe();
     this._createRentalSubscription.unsubscribe();
     this._updateRentalSubscription.unsubscribe();
-    this._suburbsSubscription.unsubscribe();
-    this._ownersSubscription.unsubscribe();
-    this._tenantsSubscription.unsubscribe();
   }
 
-  public onSuburbChange(suburbId) {
-    this.selectedRental.property.suburb = Object.assign({}, this.suburbs.find(suburb => suburb.id == suburbId));
-    this.state = this.selectedRental.property.suburb.state.name;
-  }
-
-  public onOwnerChange(ownerId) {
-    this.selectedRental.property.owner = Object.assign({}, this.owners.find(owner => owner.id == ownerId));
-  }
-
-  public onTenantChange(tenantId) {
-    this.selectedRental.tenant = Object.assign({}, this.tenants.find(tenant => tenant.id == tenantId));
+  public onAvailablePropertyChange(propertyId) {
+    this.selectedRental.property = Object.assign({}, this.availableProperties.find(property => property.id == propertyId));
   }
 
   public onCancel() {
