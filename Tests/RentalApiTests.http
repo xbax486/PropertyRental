@@ -12,7 +12,7 @@ content-type: application/json
 
 {
     "propertyid": 12,
-    "startdate": "2018-01-05",
+    "startdate": "2019-01-05",
     "enddate": "2018-10-05",
     "payment": 550,
     "tenantid": 16

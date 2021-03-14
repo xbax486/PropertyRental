@@ -72,6 +72,11 @@ namespace RentalRental.Controllers
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, this rental record already exists!");
                 return BadRequest(ModelState);
             }
+            if (rentalResource.StartDate >= rentalResource.EndDate)
+            {
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date has to be eailier than end date!");
+                return BadRequest(ModelState);
+            }
             rental = mapper.Map<RentalResource, Rental>(rentalResource);
             rental.Property = await context.Properties.SingleOrDefaultAsync(property => property.Id == rentalResource.PropertyId);
             context.Rentals.Add(rental);
@@ -97,6 +102,11 @@ namespace RentalRental.Controllers
             if (existingRental != null)
             {
                 ModelState.AddModelError("Message", "Rental update error. Sorry, this rental already exists!");
+                return BadRequest(ModelState);
+            }
+            if (rentalResource.StartDate >= rentalResource.EndDate)
+            {
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date has to be eailier than end date!");
                 return BadRequest(ModelState);
             }
             mapper.Map<RentalResource, Rental>(rentalResource, rental);
