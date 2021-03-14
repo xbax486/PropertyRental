@@ -35,4 +35,21 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     this._deleteRentalSubscription.unsubscribe();
   }
 
+  onEditRental(rental) {
+    this._rentalService.selectedRentalSubject.next(rental);
+  }
+
+  onDeleteRental(selectedRental: Rental) {
+    if(window.confirm('Do you really want to delete this rental record?')) {
+      this._deleteRentalSubscription = this._rentalService.deleteRental(selectedRental.id)
+        .subscribe(
+          () => {
+            let index = this.rentals.findIndex(rental => rental.id == selectedRental.id);
+            this.rentals.splice(index, 1);
+            console.log('Successfully delete a rental record');
+          },
+          (error) => console.log('Rental record deletion error', error)
+        );
+    }
+  }
 }

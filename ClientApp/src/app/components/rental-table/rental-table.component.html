@@ -1,7 +1,7 @@
 <div class="d-flex flex-row justify-content-between">
-  <h1 class="title">Rentals</h1>
+  <h1 class="title">Rental records</h1>
   <a [routerLink]="['/rental/new']" class="btn btn-primary btn-create">
-    Create Rental
+    Create a rental record
   </a>
 </div>
 <table
@@ -12,9 +12,9 @@
     <tr>
       <th scope="col">Owner</th>
       <th scope="col">Tenant</th>
-      <th scope="col">Payment</th>
-      <th scope="col">StartDate</th>
-      <th scope="col">EndDate</th>
+      <th scope="col">Payment(AU$/week)</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -44,4 +44,4 @@
     </tr>
   </tbody>
 </table>
-<h2 *ngIf="!rentalsLoaded">Rentals loading...</h2>
+<h2 *ngIf="!rentalsLoaded">Rental records loading...</h2>
