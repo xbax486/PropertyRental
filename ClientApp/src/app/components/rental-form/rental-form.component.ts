@@ -27,7 +27,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     tenantId: -1,
     startDate: '',
     endDate: '',
-    payment: -1,
+    payment: 0,
     id: -1
   };
   public availableProperties: Property[] = [];
@@ -52,10 +52,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedRental: Rental) => {
           this.selectedRental = selectedRental;
-          this.selectedRental.startDate = this.updateDateTimeFormat(this.selectedRental.startDate);
-          this.selectedRental.endDate = this.updateDateTimeFormat(this.selectedRental.endDate);
           this.rentalEditingMode = this.selectedRental.id == -1 ? false : true;
-          console.log('this.rentalEditingMode', this.rentalEditingMode);
         },
         (error) => console.log('Selected rental fetching error', error)
       );
@@ -84,6 +81,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   }
 
   public onAvailablePropertyChange(propertyId) {
+    this.selectedRental.propertyId = propertyId;
     this.selectedRental.property = Object.assign({}, this.availableProperties.find(property => property.id == propertyId));
   }
 
@@ -106,31 +104,26 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     rentalDetails.propertyId = +this.selectedRental.propertyId;
     rentalDetails.tenantId = +this.selectedRental.tenantId;
     console.log('rentalDetails', rentalDetails);
-    
-    // if(rentalDetails.id == -1) {
-    //   this._createRentalSubscription = this._rentalService.createRental(rentalDetails)
-    //     .subscribe(
-    //       (message) => {
-    //         console.log('Successfully created a rental record', message);
-    //         this.navigateToTable(propertyForm);
-    //       },
-    //       (error) => console.log('Create a property fails', error)
-    //     );
-    // }
-    // else {
-    //   this._updateRentalSubscription = this._rentalService.updateRental(rentalDetails)
-    //     .subscribe(
-    //       (message) => {
-    //         console.log('Successfully updated a rental record', message);
-    //         this.navigateToTable(propertyForm);
-    //       },
-    //       (error) => console.log('Update a suburb fails', error)
-    //     );
-    // }
-  }
-
-  private updateDateTimeFormat(datetime: string) {
-    return datetime.substr(0, 10);
+    if(rentalDetails.id == -1) {
+      this._createRentalSubscription = this._rentalService.createRental(rentalDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully created a rental record', message);
+            this.navigateToTable(propertyForm);
+          },
+          (error) => console.log('Create a rental record fails', error)
+        );
+    }
+    else {
+      this._updateRentalSubscription = this._rentalService.updateRental(rentalDetails)
+        .subscribe(
+          (message) => {
+            console.log('Successfully updated a rental record', message);
+            this.navigateToTable(propertyForm);
+          },
+          (error) => console.log('Update a rental record fails. ', error)
+        );
+    }
   }
 
   private navigateToTable(propertyForm: NgForm) {
@@ -149,7 +142,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     this.selectedRental.propertyId = -1;
     this.selectedRental.tenant = { name: '' };
     this.selectedRental.tenantId = -1;
-    this.selectedRental.payment = -1;
+    this.selectedRental.payment = 0;
     this.selectedRental.startDate = '';
     this.selectedRental.startDate = '';
   }

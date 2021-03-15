@@ -17,7 +17,12 @@
           placeholder="Please enter the unit of the property"
           name="unit"
           [(ngModel)]="selectedProperty.unit"
+          #unit="ngModel"
+          required
         />
+        <span class="error" *ngIf="unit.touched && unit.invalid">
+          Please enter the unit of the property!
+        </span>
       </div>
       <div class="form-group col-md-6">
         <label for="street">Street</label>
@@ -28,7 +33,12 @@
           placeholder="Please enter the street of the property"
           name="street"
           [(ngModel)]="selectedProperty.street"
+          #street="ngModel"
+          required
         />
+        <span class="error" *ngIf="street.touched && street.invalid">
+          Please enter the street of the property!
+        </span>
       </div>
     </div>
     <div class="form-row">
@@ -41,11 +51,19 @@
           placeholder="Please select the suburb of the property"
           [(ngModel)]="selectedProperty.suburbId"
           (change)="onSuburbChange(selectedProperty.suburbId)"
+          #suburbId="ngModel"
+          required
         >
           <option value="{{ suburb.id }}" *ngFor="let suburb of suburbs">
             {{ suburb.name }} {{ suburb.postcode }}
           </option>
         </select>
+        <span
+          class="error"
+          *ngIf="suburbId.touched && selectedProperty.suburbId == -1"
+        >
+          Please choose one of the suburbs for the property!
+        </span>
       </div>
       <div class="form-group col-md-6">
         <label for="state">State</label>
@@ -74,6 +92,7 @@
           [(ngModel)]="selectedProperty.bedroom"
           min="0"
           max="10"
+          required
         />
       </div>
       <div class="form-group col-md-4">
@@ -86,6 +105,7 @@
           [(ngModel)]="selectedProperty.bathroom"
           min="0"
           max="10"
+          required
         />
       </div>
       <div class="form-group col-md-4">
@@ -98,6 +118,7 @@
           [(ngModel)]="selectedProperty.parking"
           min="0"
           max="10"
+          required
         />
       </div>
     </div>
@@ -178,11 +199,19 @@
           placeholder="Please select the owner of the property"
           [(ngModel)]="selectedProperty.ownerId"
           (change)="onOwnerChange(selectedProperty.ownerId)"
+          #ownerId="ngModel"
+          required
         >
           <option value="{{ owner.id }}" *ngFor="let owner of owners">
             {{ owner.name }}
           </option>
         </select>
+        <span
+          class="error"
+          *ngIf="ownerId.touched && selectedProperty.ownerId == -1"
+        >
+          Please choose one of the owners for the property!
+        </span>
       </div>
       <div class="form-group col-md-4">
         <label for="propertyType">Property Type</label>
@@ -193,6 +222,8 @@
           placeholder="Property Type"
           [(ngModel)]="selectedProperty.propertyTypeId"
           (change)="onPropertyTypeChange(selectedProperty.propertyTypeId)"
+          #propertyTypeId="ngModel"
+          required
         >
           <option
             value="{{ propertyType.id }}"
@@ -201,6 +232,14 @@
             {{ propertyType.name }}
           </option>
         </select>
+        <span
+          class="error"
+          *ngIf="
+            propertyTypeId.touched && selectedProperty.propertyTypeId == -1
+          "
+        >
+          Please choose one of the property types for the property!
+        </span>
       </div>
       <div class="form-group col-md-4">
         <label for="available">Available</label>
@@ -223,7 +262,12 @@
         <button
           type="submit"
           class="btn btn-primary btn-block"
-          [disabled]="propertyForm.form.invalid"
+          [disabled]="
+            selectedProperty.suburbId == -1 ||
+            selectedProperty.ownerId == -1 ||
+            selectedProperty.propertyTypeId == -1 ||
+            propertyForm.form.invalid
+          "
         >
           Submit
         </button>

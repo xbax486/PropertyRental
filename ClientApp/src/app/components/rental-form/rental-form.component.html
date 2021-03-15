@@ -9,6 +9,8 @@
       placeholder="Please choose one of the available propertyies"
       [(ngModel)]="selectedRental.property.id"
       (change)="onAvailablePropertyChange(selectedRental.property.id)"
+      #property="ngModel"
+      required
     >
       <option
         value="{{ availableProperty.id }}"
@@ -17,9 +19,15 @@
         Property {{ i }}
       </option>
     </select>
+    <span
+      class="error"
+      *ngIf="property.touched && selectedRental.propertyId == -1"
+    >
+      Please choose one of the available properties for the rental record!
+    </span>
   </div>
   <div class="col-md-6">
-    <label for="tenant">All Tenants</label>
+    <label for="tenant">Available Tenants</label>
     <select
       name="tenant"
       id="tenant"
@@ -27,11 +35,16 @@
       placeholder="Please choose one of the tenants"
       [(ngModel)]="selectedRental.tenantId"
       (change)="onTenantChange(selectedRental.tenantId)"
+      #tenant="ngModel"
+      required
     >
       <option value="{{ tenant.id }}" *ngFor="let tenant of tenants">
         {{ tenant.name }}
       </option>
     </select>
+    <span class="error" *ngIf="tenant.touched && selectedRental.tenantId == -1">
+      Please choose one of the available tenants for the rental record!
+    </span>
   </div>
 </div>
 <form
@@ -137,6 +150,8 @@
             placeholder="Please enter the rent"
             name="payment"
             [(ngModel)]="selectedRental.payment"
+            min="100"
+            #payment="ngModel"
           />
         </div>
       </div>
@@ -172,6 +187,11 @@
           type="submit"
           class="btn btn-primary btn-block"
           [disabled]="rentalForm.form.invalid"
+          [disabled]="
+            selectedRental.propertyId == -1 ||
+            selectedRental.tenantId == -1 ||
+            rentalForm.form.invalid
+          "
         >
           Submit
         </button>

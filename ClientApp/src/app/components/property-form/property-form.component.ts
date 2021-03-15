@@ -139,7 +139,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
             console.log('Successfully updated a property', message);
             this.navigateToTable(propertyForm);
           },
-          (error) => console.log('Update a suburb fails', error)
+          (error) => console.log('Update a property fails', error)
         );
     }
   }

@@ -96,14 +96,6 @@ namespace RentalRental.Controllers
             {
                 return NotFound();
             }
-            var existingRental = await context.Rentals.SingleOrDefaultAsync(record =>
-                record.PropertyId == rentalResource.PropertyId &&
-                record.TenantId == rentalResource.TenantId);
-            if (existingRental != null)
-            {
-                ModelState.AddModelError("Message", "Rental update error. Sorry, this rental already exists!");
-                return BadRequest(ModelState);
-            }
             if (rentalResource.StartDate >= rentalResource.EndDate)
             {
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, start date has to be eailier than end date!");

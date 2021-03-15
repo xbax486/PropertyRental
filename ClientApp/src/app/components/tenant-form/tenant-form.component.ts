@@ -41,20 +41,20 @@ export class TenantFormComponent implements OnInit, OnDestroy {
       this._createTenantSubscription = this._tenantService.createTenant(tenantDetails)
         .subscribe(
           (message) => {
-            console.log('Successfully created an tenant', message);
+            console.log('Successfully created a tenant', message);
             this.navigateToTable(tenantForm);
           },
-          (error) => console.log('Create an tenant fails', error)
+          (error) => console.log('Create a tenant fails', error)
         );
     }
     else {
       this._updateTenantSubscription = this._tenantService.updateTenant(tenantDetails)
         .subscribe(
           (message) => {
-            console.log('Successfully updated an tenant', message);
+            console.log('Successfully updated a tenant', message);
             this.navigateToTable(tenantForm);
           },
-          (error) => console.log('Update an tenant fails', error)
+          (error) => console.log('Update a tenant fails', error)
         );
     }
   }

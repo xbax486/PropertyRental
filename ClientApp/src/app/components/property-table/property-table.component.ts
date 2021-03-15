@@ -29,7 +29,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           this.properties = properties;
           this.propertiesLoaded = true;
         },
-        (error) => console.log('Addresses fetching error', error)
+        (error) => console.log('Properties fetching error', error)
       );
   }
 

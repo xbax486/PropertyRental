@@ -22,26 +22,26 @@ export class RentalTableComponent implements OnInit, OnDestroy {
       .subscribe(
         (rentals: Rental[]) => {
           this.rentals = rentals;
-          console.log('rentals', this.rentals);
-          
+          this.rentals.forEach(rental => {
+            rental.startDate = this.updateDateTimeFormat(rental.startDate);
+            rental.endDate = this.updateDateTimeFormat(rental.endDate);
+          });
           this.rentalsLoaded = true;
         },
         (error) => console.log('Rentals fetching error', error)
       );
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this._getRentalsSubscription.unsubscribe();
     this._deleteRentalSubscription.unsubscribe();
   }
 
-  onEditRental(rental) {
-    console.log('rental', rental);
-    
+  public onEditRental(rental) {
     this._rentalService.selectedRentalSubject.next(rental);
   }
 
-  onDeleteRental(selectedRental: Rental) {
+  public onDeleteRental(selectedRental: Rental) {
     if(window.confirm('Do you really want to delete this rental record?')) {
       this._deleteRentalSubscription = this._rentalService.deleteRental(selectedRental.id)
         .subscribe(
@@ -53,5 +53,9 @@ export class RentalTableComponent implements OnInit, OnDestroy {
           (error) => console.log('Rental record deletion error', error)
         );
     }
+  }
+
+  private updateDateTimeFormat(datetime: string) {
+    return datetime.substr(0, 10);
   }
 }

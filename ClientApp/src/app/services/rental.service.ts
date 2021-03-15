@@ -19,7 +19,7 @@ export class RentalService {
     tenantId: -1,
     startDate: '',
     endDate: '',
-    payment: -1,
+    payment: 0,
     id: -1
   });
 

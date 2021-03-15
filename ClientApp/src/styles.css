@@ -24,7 +24,7 @@ code {
 }
 
 input.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched {
+select.ng-pristine.ng-touched {
   border: 1px solid #dc3545;
 }
 
