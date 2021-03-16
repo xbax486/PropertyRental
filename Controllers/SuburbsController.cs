@@ -51,7 +51,11 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var suburb = await context.Suburbs.SingleOrDefaultAsync(record => record.Postcode == suburbResource.Postcode && record.Name == suburbResource.Name);
+            var suburb = await context.Suburbs.SingleOrDefaultAsync(record =>
+                record.Postcode == suburbResource.Postcode &&
+                record.Name == suburbResource.Name &&
+                record.StateId == suburbResource.StateId
+            );
             if (suburb != null)
             {
                 ModelState.AddModelError("Message", "Suburb creation error. Sorry, this suburb already exists!");
@@ -76,7 +80,11 @@ namespace PropertyRental.Controllers
             {
                 return NotFound();
             }
-            var existingSuburb = await context.Suburbs.SingleOrDefaultAsync(record => record.Postcode == suburbResource.Postcode && record.Name == suburbResource.Name);
+            var existingSuburb = await context.Suburbs.SingleOrDefaultAsync(
+                record => record.Postcode == suburbResource.Postcode &&
+                record.Name == suburbResource.Name &&
+                record.StateId == suburbResource.StateId
+            );
             if (existingSuburb != null)
             {
                 ModelState.AddModelError("Message", "Suburb update error. Sorry, this suburb already exists!");

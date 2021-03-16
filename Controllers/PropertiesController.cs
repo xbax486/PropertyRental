@@ -74,10 +74,22 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var property = mapper.Map<PropertyResource, Property>(propertyResource);
+            var property = await context.Properties.SingleOrDefaultAsync(record =>
+                record.OwnerId == propertyResource.OwnerId &&
+                record.Unit == propertyResource.Unit &&
+                record.Street == propertyResource.Street &&
+                record.SuburbId == propertyResource.SuburbId
+            );
+            if (property != null)
+            {
+                ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
+                return BadRequest(ModelState);
+            }
+            property = mapper.Map<PropertyResource, Property>(propertyResource);
             property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
             property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
             property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
+            property.Available = true;
             context.Properties.Add(property);
             await context.SaveChangesAsync();
             return Ok(property);
@@ -94,6 +106,17 @@ namespace PropertyRental.Controllers
             if (property == null)
             {
                 return NotFound();
+            }
+            var existingProperty = await context.Properties.SingleOrDefaultAsync(record =>
+                record.OwnerId == propertyResource.OwnerId &&
+                record.Unit == propertyResource.Unit &&
+                record.Street == propertyResource.Street &&
+                record.SuburbId == propertyResource.SuburbId
+            );
+            if (existingProperty != null)
+            {
+                ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
+                return BadRequest(ModelState);
             }
             mapper.Map<PropertyResource, Property>(propertyResource, property);
             property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);

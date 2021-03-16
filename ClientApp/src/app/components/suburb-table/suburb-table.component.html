@@ -4,42 +4,47 @@
     Create Suburb
   </a>
 </div>
-<table
-  class="table table-hover table-striped mt-3 text-center"
-  *ngIf="suburbsLoaded"
->
-  <thead>
-    <tr>
-      <th scope="col">Suburb</th>
-      <th scope="col">Postcode</th>
-      <th scope="col">State</th>
-      <th scope="col">Abbreviation</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let suburb of suburbs">
-      <td scope="row">{{ suburb.name }}</td>
-      <td scope="row">{{ suburb.postcode }}</td>
-      <td scope="row">{{ suburb.state.name }}</td>
-      <td scope="row">{{ suburb.state.acronym }}</td>
-      <td scope="row" class="actions">
-        <a
-          [routerLink]="['/suburb', suburb.id]"
-          (click)="onEditSuburb(suburb)"
-          class="btn btn-primary mr-5"
-        >
-          Edit
-        </a>
-        <button
-          (click)="onDeleteSuburb(suburb)"
-          class="btn btn-danger"
-          type="button"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="data-loaded" *ngIf="suburbsLoaded">
+  <h2 *ngIf="suburbs.length == 0" class="text-center m-5">
+    No suburb at the moment.
+  </h2>
+  <table
+    class="table table-hover table-striped mt-3 text-center"
+    *ngIf="suburbs.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Suburb</th>
+        <th scope="col">Postcode</th>
+        <th scope="col">State</th>
+        <th scope="col">Abbreviation</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let suburb of suburbs">
+        <td scope="row">{{ suburb.name }}</td>
+        <td scope="row">{{ suburb.postcode }}</td>
+        <td scope="row">{{ suburb.state.name }}</td>
+        <td scope="row">{{ suburb.state.acronym }}</td>
+        <td scope="row" class="actions">
+          <a
+            [routerLink]="['/suburb', suburb.id]"
+            (click)="onEditSuburb(suburb)"
+            class="btn btn-primary mr-5"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteSuburb(suburb)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <h2 *ngIf="!suburbsLoaded">Suburbs loading...</h2>

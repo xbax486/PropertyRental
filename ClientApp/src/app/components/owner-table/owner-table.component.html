@@ -4,40 +4,45 @@
     Create Owner
   </a>
 </div>
-<table
-  class="table table-hover table-striped mt-3 text-center"
-  *ngIf="ownersLoaded"
->
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Mobile</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let owner of owners">
-      <td scope="row">{{ owner.name }}</td>
-      <td scope="row">{{ owner.email }}</td>
-      <td scope="row">{{ owner.mobile }}</td>
-      <td scope="row" class="actions">
-        <a
-          [routerLink]="['/owner', owner.id]"
-          (click)="onEditOwner(owner)"
-          class="btn btn-primary mr-5"
-        >
-          Edit
-        </a>
-        <button
-          (click)="onDeleteOwner(owner)"
-          class="btn btn-danger"
-          type="button"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="data-loaded" *ngIf="ownersLoaded">
+  <h2 *ngIf="owners.length == 0" class="text-center m-5">
+    No owner at the moment.
+  </h2>
+  <table
+    class="table table-hover table-striped mt-3 text-center"
+    *ngIf="owners.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let owner of owners">
+        <td scope="row">{{ owner.name }}</td>
+        <td scope="row">{{ owner.email }}</td>
+        <td scope="row">{{ owner.mobile }}</td>
+        <td scope="row" class="actions">
+          <a
+            [routerLink]="['/owner', owner.id]"
+            (click)="onEditOwner(owner)"
+            class="btn btn-primary mr-5"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteOwner(owner)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <h2 *ngIf="!ownersLoaded">Owners loading...</h2>

@@ -23,7 +23,7 @@ export class PropertyService {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
-    available: false,
+    available: true,
     street: '',
     unit: '',
     id: -1

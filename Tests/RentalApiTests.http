@@ -12,8 +12,8 @@ content-type: application/json
 
 {
     "propertyid": 12,
-    "startdate": "2019-01-05",
-    "enddate": "2018-10-05",
+    "startdate": "2018-01-05",
+    "enddate": "2019-10-05",
     "payment": 550,
     "tenantid": 16
 }
@@ -31,4 +31,4 @@ content-type: application/json
 }
 
 ### Delete a rental
-DELETE https://localhost:5001/api/rentals/9 HTTP/1.1
+DELETE https://localhost:5001/api/rentals/15 HTTP/1.1

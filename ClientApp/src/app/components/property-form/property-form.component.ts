@@ -31,7 +31,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     gasAvailable: false,
     hasStudyRoom: false,
     furnished: false,
-    available: false,
+    available: true,
     street: '',
     unit: '',
     id: -1
@@ -165,6 +165,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.selectedProperty.gasAvailable = false;
     this.selectedProperty.hasStudyRoom = false;
     this.selectedProperty.furnished = false;
+    this.selectedProperty.available = true;
     this.selectedProperty.street = '';
     this.selectedProperty.unit = '';
   }

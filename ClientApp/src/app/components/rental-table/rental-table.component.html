@@ -4,44 +4,49 @@
     Create a rental record
   </a>
 </div>
-<table
-  class="table table-hover table-striped mt-3 text-center"
-  *ngIf="rentalsLoaded"
->
-  <thead>
-    <tr>
-      <th scope="col">Owner</th>
-      <th scope="col">Tenant</th>
-      <th scope="col">Payment per week(AU$)</th>
-      <th scope="col">Start Date</th>
-      <th scope="col">End Date</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let rental of rentals">
-      <td scope="row">{{ rental.property.owner?.name }}</td>
-      <td scope="row">{{ rental.tenant.name }}</td>
-      <td scope="row">{{ rental.payment }}</td>
-      <td scope="row">{{ rental.startDate }}</td>
-      <td scope="row">{{ rental.endDate }}</td>
-      <td scope="row" class="actions">
-        <a
-          [routerLink]="['/rental', rental.id]"
-          (click)="onEditRental(rental)"
-          class="btn btn-primary mr-5"
-        >
-          Edit
-        </a>
-        <button
-          (click)="onDeleteRental(rental)"
-          class="btn btn-danger"
-          type="button"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="data-loaded" *ngIf="rentalsLoaded">
+  <h2 *ngIf="rentals.length == 0" class="text-center m-5">
+    No rental record at the moment.
+  </h2>
+  <table
+    class="table table-hover table-striped mt-3 text-center"
+    *ngIf="rentals.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Owner</th>
+        <th scope="col">Tenant</th>
+        <th scope="col">Payment per week(AU$)</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rental of rentals">
+        <td scope="row">{{ rental.property.owner?.name }}</td>
+        <td scope="row">{{ rental.tenant.name }}</td>
+        <td scope="row">{{ rental.payment }}</td>
+        <td scope="row">{{ rental.startDate }}</td>
+        <td scope="row">{{ rental.endDate }}</td>
+        <td scope="row" class="actions">
+          <a
+            [routerLink]="['/rental', rental.id]"
+            (click)="onEditRental(rental)"
+            class="btn btn-primary mr-5"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteRental(rental)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <h2 *ngIf="!rentalsLoaded">Rental records loading...</h2>

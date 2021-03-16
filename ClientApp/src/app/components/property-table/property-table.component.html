@@ -4,146 +4,151 @@
     Create Property
   </a>
 </div>
-<table
-  class="table table-hover table-striped mt-3 text-center"
-  *ngIf="propertiesLoaded"
->
-  <thead>
-    <tr>
-      <th scope="col">Suburb</th>
-      <th scope="col">State</th>
-      <th scope="col">Bedroom</th>
-      <th scope="col">Bathroom</th>
-      <th scope="col">Parking</th>
-      <th scope="col">Pets Allowed</th>
-      <th scope="col">Built-in Wardrobe</th>
-      <th scope="col">Gas Available</th>
-      <th scope="col">Has Study Room</th>
-      <th scope="col">Furnished</th>
-      <th scope="col">Available</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let property of properties">
-      <td scope="row">{{ property.suburb.name }}</td>
-      <td scope="row">{{ property.suburb.state.acronym }}</td>
-      <td scope="row">{{ property.bedroom }}</td>
-      <td scope="row">{{ property.bathroom }}</td>
-      <td scope="row">{{ property.parking }}</td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.petsAllowed"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.petsAllowed"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.builtInWardrobe"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.builtInWardrobe"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.gasAvailable"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.gasAvailable"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.hasStudyRoom"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.hasStudyRoom"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.furnished"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.furnished"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row">
-        <fa-icon
-          [icon]="faCheckCircle"
-          [classes]="['icon-true']"
-          size="lg"
-          *ngIf="property.available"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          [classes]="['icon-false']"
-          size="lg"
-          *ngIf="!property.available"
-        >
-        </fa-icon>
-      </td>
-      <td scope="row" class="actions">
-        <a
-          [routerLink]="['/property', property.id]"
-          (click)="onEditProperty(property)"
-          class="btn btn-primary mr-2"
-        >
-          Edit
-        </a>
-        <button
-          (click)="onDeleteProperty(property)"
-          class="btn btn-danger"
-          type="button"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="data-loaded" *ngIf="propertiesLoaded">
+  <h2 *ngIf="properties.length == 0" class="text-center m-5">
+    No property at the moment.
+  </h2>
+  <table
+    class="table table-hover table-striped mt-3 text-center"
+    *ngIf="properties.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Suburb</th>
+        <th scope="col">State</th>
+        <th scope="col">Bedroom</th>
+        <th scope="col">Bathroom</th>
+        <th scope="col">Parking</th>
+        <th scope="col">Pets Allowed</th>
+        <th scope="col">Built-in Wardrobe</th>
+        <th scope="col">Gas Available</th>
+        <th scope="col">Has Study Room</th>
+        <th scope="col">Furnished</th>
+        <th scope="col">Available</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let property of properties">
+        <td scope="row">{{ property.suburb.name }}</td>
+        <td scope="row">{{ property.suburb.state.acronym }}</td>
+        <td scope="row">{{ property.bedroom }}</td>
+        <td scope="row">{{ property.bathroom }}</td>
+        <td scope="row">{{ property.parking }}</td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.petsAllowed"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.petsAllowed"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.builtInWardrobe"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.builtInWardrobe"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.gasAvailable"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.gasAvailable"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.hasStudyRoom"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.hasStudyRoom"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.furnished"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.furnished"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row">
+          <fa-icon
+            [icon]="faCheckCircle"
+            [classes]="['icon-true']"
+            size="lg"
+            *ngIf="property.available"
+          >
+          </fa-icon>
+          <fa-icon
+            [icon]="faTimesCircle"
+            [classes]="['icon-false']"
+            size="lg"
+            *ngIf="!property.available"
+          >
+          </fa-icon>
+        </td>
+        <td scope="row" class="actions">
+          <a
+            [routerLink]="['/property', property.id]"
+            (click)="onEditProperty(property)"
+            class="btn btn-primary mr-2"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteProperty(property)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <h2 *ngIf="!propertiesLoaded">Properties loading...</h2>

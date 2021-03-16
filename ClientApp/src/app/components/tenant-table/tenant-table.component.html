@@ -4,40 +4,45 @@
     Create Tenant
   </a>
 </div>
-<table
-  class="table table-hover table-striped mt-3 text-center"
-  *ngIf="tenantsLoaded"
->
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Mobile</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let tenant of tenants">
-      <td scope="row">{{ tenant.name }}</td>
-      <td scope="row">{{ tenant.email }}</td>
-      <td scope="row">{{ tenant.mobile }}</td>
-      <td scope="row" class="actions">
-        <a
-          [routerLink]="['/tenant', tenant.id]"
-          (click)="onEditTenant(tenant)"
-          class="btn btn-primary mr-5"
-        >
-          Edit
-        </a>
-        <button
-          (click)="onDeleteTenant(tenant)"
-          class="btn btn-danger"
-          type="button"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="data-loaded" *ngIf="tenantsLoaded">
+  <h2 *ngIf="tenants.length == 0" class="text-center m-5">
+    No tenant at the moment.
+  </h2>
+  <table
+    class="table table-hover table-striped mt-3 text-center"
+    *ngIf="tenants.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tenant of tenants">
+        <td scope="row">{{ tenant.name }}</td>
+        <td scope="row">{{ tenant.email }}</td>
+        <td scope="row">{{ tenant.mobile }}</td>
+        <td scope="row" class="actions">
+          <a
+            [routerLink]="['/tenant', tenant.id]"
+            (click)="onEditTenant(tenant)"
+            class="btn btn-primary mr-5"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteTenant(tenant)"
+            class="btn btn-danger"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <h2 *ngIf="!tenantsLoaded">tenants loading...</h2>

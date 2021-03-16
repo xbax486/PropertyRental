@@ -72,9 +72,16 @@ namespace RentalRental.Controllers
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, this rental record already exists!");
                 return BadRequest(ModelState);
             }
+            var property = await context.Properties.SingleOrDefaultAsync(record => record.Id == rentalResource.PropertyId);
+            if (property == null)
+            {
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, this property does not exist!");
+                return BadRequest(ModelState);
+            }
+            property.Available = false;
             if (rentalResource.StartDate >= rentalResource.EndDate)
             {
-                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date has to be eailier than end date!");
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date must be eailier than end date!");
                 return BadRequest(ModelState);
             }
             rental = mapper.Map<RentalResource, Rental>(rentalResource);
@@ -98,7 +105,7 @@ namespace RentalRental.Controllers
             }
             if (rentalResource.StartDate >= rentalResource.EndDate)
             {
-                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date has to be eailier than end date!");
+                ModelState.AddModelError("Message", "Rental creation error. Sorry, start date must be eailier than end date!");
                 return BadRequest(ModelState);
             }
             mapper.Map<RentalResource, Rental>(rentalResource, rental);
@@ -115,6 +122,13 @@ namespace RentalRental.Controllers
                 return NotFound();
             }
             context.Rentals.Remove(rental);
+            var property = await context.Properties.SingleOrDefaultAsync(record => record.Id == rental.PropertyId);
+            if (property == null)
+            {
+                ModelState.AddModelError("Message", "Rental deletion error. Sorry, this property does not exist!");
+                return BadRequest(ModelState);
+            }
+            property.Available = true;
             await context.SaveChangesAsync();
             return Ok();
         }

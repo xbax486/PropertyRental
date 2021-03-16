@@ -49,7 +49,16 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var owner = mapper.Map<OwnerResource, Owner>(ownerResource);
+            var owner = await context.Owners.SingleOrDefaultAsync(record =>
+                record.Name == ownerResource.Name &&
+                record.Email == ownerResource.Email &&
+                record.Mobile == ownerResource.Mobile);
+            if (owner != null)
+            {
+                ModelState.AddModelError("Message", "Owner creation error. Sorry, this owner already exists!");
+                return BadRequest(ModelState);
+            }
+            owner = mapper.Map<OwnerResource, Owner>(ownerResource);
             context.Owners.Add(owner);
             await context.SaveChangesAsync();
             return Ok(owner);
@@ -66,6 +75,15 @@ namespace PropertyRental.Controllers
             if (owner == null)
             {
                 return NotFound();
+            }
+            var existingOwner = await context.Owners.SingleOrDefaultAsync(record =>
+                record.Name == ownerResource.Name &&
+                record.Email == ownerResource.Email &&
+                record.Mobile == ownerResource.Mobile);
+            if (existingOwner != null)
+            {
+                ModelState.AddModelError("Message", "Owner update error. Sorry, this owner already exists!");
+                return BadRequest(ModelState);
             }
             mapper.Map<OwnerResource, Owner>(ownerResource, owner);
             await context.SaveChangesAsync();
