@@ -31,6 +31,7 @@ namespace PropertyRental
             });
 
             services.AddAutoMapper();
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
 
             services.AddDbContext<PropertyRentalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PropertyRentalContext")));
         }
