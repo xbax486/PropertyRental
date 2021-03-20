@@ -37,6 +37,7 @@ namespace PropertyRental
             services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
             services.AddScoped<ISuburbRepository, SuburbRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<PropertyRentalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PropertyRentalContext")));

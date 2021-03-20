@@ -8,49 +8,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Persistence.Interfaces;
 
 namespace PropertyRental.Controllers
 {
     [Route("/api/tenants")]
     public class TenantsController : Controller
     {
-        private readonly PropertyRentalContext context;
         private readonly IMapper mapper;
+        private readonly ITenantRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public TenantsController(PropertyRentalContext context, IMapper mapper)
+        public TenantsController(IMapper mapper, ITenantRepository repository, IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
+            this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IEnumerable<TenantResource>> GetTenants(bool available = false)
         {
-            if (!available)
-            {
-                var tenants = await context.Tenants.ToListAsync();
-                return mapper.Map<List<Tenant>, List<TenantResource>>(tenants);
-            }
-            else
-            {
-                var unavailableTenants = new List<int>();
-                var rentals = await context.Rentals
-                    .Include(rental => rental.Tenant)
-                    .ToListAsync();
-                foreach (var rental in rentals)
-                {
-                    unavailableTenants.Add(rental.Tenant.Id);
-                }
-                var tenants = await context.Tenants.ToListAsync();
-                var availableTenants = tenants.Where(tenant => !unavailableTenants.Any(unavailableTenantId => unavailableTenantId == tenant.Id)).ToList();
-                return mapper.Map<List<Tenant>, List<TenantResource>>(availableTenants);
-            }
+            var availableTenants = await repository.GetTenants(available);
+            return mapper.Map<List<Tenant>, List<TenantResource>>(availableTenants.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTenant(int id)
         {
-            var tenant = await context.Tenants.SingleOrDefaultAsync(tenant => tenant.Id == id);
+            var tenant = await repository.GetTenant(id);
             if (tenant == null)
             {
                 return NotFound();
@@ -66,18 +52,15 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var tenant = await context.Tenants.SingleOrDefaultAsync(record =>
-                record.Name == tenantResource.Name &&
-                record.Email == tenantResource.Email &&
-                record.Mobile == tenantResource.Mobile);
+            var tenant = await repository.FindTenant(tenantResource);
             if (tenant != null)
             {
                 ModelState.AddModelError("Message", "Tenant creation error. Sorry, this tenant already exists!");
                 return BadRequest(ModelState);
             }
             tenant = mapper.Map<TenantResource, Tenant>(tenantResource);
-            context.Tenants.Add(tenant);
-            await context.SaveChangesAsync();
+            repository.Add(tenant);
+            await unitOfWork.CompleteAsync();
             return Ok(tenant);
         }
 
@@ -88,35 +71,32 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var tenant = await context.Tenants.FindAsync(id);
+            var tenant = await repository.GetTenant(id);
             if (tenant == null)
             {
                 return NotFound();
             }
-            var existingTenant = await context.Tenants.SingleOrDefaultAsync(record =>
-                record.Name == tenantResource.Name &&
-                record.Email == tenantResource.Email &&
-                record.Mobile == tenantResource.Mobile);
+            var existingTenant = await repository.FindTenant(tenantResource);
             if (existingTenant != null)
             {
                 ModelState.AddModelError("Message", "Tenant update error. Sorry, this tenant already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<TenantResource, Tenant>(tenantResource, tenant);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok(tenant);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTenant(int id)
         {
-            var tenant = await context.Tenants.FindAsync(id);
+            var tenant = await repository.GetTenant(id);
             if (tenant == null)
             {
                 return NotFound();
             }
-            context.Tenants.Remove(tenant);
-            await context.SaveChangesAsync();
+            repository.Remove(tenant);
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
     }
