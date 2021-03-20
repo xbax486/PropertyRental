@@ -9,21 +9,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Persistence.Interfaces;
 
 namespace PropertyRental.Controllers
 {
     [Route("/api/properties")]
     public class PropertiesController : Controller
     {
-        private readonly PropertyRentalContext context;
         private readonly IMapper mapper;
         private readonly IPropertyRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public PropertiesController(PropertyRentalContext context, IMapper mapper, IPropertyRepository repository)
+        public PropertiesController(IMapper mapper, IPropertyRepository repository, IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
             this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -52,24 +53,17 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var property = await context.Properties.SingleOrDefaultAsync(record =>
-                record.OwnerId == propertyResource.OwnerId &&
-                record.Unit == propertyResource.Unit &&
-                record.Street == propertyResource.Street &&
-                record.SuburbId == propertyResource.SuburbId
-            );
+            var property = await repository.FindProperty(propertyResource);
             if (property != null)
             {
                 ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
                 return BadRequest(ModelState);
             }
             property = mapper.Map<PropertyResource, Property>(propertyResource);
-            property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
-            property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
-            property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
+            property = await repository.PopulatePropertyWithRelatedFields(property, propertyResource);
             property.Available = true;
             repository.Add(property);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok(property);
         }
 
@@ -85,22 +79,15 @@ namespace PropertyRental.Controllers
             {
                 return NotFound();
             }
-            var existingProperty = await context.Properties.SingleOrDefaultAsync(record =>
-                record.OwnerId == propertyResource.OwnerId &&
-                record.Unit == propertyResource.Unit &&
-                record.Street == propertyResource.Street &&
-                record.SuburbId == propertyResource.SuburbId
-            );
+            var existingProperty = await repository.FindProperty(propertyResource);
             if (existingProperty != null)
             {
                 ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<PropertyResource, Property>(propertyResource, property);
-            property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
-            property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
-            property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
-            await context.SaveChangesAsync();
+            property = await repository.PopulatePropertyWithRelatedFields(property, propertyResource);
+            await unitOfWork.CompleteAsync();
             return Ok(property);
         }
 
@@ -113,7 +100,7 @@ namespace PropertyRental.Controllers
                 return NotFound();
             }
             repository.Remove(property);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
     }
