@@ -2,40 +2,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PropertyRental.Models;
 using PropertyRental.Persistence;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Persistence.Interfaces;
 
 namespace PropertyRental.Controllers
 {
     [Route("/api/suburbs")]
     public class SuburbsController : Controller
     {
-        private readonly PropertyRentalContext context;
         private readonly IMapper mapper;
+        private readonly ISuburbRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SuburbsController(PropertyRentalContext context, IMapper mapper)
+        public SuburbsController(IMapper mapper, ISuburbRepository repository, IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
+            this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IEnumerable<SuburbResource>> GetSuburbs()
         {
-            var suburbs = await context.Suburbs
-                .Include(suburb => suburb.State)
-                .ToListAsync();
-            return mapper.Map<List<Suburb>, List<SuburbResource>>(suburbs);
+            var suburbs = await repository.GetSuburbs();
+            return mapper.Map<List<Suburb>, List<SuburbResource>>(suburbs.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuburb(int id)
         {
-            var suburb = await context.Suburbs
-                .Include(suburb => suburb.State)
-                .SingleOrDefaultAsync(suburb => suburb.Id == id);
+            var suburb = await repository.GetSuburb(id);
             if (suburb == null)
             {
                 return NotFound();
@@ -51,20 +53,16 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var suburb = await context.Suburbs.SingleOrDefaultAsync(record =>
-                record.Postcode == suburbResource.Postcode &&
-                record.Name == suburbResource.Name &&
-                record.StateId == suburbResource.StateId
-            );
+            var suburb = await repository.FindSuburb(suburbResource);
             if (suburb != null)
             {
                 ModelState.AddModelError("Message", "Suburb creation error. Sorry, this suburb already exists!");
                 return BadRequest(ModelState);
             }
             suburb = mapper.Map<SuburbResource, Suburb>(suburbResource);
-            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburbResource.StateId);
-            context.Suburbs.Add(suburb);
-            await context.SaveChangesAsync();
+            suburb = await repository.PopulateSuburbWithRelatedFields(suburb, suburbResource);
+            repository.Add(suburb);
+            await unitOfWork.CompleteAsync();
             return Ok(suburb);
         }
 
@@ -75,37 +73,33 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var suburb = await context.Suburbs.FindAsync(id);
+            var suburb = await repository.GetSuburb(id, includeRelated: false);
             if (suburb == null)
             {
                 return NotFound();
             }
-            var existingSuburb = await context.Suburbs.SingleOrDefaultAsync(
-                record => record.Postcode == suburbResource.Postcode &&
-                record.Name == suburbResource.Name &&
-                record.StateId == suburbResource.StateId
-            );
+            var existingSuburb = await repository.FindSuburb(suburbResource);
             if (existingSuburb != null)
             {
                 ModelState.AddModelError("Message", "Suburb update error. Sorry, this suburb already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<SuburbResource, Suburb>(suburbResource, suburb);
-            suburb.State = await context.States.SingleOrDefaultAsync(state => state.Id == suburb.StateId);
-            await context.SaveChangesAsync();
+            suburb = await repository.PopulateSuburbWithRelatedFields(suburb, suburbResource);
+            await unitOfWork.CompleteAsync();
             return Ok(suburb);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSuburb(int id)
         {
-            var suburb = await context.Suburbs.FindAsync(id);
+            var suburb = await repository.GetSuburb(id, includeRelated: false);
             if (suburb == null)
             {
                 return NotFound();
             }
-            context.Suburbs.Remove(suburb);
-            await context.SaveChangesAsync();
+            repository.Remove(suburb);
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
     }
