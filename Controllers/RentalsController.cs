@@ -8,51 +8,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Persistence.Interfaces;
 
 namespace RentalRental.Controllers
 {
     [Route("/api/rentals")]
     public class RentalsController : Controller
     {
-        private readonly PropertyRentalContext context;
         private readonly IMapper mapper;
+        private readonly IRentalRepository rentalRepository;
+        private readonly IPropertyRepository propertyRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public RentalsController(PropertyRentalContext context, IMapper mapper)
+        public RentalsController(IMapper mapper, IRentalRepository rentalRepository, IPropertyRepository propertyRepository, IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
+            this.rentalRepository = rentalRepository;
+            this.propertyRepository = propertyRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IEnumerable<RentalResource>> GetRentals()
         {
-            var rentals = await context.Rentals
-                .Include(rental => rental.Tenant)
-                .Include(rental => rental.Property)
-                    .ThenInclude(property => property.Suburb)
-                        .ThenInclude(suburb => suburb.State)
-                .ToListAsync();
-            foreach (var rental in rentals)
-            {
-                rental.Property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rental.Property.OwnerId);
-            }
-            return mapper.Map<List<Rental>, List<RentalResource>>(rentals);
+            var rentals = await rentalRepository.GetRentals();
+            return mapper.Map<List<Rental>, List<RentalResource>>(rentals.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRental(int id)
         {
-            var rental = await context.Rentals
-                .Include(rental => rental.Tenant)
-                .Include(rental => rental.Property)
-                    .ThenInclude(property => property.Suburb)
-                        .ThenInclude(suburb => suburb.State)
-                .SingleOrDefaultAsync(rental => rental.Id == id);
+            var rental = await rentalRepository.GetRental(id);
             if (rental == null)
             {
                 return NotFound();
             }
-            rental.Property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == rental.Property.OwnerId);
             var rentalResource = mapper.Map<Rental, RentalResource>(rental);
             return Ok(rentalResource);
         }
@@ -64,15 +54,13 @@ namespace RentalRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var rental = await context.Rentals.SingleOrDefaultAsync(record =>
-                record.PropertyId == rentalResource.PropertyId ||
-                record.TenantId == rentalResource.TenantId);
+            var rental = await rentalRepository.FindRental(rentalResource);
             if (rental != null)
             {
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, this rental record already exists!");
                 return BadRequest(ModelState);
             }
-            var property = await context.Properties.SingleOrDefaultAsync(record => record.Id == rentalResource.PropertyId);
+            var property = await propertyRepository.GetProperty(rentalResource.PropertyId);
             if (property == null)
             {
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, this property does not exist!");
@@ -85,9 +73,9 @@ namespace RentalRental.Controllers
                 return BadRequest(ModelState);
             }
             rental = mapper.Map<RentalResource, Rental>(rentalResource);
-            rental.Property = await context.Properties.SingleOrDefaultAsync(property => property.Id == rentalResource.PropertyId);
-            context.Rentals.Add(rental);
-            await context.SaveChangesAsync();
+            rental.Property = await propertyRepository.GetProperty(rentalResource.PropertyId);
+            rentalRepository.Add(rental);
+            await unitOfWork.CompleteAsync();
             return Ok(rental);
         }
 
@@ -98,7 +86,7 @@ namespace RentalRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var rental = await context.Rentals.FindAsync(id);
+            var rental = await rentalRepository.GetRental(id);
             if (rental == null)
             {
                 return NotFound();
@@ -109,27 +97,27 @@ namespace RentalRental.Controllers
                 return BadRequest(ModelState);
             }
             mapper.Map<RentalResource, Rental>(rentalResource, rental);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok(rental);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRental(int id)
         {
-            var rental = await context.Rentals.FindAsync(id);
+            var rental = await rentalRepository.GetRental(id, includeRelated: false);
             if (rental == null)
             {
                 return NotFound();
             }
-            context.Rentals.Remove(rental);
-            var property = await context.Properties.SingleOrDefaultAsync(record => record.Id == rental.PropertyId);
+            rentalRepository.Remove(rental);
+            var property = await propertyRepository.GetProperty(rental.PropertyId, includeRelated: false);
             if (property == null)
             {
                 ModelState.AddModelError("Message", "Rental deletion error. Sorry, this property does not exist!");
                 return BadRequest(ModelState);
             }
             property.Available = true;
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
     }

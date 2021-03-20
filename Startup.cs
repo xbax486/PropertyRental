@@ -38,6 +38,7 @@ namespace PropertyRental
             services.AddScoped<ISuburbRepository, SuburbRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<PropertyRentalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PropertyRentalContext")));
