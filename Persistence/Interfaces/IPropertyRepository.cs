@@ -9,7 +9,6 @@ namespace PropertyRental.Persistence.Interfaces
     {
         Task<IEnumerable<Property>> GetProperties(bool available = false);
         Task<Property> GetProperty(int id, bool includeRelated = true);
-        Task<Property> PopulatePropertyWithRelatedFields(Property property, PropertyResource propertyResource);
         Task<Property> FindProperty(PropertyResource propertyResource);
         void Add(Property property);
         void Remove(Property property);

@@ -17,27 +17,34 @@ namespace PropertyRental.Controllers
     public class PropertiesController : Controller
     {
         private readonly IMapper mapper;
-        private readonly IPropertyRepository repository;
+        private readonly IPropertyRepository propertyRepository;
+        private readonly IOwnerRepository ownerRepository;
+        private readonly ISuburbRepository suburbRepository;
+        private readonly IPropertyTypeRepository propertyTypeRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public PropertiesController(IMapper mapper, IPropertyRepository repository, IUnitOfWork unitOfWork)
+        public PropertiesController(IMapper mapper, IPropertyRepository propertyRepository, IOwnerRepository ownerRepository,
+            ISuburbRepository suburbRepository, IPropertyTypeRepository propertyTypeRepository, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
-            this.repository = repository;
+            this.propertyRepository = propertyRepository;
+            this.ownerRepository = ownerRepository;
+            this.suburbRepository = suburbRepository;
+            this.propertyTypeRepository = propertyTypeRepository;
             this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IEnumerable<PropertyResource>> GetProperties(bool available = false)
         {
-            var allProperties = await repository.GetProperties(available);
+            var allProperties = await propertyRepository.GetProperties(available);
             return mapper.Map<List<Property>, List<PropertyResource>>(allProperties.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProperty(int id)
         {
-            var property = await repository.GetProperty(id);
+            var property = await propertyRepository.GetProperty(id);
             if (property == null)
             {
                 return NotFound();
@@ -53,16 +60,16 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var property = await repository.FindProperty(propertyResource);
+            var property = await propertyRepository.FindProperty(propertyResource);
             if (property != null)
             {
                 ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
                 return BadRequest(ModelState);
             }
             property = mapper.Map<PropertyResource, Property>(propertyResource);
-            property = await repository.PopulatePropertyWithRelatedFields(property, propertyResource);
+            property = await PopulateRelatedFields(property, propertyResource);
             property.Available = true;
-            repository.Add(property);
+            propertyRepository.Add(property);
             await unitOfWork.CompleteAsync();
             return Ok(property);
         }
@@ -74,19 +81,19 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var property = await repository.GetProperty(id, includeRelated: false);
+            var property = await propertyRepository.GetProperty(id, includeRelated: false);
             if (property == null)
             {
                 return NotFound();
             }
-            var existingProperty = await repository.FindProperty(propertyResource);
+            var existingProperty = await propertyRepository.FindProperty(propertyResource);
             if (existingProperty != null)
             {
                 ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<PropertyResource, Property>(propertyResource, property);
-            property = await repository.PopulatePropertyWithRelatedFields(property, propertyResource);
+            property = await PopulateRelatedFields(property, propertyResource);
             await unitOfWork.CompleteAsync();
             return Ok(property);
         }
@@ -94,14 +101,22 @@ namespace PropertyRental.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProperty(int id)
         {
-            var property = await repository.GetProperty(id, includeRelated: false);
+            var property = await propertyRepository.GetProperty(id, includeRelated: false);
             if (property == null)
             {
                 return NotFound();
             }
-            repository.Remove(property);
+            propertyRepository.Remove(property);
             await unitOfWork.CompleteAsync();
             return Ok();
+        }
+
+        private async Task<Property> PopulateRelatedFields(Property property, PropertyResource propertyResource)
+        {
+            property.Owner = await ownerRepository.GetOwner((int)propertyResource.OwnerId);
+            property.Suburb = await suburbRepository.GetSuburb(propertyResource.SuburbId);
+            property.PropertyType = await propertyTypeRepository.GetPropertyType(propertyResource.PropertyTypeId);
+            return property;
         }
     }
 }

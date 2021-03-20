@@ -7,5 +7,6 @@ namespace PropertyRental.Persistence.Interfaces
     public interface IPropertyTypeRepository
     {
         Task<IEnumerable<PropertyType>> GetPropertyTypes();
+        Task<PropertyType> GetPropertyType(int id);
     }
 }

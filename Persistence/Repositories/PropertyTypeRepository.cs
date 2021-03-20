@@ -19,5 +19,10 @@ namespace PropertyRental.Persistence.Repositories
         {
             return await context.PropertyTypes.ToListAsync();
         }
+
+        public async Task<PropertyType> GetPropertyType(int id)
+        {
+            return await context.PropertyTypes.FindAsync(id);
+        }
     }
 }

@@ -53,14 +53,6 @@ namespace PropertyRental.Persistence.Repositories
                 .SingleOrDefaultAsync(property => property.Id == id);
         }
 
-        public async Task<Property> PopulatePropertyWithRelatedFields(Property property, PropertyResource propertyResource)
-        {
-            property.Owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == propertyResource.OwnerId);
-            property.Suburb = await context.Suburbs.SingleOrDefaultAsync(suburb => suburb.Id == propertyResource.SuburbId);
-            property.PropertyType = await context.PropertyTypes.SingleOrDefaultAsync(propertyType => propertyType.Id == propertyResource.PropertyTypeId);
-            return property;
-        }
-
         public async Task<Property> FindProperty(PropertyResource propertyResource)
         {
             return await context.Properties.SingleOrDefaultAsync(record =>
