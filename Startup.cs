@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using PropertyRental.Persistence;
+using PropertyRental.Persistence.Interfaces;
+using PropertyRental.Persistence.Repositories;
 using AutoMapper;
 
 namespace PropertyRental
@@ -31,7 +33,11 @@ namespace PropertyRental
             });
 
             services.AddAutoMapper();
+            services.AddScoped<IOwnerRepository, OwnerRepository>();
+            services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
+            services.AddScoped<ISuburbRepository, SuburbRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<PropertyRentalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PropertyRentalContext")));
         }

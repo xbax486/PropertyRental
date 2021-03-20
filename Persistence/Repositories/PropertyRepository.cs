@@ -67,8 +67,7 @@ namespace PropertyRental.Persistence.Repositories
                 record.OwnerId == propertyResource.OwnerId &&
                 record.Unit == propertyResource.Unit &&
                 record.Street == propertyResource.Street &&
-                record.SuburbId == propertyResource.SuburbId
-            );
+                record.SuburbId == propertyResource.SuburbId);
         }
 
         public void Add(Property property)
