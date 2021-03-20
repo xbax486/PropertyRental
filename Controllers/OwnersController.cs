@@ -8,32 +8,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Persistence.Interfaces;
 
 namespace PropertyRental.Controllers
 {
     [Route("/api/owners")]
     public class OwnersController : Controller
     {
-        private readonly PropertyRentalContext context;
         private readonly IMapper mapper;
+        private readonly IOwnerRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public OwnersController(PropertyRentalContext context, IMapper mapper)
+        public OwnersController(IMapper mapper, IOwnerRepository repository, IUnitOfWork unitOfWork)
         {
-            this.context = context;
             this.mapper = mapper;
+            this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IEnumerable<OwnerResource>> GetOwners()
         {
-            var owners = await context.Owners.ToListAsync();
-            return mapper.Map<List<Owner>, List<OwnerResource>>(owners);
+            var owners = await repository.GetOwners();
+            return mapper.Map<List<Owner>, List<OwnerResource>>(owners.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOwner(int id)
         {
-            var owner = await context.Owners.SingleOrDefaultAsync(owner => owner.Id == id);
+            var owner = await repository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
@@ -49,18 +52,15 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var owner = await context.Owners.SingleOrDefaultAsync(record =>
-                record.Name == ownerResource.Name &&
-                record.Email == ownerResource.Email &&
-                record.Mobile == ownerResource.Mobile);
+            var owner = await repository.FindOwner(ownerResource);
             if (owner != null)
             {
                 ModelState.AddModelError("Message", "Owner creation error. Sorry, this owner already exists!");
                 return BadRequest(ModelState);
             }
             owner = mapper.Map<OwnerResource, Owner>(ownerResource);
-            context.Owners.Add(owner);
-            await context.SaveChangesAsync();
+            repository.Add(owner);
+            await unitOfWork.CompleteAsync();
             return Ok(owner);
         }
 
@@ -71,35 +71,32 @@ namespace PropertyRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var owner = await context.Owners.FindAsync(id);
+            var owner = await repository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
             }
-            var existingOwner = await context.Owners.SingleOrDefaultAsync(record =>
-                record.Name == ownerResource.Name &&
-                record.Email == ownerResource.Email &&
-                record.Mobile == ownerResource.Mobile);
+            var existingOwner = await repository.FindOwner(ownerResource);
             if (existingOwner != null)
             {
                 ModelState.AddModelError("Message", "Owner update error. Sorry, this owner already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<OwnerResource, Owner>(ownerResource, owner);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
             return Ok(owner);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOwner(int id)
         {
-            var owner = await context.Owners.FindAsync(id);
+            var owner = await repository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
             }
-            context.Owners.Remove(owner);
-            await context.SaveChangesAsync();
+            repository.Remove(owner);
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
     }
