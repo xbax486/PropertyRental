@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Controllers.Resources;
 
-namespace PropertyRental.Persistence.Interfaces
+namespace PropertyRental.Core.Interfaces
 {
     public interface IRentalRepository
     {

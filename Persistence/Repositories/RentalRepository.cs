@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
-using PropertyRental.Persistence.Interfaces;
+using PropertyRental.Core.Interfaces;
 using PropertyRental.Controllers.Resources;
 
 namespace PropertyRental.Persistence.Repositories

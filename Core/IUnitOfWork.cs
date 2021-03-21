@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace PropertyRental.Persistence
+namespace PropertyRental.Core
 {
     public interface IUnitOfWork
     {

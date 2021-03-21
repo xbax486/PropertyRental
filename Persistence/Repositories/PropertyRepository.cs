@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Controllers.Resources;
-using PropertyRental.Persistence.Interfaces;
+using PropertyRental.Core.Interfaces;
 
 namespace PropertyRental.Persistence.Repositories
 {

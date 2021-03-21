@@ -7,7 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using PropertyRental.Persistence;
-using PropertyRental.Persistence.Interfaces;
+using PropertyRental.Core.Interfaces;
+using PropertyRental.Core;
 using PropertyRental.Persistence.Repositories;
 using AutoMapper;
 

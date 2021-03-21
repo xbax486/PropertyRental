@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
 
-namespace PropertyRental.Persistence.Interfaces
+namespace PropertyRental.Core.Interfaces
 {
     public interface IPropertyTypeRepository
     {

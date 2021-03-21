@@ -8,7 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PropertyRental.Controllers.Resources;
-using PropertyRental.Persistence.Interfaces;
+using PropertyRental.Core.Interfaces;
+using PropertyRental.Core;
 
 namespace RentalRental.Controllers
 {
