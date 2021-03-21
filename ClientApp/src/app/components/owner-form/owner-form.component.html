@@ -18,9 +18,9 @@
         required
         #name="ngModel"
       />
-      <span class="error" *ngIf="name.touched && name.invalid">
+      <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
         Please enter the name of the owner!
-      </span>
+      </div>
     </div>
     <div class="form-group col-xl-4">
       <label for="postcode">Email</label>
@@ -35,9 +35,9 @@
         email
         #email="ngModel"
       />
-      <span class="error" *ngIf="email.touched && email.invalid">
+      <div class="alert alert-danger" *ngIf="email.touched && email.invalid">
         Please enter the valid email of the owner!
-      </span>
+      </div>
     </div>
     <div class="form-group col-xl-4">
       <label for="state">Mobile</label>
@@ -51,9 +51,9 @@
         required
         #mobile="ngModel"
       />
-      <span class="error" *ngIf="mobile.touched && mobile.invalid">
+      <div class="alert alert-danger" *ngIf="mobile.touched && mobile.invalid">
         Please choose the mobile of the owner!
-      </span>
+      </div>
     </div>
   </div>
   <fieldset class="border p-3 mb-4">

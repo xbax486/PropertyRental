@@ -28,10 +28,6 @@ select.ng-invalid.ng-touched {
   border: 1px solid #dc3545;
 }
 
-span.error {
-  color: #dc3545;
-}
-
 fa-icon[ng-reflect-classes="icon-true"] svg {
   color: #28a745;
 }

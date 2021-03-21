@@ -20,9 +20,9 @@
           #unit="ngModel"
           required
         />
-        <span class="error" *ngIf="unit.touched && unit.invalid">
+        <div class="alert alert-danger" *ngIf="unit.touched && unit.invalid">
           Please enter the unit of the property!
-        </span>
+        </div>
       </div>
       <div class="form-group col-md-6">
         <label for="street">Street</label>
@@ -36,9 +36,12 @@
           #street="ngModel"
           required
         />
-        <span class="error" *ngIf="street.touched && street.invalid">
+        <div
+          class="alert alert-danger"
+          *ngIf="street.touched && street.invalid"
+        >
           Please enter the street of the property!
-        </span>
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -59,12 +62,12 @@
             {{ suburb.name }} {{ suburb.postcode }}
           </option>
         </select>
-        <span
-          class="error"
+        <div
+          class="alert alert-danger"
           *ngIf="suburbId.touched && selectedProperty.suburbId == -1"
         >
           Please choose one of the suburbs for the property!
-        </span>
+        </div>
       </div>
       <div class="form-group col-md-6">
         <label for="state">State</label>
@@ -208,12 +211,12 @@
             {{ owner.name }}
           </option>
         </select>
-        <span
-          class="error"
+        <div
+          class="alert alert-danger"
           *ngIf="ownerId.touched && selectedProperty.ownerId == -1"
         >
           Please choose one of the owners for the property!
-        </span>
+        </div>
       </div>
       <div class="form-group col-md-4">
         <label for="propertyType">Property Type</label>
@@ -235,14 +238,14 @@
             {{ propertyType.name }}
           </option>
         </select>
-        <span
-          class="error"
+        <div
+          class="alert alert-danger"
           *ngIf="
             propertyTypeId.touched && selectedProperty.propertyTypeId == -1
           "
         >
           Please choose one of the property types for the property!
-        </span>
+        </div>
       </div>
       <div class="form-group col-md-4">
         <label for="available">Available</label>

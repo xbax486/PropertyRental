@@ -18,9 +18,9 @@
         #name="ngModel"
         required
       />
-      <span class="error" *ngIf="name.touched && name.invalid">
+      <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
         Please enter the name of the suburb!
-      </span>
+      </div>
     </div>
     <div class="form-group col-xl-4">
       <label for="postcode">Postcode</label>
@@ -35,9 +35,12 @@
         pattern="^[0-9]{4}$"
         #postcode="ngModel"
       />
-      <span class="error" *ngIf="postcode.touched && postcode.invalid">
+      <div
+        class="alert alert-danger"
+        *ngIf="postcode.touched && postcode.invalid"
+      >
         Please enter the postcode of the suburb! [1000-9999]
-      </span>
+      </div>
     </div>
     <div class="form-group col-xl-4">
       <label for="state">State</label>
@@ -55,9 +58,9 @@
           {{ state.name }}
         </option>
       </select>
-      <span class="error" *ngIf="state.touched && state.invalid">
+      <div class="alert alert-danger" *ngIf="state.touched && state.invalid">
         Please choose the state of the suburb!
-      </span>
+      </div>
     </div>
   </div>
   <fieldset class="border p-3 mb-4">

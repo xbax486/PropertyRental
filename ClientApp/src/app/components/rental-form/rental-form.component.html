@@ -20,12 +20,12 @@
         Property {{ i + 1 }}
       </option>
     </select>
-    <span
-      class="error"
+    <div
+      class="alert alert-danger"
       *ngIf="property.touched && selectedRental.propertyId == -1"
     >
-      Please choose one of the available properties for the rental record!
-    </span>
+      Please choose one of the available properties for the rental!
+    </div>
   </div>
   <div class="col-md-6">
     <label for="tenant">Available Tenants</label>
@@ -33,7 +33,7 @@
       name="tenant"
       id="tenant"
       class="form-control custom-select"
-      placeholder="Please choose one of the tenants"
+      placeholder="Please choose one of the available tenants"
       [(ngModel)]="selectedRental.tenantId"
       (change)="onTenantChange(selectedRental.tenantId)"
       #tenant="ngModel"
@@ -44,9 +44,12 @@
         {{ tenant.name }}
       </option>
     </select>
-    <span class="error" *ngIf="tenant.touched && selectedRental.tenantId == -1">
-      Please choose one of the available tenants for the rental record!
-    </span>
+    <div
+      class="alert alert-danger"
+      *ngIf="tenant.touched && selectedRental.tenantId == -1"
+    >
+      Please choose one of the available tenants for the rental!
+    </div>
   </div>
 </div>
 <form
@@ -64,7 +67,7 @@
           type="text"
           class="form-control"
           id="owner"
-          placeholder="Please check the owner of the rental record"
+          placeholder="Please check the owner of the rental"
           name="owner"
           [(ngModel)]="selectedRental.property.owner.name"
           disabled
@@ -90,7 +93,7 @@
           type="text"
           class="form-control"
           id="unit"
-          placeholder="Please enter the unit of the property"
+          placeholder="Please check the unit of the property"
           name="unit"
           [(ngModel)]="selectedRental.property.unit"
           disabled
@@ -102,7 +105,7 @@
           type="text"
           class="form-control"
           id="street"
-          placeholder="Please enter the street of the property"
+          placeholder="Please check the street of the property"
           name="street"
           [(ngModel)]="selectedRental.property.street"
           disabled
@@ -149,7 +152,7 @@
             type="number"
             class="form-control"
             id="payment"
-            placeholder="Please enter the rent"
+            placeholder="Please enter the rent of the rental"
             name="payment"
             [(ngModel)]="selectedRental.payment"
             #payment="ngModel"
@@ -158,9 +161,12 @@
             max="999"
             pattern="^[0-9]{3}$"
           />
-          <span class="error" *ngIf="payment.touched && payment.invalid">
-            Please enter the payment of the rental record! [100-999]
-          </span>
+          <div
+            class="alert alert-danger w-100"
+            *ngIf="payment.touched && payment.invalid"
+          >
+            Please enter the payment of the rental! [100-999]
+          </div>
         </div>
       </div>
       <div class="form-group col-md-4">
@@ -169,15 +175,18 @@
           type="date"
           class="form-control"
           id="startDate"
-          placeholder="Please enter the start date of the rental"
+          placeholder="Please choose or enter the start date of the rental"
           name="startDate"
           [(ngModel)]="selectedRental.startDate"
           #startDate="ngModel"
           required
         />
-        <span class="error" *ngIf="startDate.touched && startDate.invalid">
-          Please choose the start date for the rental record!
-        </span>
+        <div
+          class="alert alert-danger"
+          *ngIf="startDate.touched && startDate.invalid"
+        >
+          Please choose or enter the start date of the rental!
+        </div>
       </div>
       <div class="form-group col-md-4">
         <label for="endDate">End Date</label>
@@ -185,15 +194,18 @@
           type="date"
           class="form-control"
           id="endDate"
-          placeholder="Please enter the end date of the rental"
+          placeholder="Please choose or enter the end date of the rental"
           name="endDate"
           [(ngModel)]="selectedRental.endDate"
           #endDate="ngModel"
           required
         />
-        <span class="error" *ngIf="endDate.touched && endDate.invalid">
-          Please choose the end date for the rental record!
-        </span>
+        <div
+          class="alert alert-danger"
+          *ngIf="endDate.touched && endDate.invalid"
+        >
+          Please choose or enter the end date of the rental!
+        </div>
       </div>
     </div>
   </fieldset>
