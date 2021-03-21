@@ -52,6 +52,7 @@
           [(ngModel)]="selectedProperty.suburbId"
           (change)="onSuburbChange(selectedProperty.suburbId)"
           #suburbId="ngModel"
+          pattern="^[1-9][0-9]*$"
           required
         >
           <option value="{{ suburb.id }}" *ngFor="let suburb of suburbs">
@@ -200,6 +201,7 @@
           [(ngModel)]="selectedProperty.ownerId"
           (change)="onOwnerChange(selectedProperty.ownerId)"
           #ownerId="ngModel"
+          pattern="^[1-9][0-9]*$"
           required
         >
           <option value="{{ owner.id }}" *ngFor="let owner of owners">
@@ -223,6 +225,7 @@
           [(ngModel)]="selectedProperty.propertyTypeId"
           (change)="onPropertyTypeChange(selectedProperty.propertyTypeId)"
           #propertyTypeId="ngModel"
+          pattern="^[1-9][0-9]*$"
           required
         >
           <option

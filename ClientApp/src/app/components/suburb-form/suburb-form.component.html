@@ -15,8 +15,8 @@
         placeholder="Please enter the name of the suburb"
         name="name"
         [(ngModel)]="selectedSuburb.name"
-        required
         #name="ngModel"
+        required
       />
       <span class="error" *ngIf="name.touched && name.invalid">
         Please enter the name of the suburb!
@@ -48,10 +48,9 @@
         name="stateId"
         [(ngModel)]="selectedSuburb.stateId"
         required
-        pattern="^[1-8]$"
+        pattern="^[1-9][0-9]*$"
         #state="ngModel"
       >
-        <option value="0"></option>
         <option [value]="state.id" *ngFor="let state of states">
           {{ state.name }}
         </option>

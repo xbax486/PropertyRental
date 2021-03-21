@@ -10,6 +10,7 @@
       [(ngModel)]="selectedRental.property.id"
       (change)="onAvailablePropertyChange(selectedRental.property.id)"
       #property="ngModel"
+      pattern="^[1-9][0-9]*$"
       required
     >
       <option
@@ -36,6 +37,7 @@
       [(ngModel)]="selectedRental.tenantId"
       (change)="onTenantChange(selectedRental.tenantId)"
       #tenant="ngModel"
+      pattern="^[1-9][0-9]*$"
       required
     >
       <option value="{{ tenant.id }}" *ngFor="let tenant of tenants">
