@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RoutingModule } from "./modules/routing.module";
+import { ToastyModule } from 'ng2-toasty';
 
 /* Components */
 import { AppComponent } from './components/app.component';
@@ -27,6 +28,7 @@ import { TenantService } from './services/tenant.service';
 import { SuburbService } from './services/suburb.service';
 import { PropertyService } from './services/property.service';
 import { RentalService } from "./services/rental.service";
+import { ToastService } from "./services/toast.service";
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { RentalService } from "./services/rental.service";
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    ToastyModule.forRoot(),
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
@@ -56,7 +59,8 @@ import { RentalService } from "./services/rental.service";
     TenantService,
     SuburbService,
     PropertyService,
-    RentalService
+    RentalService,
+    ToastService
   ],
   bootstrap: [AppComponent]
 })
