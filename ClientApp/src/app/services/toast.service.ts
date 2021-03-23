@@ -11,6 +11,16 @@ export class ToastService {
     this._toastyConfig.theme = 'bootstrap';
   }
 
+  public onSuccessCall(ownerForm, message) {
+    this.addToast('Success', { status: 200, message: message }, ownerForm, 'owners');
+  }
+
+  public onErrorCall(error, message?) {
+    if(message)
+      error.error.Message = message;
+    this.addToast('Error', error);
+  }
+
   public addToast(title, httpResponse, form?: NgForm, navigatPath?: string) {
     var toastOptions:ToastOptions = {
       title: title,

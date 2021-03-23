@@ -27,10 +27,7 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
     this._selectedOwnerSubscription = this._ownerService.selectedOwnerSubject
       .subscribe(
         (selectedOwner: Owner) => this.selectedOwner = selectedOwner,
-        (error) => {
-          console.log('Selected owner fetching error', error);
-          this.onErrorCall(error, 'Selected owner fetching error');
-        }
+        (error) => this._toastService.onErrorCall(error, 'Selected owner fetching error')
       );
   }
 
@@ -47,26 +44,15 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
     if(ownerDetails.id == -1) {
       this._createOwnerSubscription = this._ownerService.createOwner(ownerDetails)
         .subscribe(
-          (message) => {
-            // console.log('Successfully created an owner', message);
-            this.onSuccessCall(ownerForm, 'Successfully created an owner');
-          },
-          (error) => {
-            // console.log('Create an owner fails', error);
-            this.onErrorCall(error);
-          }
+          (message) => this._toastService.onSuccessCall(ownerForm, 'Successfully created an owner'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
     else {
       this._updateOwnerSubscription = this._ownerService.updateOwner(ownerDetails)
         .subscribe(
-          (message) => {
-            this.onSuccessCall(ownerForm, 'Successfully updated an owner');
-          },
-          (error) => {
-            // console.log('Update an owner fails', error);
-            this.onErrorCall(error);
-          }
+          (message) => this._toastService.onSuccessCall(ownerForm, 'Successfully updated an owner'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
   }
@@ -84,17 +70,5 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
     this.selectedOwner.name = '';
     this.selectedOwner.email = '';
     this.selectedOwner.mobile = '';
-  }
-
-  private onSuccessCall(ownerForm, message) {
-    this._toastService.addToast('Success', { status: 200, message: message }, ownerForm, 'owners');
-  }
-
-  private onErrorCall(error, message?) {
-    if(message) {
-      error.error.Message = message;
-    }
-    console.log('Update an owner fails', error);
-    this._toastService.addToast('Error', error);
   }
 }
