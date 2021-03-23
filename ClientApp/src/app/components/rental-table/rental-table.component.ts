@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Rental } from 'src/app/models/rental';
 import { RentalService } from 'src/app/services/rental.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-rental-table',
@@ -14,7 +15,7 @@ export class RentalTableComponent implements OnInit, OnDestroy {
   private _getRentalsSubscription = new Subscription();
   private _deleteRentalSubscription = new Subscription();
 
-  constructor(private _rentalService: RentalService) { }
+  constructor(private _rentalService: RentalService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.rentalsLoaded = false;
@@ -28,7 +29,7 @@ export class RentalTableComponent implements OnInit, OnDestroy {
           });
           this.rentalsLoaded = true;
         },
-        (error) => console.log('Rentals fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Rentals fetching error')
       );
   }
 
@@ -48,9 +49,9 @@ export class RentalTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.rentals.findIndex(rental => rental.id == selectedRental.id);
             this.rentals.splice(index, 1);
-            console.log('Successfully delete a rental record');
+            this._toastService.onSuccessCall('Successfully delete a rental record');
           },
-          (error) => console.log('Rental record deletion error', error)
+          (error) => this._toastService.onErrorCall(error, 'Rental record deletion error')
         );
     }
   }
