@@ -8,6 +8,7 @@ import { Tenant } from "../../models/tenant";
 import { RentalService } from './../../services/rental.service';
 import { PropertyService } from './../../services/property.service';
 import { TenantService } from './../../services/tenant.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-rental-form',
@@ -45,6 +46,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     private _rentalService: RentalService,
     private _propertyService: PropertyService,
     private _tenantService: TenantService,
+    private _toastService: ToastService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -54,19 +56,19 @@ export class RentalFormComponent implements OnInit, OnDestroy {
           this.selectedRental = selectedRental;
           this.rentalEditingMode = this.selectedRental.id == -1 ? false : true;
         },
-        (error) => console.log('Selected rental fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Selected rental fetching error')
       );
     
     this._getAvailablePropertiesSubscription = this._propertyService.getAvailableProperties()
       .subscribe(
         (availableProperties: Property[]) => this.availableProperties = availableProperties,
-        (error) => console.log('Available properties fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Available properties fetching error')
       );
     
     this._getTenantsSubscription = this._tenantService.getAvailableTenants()
       .subscribe(
         (tenants: Tenant[]) => this.tenants = tenants,
-        (error) => console.log('Tenants fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
       );
   }
 
@@ -94,41 +96,29 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     this._router.navigate(['rentals']);
   }
 
-  public onClear(propertyForm: NgForm) {
-    propertyForm.reset();
+  public onClear(rentalForm: NgForm) {
+    rentalForm.reset();
   }
 
-  public onSubmit(propertyForm: NgForm) {
-    let rentalDetails = propertyForm.form.value;
+  public onSubmit(rentalForm: NgForm) {
+    let rentalDetails = rentalForm.form.value;
     rentalDetails.id = this.selectedRental.id;
     rentalDetails.propertyId = +this.selectedRental.propertyId;
     rentalDetails.tenantId = +this.selectedRental.tenantId;
-    console.log('rentalDetails', rentalDetails);
     if(rentalDetails.id == -1) {
       this._createRentalSubscription = this._rentalService.createRental(rentalDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully created a rental record', message);
-            this.navigateToTable(propertyForm);
-          },
-          (error) => console.log('Create a rental record fails', error)
+          (message) => this._toastService.onSuccessCall('Successfully created a rental record', rentalForm, 'rentals'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
     else {
       this._updateRentalSubscription = this._rentalService.updateRental(rentalDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully updated a rental record', message);
-            this.navigateToTable(propertyForm);
-          },
-          (error) => console.log('Update a rental record fails. ', error)
+          (message) => this._toastService.onSuccessCall('Successfully updated a rental record', rentalForm, 'rentals'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
-  }
-
-  private navigateToTable(propertyForm: NgForm) {
-    propertyForm.reset();
-    this._router.navigate(['rentals']);
   }
 
   private clearForm() {
