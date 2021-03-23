@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TenantService } from './../../services/tenant.service';
+import { ToastService } from "../../services/toast.service";
 import { Tenant } from './../../models/tenant';
 
 @Component({
@@ -17,13 +18,16 @@ export class TenantFormComponent implements OnInit, OnDestroy {
   private _createTenantSubscription = new Subscription();
   private _updateTenantSubscription = new Subscription();
 
-  constructor(private _tenantService: TenantService, private _router: Router) { }
+  constructor(
+    private _tenantService: TenantService, 
+    private _toastService: ToastService,
+    private _router: Router) { }
 
   ngOnInit() {
     this._selectedTenantSubscription = this._tenantService.selectedTenantSubject
       .subscribe(
         (selectedTenant: Tenant) => this.selectedTenant = selectedTenant,
-        (error) => console.log('Selected tenant fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Selected tenant fetching error')
       );
   }
 
@@ -40,21 +44,15 @@ export class TenantFormComponent implements OnInit, OnDestroy {
     if(tenantDetails.id == -1) {
       this._createTenantSubscription = this._tenantService.createTenant(tenantDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully created a tenant', message);
-            this.navigateToTable(tenantForm);
-          },
-          (error) => console.log('Create a tenant fails', error)
+          (message) => this._toastService.onSuccessCall('Successfully created a tenant', tenantForm, 'tenants'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
     else {
       this._updateTenantSubscription = this._tenantService.updateTenant(tenantDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully updated a tenant', message);
-            this.navigateToTable(tenantForm);
-          },
-          (error) => console.log('Update a tenant fails', error)
+          (message) => this._toastService.onSuccessCall('Successfully updated a tenant', tenantForm, 'tenants'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
   }
@@ -65,11 +63,6 @@ export class TenantFormComponent implements OnInit, OnDestroy {
 
   public onClear(tenantForm: NgForm) {
     tenantForm.reset();
-  }
-
-  private navigateToTable(tenantForm) {
-    tenantForm.reset();
-    this._router.navigate(['tenants']);
   }
 
   private clearForm() {
