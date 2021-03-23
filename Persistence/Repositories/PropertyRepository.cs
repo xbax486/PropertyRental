@@ -56,7 +56,6 @@ namespace PropertyRental.Persistence.Repositories
         public async Task<Property> FindProperty(PropertyResource propertyResource)
         {
             return await context.Properties.SingleOrDefaultAsync(record =>
-                record.OwnerId == propertyResource.OwnerId &&
                 record.Unit == propertyResource.Unit &&
                 record.Street == propertyResource.Street &&
                 record.SuburbId == propertyResource.SuburbId);
