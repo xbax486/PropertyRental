@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { ToastyService, ToastyConfig, ToastOptions } from 'ng2-toasty';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class ToastService {
     this._toastyConfig.theme = 'bootstrap';
   }
 
-  public onSuccessCall(message, ownerForm?) {
-    this.addToast('Success', { status: 200, message: message }, ownerForm, 'owners');
+  public onSuccessCall(message: string, form?: NgForm, navigatPath?: string) {
+    this.addToast('Success', { status: 200, message: message }, form, navigatPath);
   }
 
-  public onErrorCall(error, message?) {
+  public onErrorCall(error, message?: string) {
     if(message)
       error.error.Message = message;
     this.addToast('Error', error);
@@ -29,7 +29,8 @@ export class ToastService {
       timeout: 2000,
       onRemove: () => {
         if(form && navigatPath) {
-          this.navigateToTable(form, navigatPath);
+          form.reset();
+          this._router.navigate([navigatPath]);
         }
       }
     };
@@ -41,10 +42,5 @@ export class ToastService {
       toastOptions.msg = httpResponse.message;
       this._toastyService.success(toastOptions);
     }
-  }
-
-  private navigateToTable(form: NgForm, navigatPath: string) {
-    form.reset();
-    this._router.navigate([navigatPath]);
   }
 }

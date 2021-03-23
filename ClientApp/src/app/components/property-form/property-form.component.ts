@@ -9,6 +9,7 @@ import { Owner } from 'src/app/models/owner';
 import { PropertyService } from './../../services/property.service';
 import { SuburbService } from './../../services/suburb.service';
 import { OwnerService } from './../../services/owner.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-property-form',
@@ -53,6 +54,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     private _propertyService: PropertyService, 
     private _suburbService: SuburbService,
     private _ownerService: OwnerService,
+    private _toastService: ToastService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -63,25 +65,25 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
             this.state = this.selectedProperty.suburb.state.name;
             this.available = this.selectedProperty.available ? 'TRUE' : 'FALSE';
           },
-          (error) => console.log('Selected property fetching error', error)
+          (error) => this._toastService.onErrorCall(error, 'Selected property fetching error')
       );
     
     this._suburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => this.suburbs = suburbs,
-        (error) => console.log('Suburbs fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
       );
 
     this._propertyTypesSubscription = this._propertyService.getPropertyTypes()
       .subscribe(
         (propertyTypes: PropertyType[]) => this.propertyTypes = propertyTypes,
-        (error) => console.log('Property types fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Property types fetching error')
       );
 
     this._ownersSubscription = this._ownerService.getOwners()
       .subscribe(
         (owners: Owner[]) => this.owners = owners,
-        (error) => console.log('Owners fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
       );
   }
 
@@ -125,28 +127,17 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     if(propertyDetails.id == -1) {
       this._createPropertySubscription = this._propertyService.createProperty(propertyDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully created a property', message);
-            this.navigateToTable(propertyForm);
-          },
-          (error) => console.log('Create a property fails', error)
+          (message) => this._toastService.onSuccessCall('Successfully created a property', propertyForm, 'properties'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
     else {
       this._updatePropertySubscription = this._propertyService.updateProperty(propertyDetails)
         .subscribe(
-          (message) => {
-            console.log('Successfully updated a property', message);
-            this.navigateToTable(propertyForm);
-          },
-          (error) => console.log('Update a property fails', error)
+          (message) => this._toastService.onSuccessCall('Successfully updated a property', propertyForm, 'properties'),
+          (error) => this._toastService.onErrorCall(error)
         );
     }
-  }
-
-  private navigateToTable(propertyForm: NgForm) {
-    propertyForm.reset();
-    this._router.navigate(['properties']);
   }
 
   private clearForm() {

@@ -44,14 +44,14 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
     if(ownerDetails.id == -1) {
       this._createOwnerSubscription = this._ownerService.createOwner(ownerDetails)
         .subscribe(
-          (message) => this._toastService.onSuccessCall('Successfully created an owner', ownerForm),
+          (message) => this._toastService.onSuccessCall('Successfully created an owner', ownerForm, 'owners'),
           (error) => this._toastService.onErrorCall(error)
         );
     }
     else {
       this._updateOwnerSubscription = this._ownerService.updateOwner(ownerDetails)
         .subscribe(
-          (message) => this._toastService.onSuccessCall('Successfully updated an owner', ownerForm),
+          (message) => this._toastService.onSuccessCall('Successfully updated an owner', ownerForm, 'owners'),
           (error) => this._toastService.onErrorCall(error)
         );
     }
