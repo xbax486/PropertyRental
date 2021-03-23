@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Tenant } from 'src/app/models/tenant';
 import { TenantService } from 'src/app/services/tenant.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-tenant-table',
@@ -15,7 +16,7 @@ export class TenantTableComponent implements OnInit, OnDestroy {
   private _getTenantsSubscription = new Subscription();
   private _deleteTenantSubscription = new Subscription();
 
-  constructor(private _tenantService: TenantService) { }
+  constructor(private _tenantService: TenantService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.tenantsLoaded = false;
@@ -25,7 +26,7 @@ export class TenantTableComponent implements OnInit, OnDestroy {
           this.tenants = tenants;
           this.tenantsLoaded = true;
         },
-        (error) => console.log('Tenants fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
       );
   }
 
@@ -45,9 +46,9 @@ export class TenantTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.tenants.findIndex(tenant => tenant.id == selectedTenant.id);
             this.tenants.splice(index, 1);
-            console.log('Successfully delete an tenant');
+            this._toastService.onSuccessCall('Successfully delete a tenant');
           },
-          (error) => console.log('Tenant deletion error', error)
+          (error) => this._toastService.onErrorCall(error, 'Tenant deletion error')
         );
     }
   }
