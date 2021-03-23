@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
+import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -19,7 +20,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   public faCheckCircle = faCheckCircle;
   public faTimesCircle = faTimesCircle;
 
-  constructor(private _propertyService: PropertyService) { }
+  constructor(private _propertyService: PropertyService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.propertiesLoaded = false;
@@ -29,7 +30,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           this.properties = properties;
           this.propertiesLoaded = true;
         },
-        (error) => console.log('Properties fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
       );
   }
 
@@ -49,9 +50,9 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.properties.findIndex(property => property.id == selectedProperty.id);
             this.properties.splice(index, 1);
-            console.log('Successfully delete a property');
+            this._toastService.onSuccessCall('Successfully delete a property');
           },
-          (error) => console.log('Property deletion error', error)
+          (error) => this._toastService.onErrorCall(error, 'Property deletion error')
         );
     }
   }
