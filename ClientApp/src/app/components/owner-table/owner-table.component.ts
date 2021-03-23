@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Owner } from 'src/app/models/owner';
 import { OwnerService } from 'src/app/services/owner.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-owner-table',
@@ -15,7 +16,7 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
   private _getOwnersSubscription = new Subscription();
   private _deleteOwnerSubscription = new Subscription();
 
-  constructor(private _ownerService: OwnerService) { }
+  constructor(private _ownerService: OwnerService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.ownersLoaded = false;
@@ -25,7 +26,7 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
           this.owners = owners;
           this.ownersLoaded = true;
         },
-        (error) => console.log('Owners fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
       );
   }
 
@@ -45,9 +46,9 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.owners.findIndex(owner => owner.id == selectedOwner.id);
             this.owners.splice(index, 1);
-            console.log('Successfully delete an owner');
+            this._toastService.onSuccessCall('Successfully delete an owner');
           },
-          (error) => console.log('Owner deletion error', error)
+          (error) => this._toastService.onErrorCall(error, 'Owner deletion error')
         );
     }
   }

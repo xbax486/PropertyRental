@@ -11,7 +11,7 @@ export class ToastService {
     this._toastyConfig.theme = 'bootstrap';
   }
 
-  public onSuccessCall(ownerForm, message) {
+  public onSuccessCall(message, ownerForm?) {
     this.addToast('Success', { status: 200, message: message }, ownerForm, 'owners');
   }
 
