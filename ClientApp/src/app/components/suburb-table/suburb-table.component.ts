@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Suburb } from 'src/app/models/suburb';
 import { SuburbService } from 'src/app/services/suburb.service';
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: 'app-suburb-table',
@@ -14,7 +15,7 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
   private _getSuburbsSubscription = new Subscription();
   private _deleteSuburbSubscription = new Subscription();
 
-  constructor(private _suburbService: SuburbService) { }
+  constructor(private _suburbService: SuburbService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.suburbsLoaded = false;
@@ -24,7 +25,7 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
           this.suburbs = suburbs;
           this.suburbsLoaded = true;
         },
-        (error) => console.log('Suburbs fetching error', error)
+        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
       );
   }
 
@@ -44,9 +45,9 @@ export class SuburbTableComponent implements OnInit, OnDestroy {
           () => {
             let index = this.suburbs.findIndex(suburb => suburb.id == selectedSuburb.id);
             this.suburbs.splice(index, 1);
-            console.log('Successfully delete a suburb');
+            this._toastService.onSuccessCall('Successfully delete a suburb');
           },
-          (error) => console.log('Suburb deletion error', error)
+          (error) => this._toastService.onErrorCall(error, 'Suburb deletion error')
         );
     }
   }
