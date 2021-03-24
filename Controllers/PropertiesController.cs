@@ -36,9 +36,10 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PropertyResource>> GetProperties(bool available = false)
+        public async Task<IEnumerable<PropertyResource>> GetProperties(PropertyFilterResource filterResource = null)
         {
-            var allProperties = await propertyRepository.GetProperties(available);
+            var filter = mapper.Map<PropertyFilterResource, PropertyFilter>(filterResource);
+            var allProperties = await propertyRepository.GetProperties(filter);
             return mapper.Map<List<Property>, List<PropertyResource>>(allProperties.ToList());
         }
 

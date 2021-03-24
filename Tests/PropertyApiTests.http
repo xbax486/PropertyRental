@@ -6,6 +6,15 @@ GET https://localhost:5001/api/properties HTTP/1.1
 ### Get all available properties
 GET https://localhost:5001/api/properties?available=true HTTP/1.1
 
+### Get all unavailable properties
+GET https://localhost:5001/api/properties?available=false HTTP/1.1
+
+### Get all properties that is in suburb whose suburbId is 5 (Abbotsford)
+GET https://localhost:5001/api/properties?suburbId=5 HTTP/1.1
+
+### Get all properties that is in state whose stateId is 2 (New South Wales)
+GET https://localhost:5001/api/properties?stateId=2 HTTP/1.1
+
 ### GET a property
 GET https://localhost:5001/api/properties/12 HTTP/1.1
 

@@ -7,7 +7,7 @@ namespace PropertyRental.Core.Interfaces
 {
     public interface IPropertyRepository
     {
-        Task<IEnumerable<Property>> GetProperties(bool available = false);
+        Task<IEnumerable<Property>> GetProperties(PropertyFilter filter = null);
         Task<Property> GetProperty(int id, bool includeRelated = true);
         Task<Property> FindProperty(PropertyResource propertyResource);
         void Add(Property property);

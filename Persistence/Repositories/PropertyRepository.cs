@@ -16,27 +16,21 @@ namespace PropertyRental.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Property>> GetProperties(bool available = false)
+        public async Task<IEnumerable<Property>> GetProperties(PropertyFilter filter = null)
         {
-            if (!available)
-            {
-                return await context.Properties
-                    .Include(property => property.Owner)
-                    .Include(property => property.Suburb)
-                        .ThenInclude(suburb => suburb.State)
-                    .Include(property => property.PropertyType)
-                    .ToListAsync();
-            }
-            else
-            {
-                return await context.Properties
-                    .Where(property => property.Available == true)
-                    .Include(property => property.Owner)
-                    .Include(property => property.Suburb)
-                        .ThenInclude(suburb => suburb.State)
-                    .Include(property => property.PropertyType)
-                    .ToListAsync();
-            }
+            var query = context.Properties
+                .Include(property => property.Owner)
+                .Include(property => property.Suburb)
+                    .ThenInclude(suburb => suburb.State)
+                .Include(property => property.PropertyType)
+                .AsQueryable();
+            if (filter.Available.HasValue)
+                query = query.Where(property => property.Available == filter.Available);
+            if (filter.SuburbId.HasValue)
+                query = query.Where(property => property.SuburbId == filter.SuburbId.Value);
+            if (filter.StateId.HasValue)
+                query = query.Where(property => property.Suburb.StateId == filter.StateId.Value);
+            return await query.ToListAsync();
         }
 
         public async Task<Property> GetProperty(int id, bool includeRelated = true)
