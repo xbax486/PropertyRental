@@ -3,7 +3,7 @@ import { State } from "./state";
 export interface Suburb
 {
     name: string;
-    postcode: number;
+    postcode: string;
     state: State;
     stateId: number;
     id: number;

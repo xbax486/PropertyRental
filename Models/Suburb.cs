@@ -11,7 +11,8 @@ namespace PropertyRental.Models
         public string Name { get; set; }
 
         [Required]
-        public short Postcode { get; set; }
+        [StringLength(255)]
+        public string Postcode { get; set; }
 
         public State State { get; set; }
 

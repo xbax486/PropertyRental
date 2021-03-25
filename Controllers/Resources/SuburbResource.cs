@@ -4,7 +4,7 @@ namespace PropertyRental.Controllers.Resources
     {
         public string Name { get; set; }
 
-        public short Postcode { get; set; }
+        public string Postcode { get; set; }
 
         public StateResource State { get; set; }
 
