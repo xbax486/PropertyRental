@@ -28,30 +28,32 @@ export class PropertyService {
     unit: '',
     id: -1
   });
+  private readonly _propertyEndpoint = '/api/properties';
+  private readonly _propertyTypeEndpoint = '/api/propertytypes';
 
   constructor(private _httpClient: HttpClient) { }
 
   public getAllProperties() {
-    return this._httpClient.get<Property[]>('/api/properties');
+    return this._httpClient.get<Property[]>(this._propertyEndpoint);
   }
 
   public getAvailableProperties() {
-    return this._httpClient.get<Property[]>('/api/properties?available=true');
+    return this._httpClient.get<Property[]>(this._propertyEndpoint + '?available=true');
   }
 
   public createProperty(property: Property) {
-    return this._httpClient.post<Property>('/api/properties/', property);
+    return this._httpClient.post<Property>(this._propertyEndpoint, property);
   }
 
   public updateProperty(property: Property) {
-    return this._httpClient.put<Property>('/api/properties/' + property.id, property);
+    return this._httpClient.put<Property>(this._propertyEndpoint + '/' + property.id, property);
   }
 
   public deleteProperty(id: number) {
-    return this._httpClient.delete<Property>('/api/properties/' + id);
+    return this._httpClient.delete<Property>(this._propertyEndpoint + '/' + id);
   }
 
   public getPropertyTypes() {
-    return this._httpClient.get<PropertyType[]>('/api/propertytypes');
+    return this._httpClient.get<PropertyType[]>(this._propertyTypeEndpoint);
   }
 }

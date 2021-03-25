@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PropertyService } from './../../services/property.service';
+import { SuburbService } from './../../services/suburb.service';
 import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
+import { Suburb } from './../../models/suburb';
+import { State } from './../../models/state';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -12,19 +15,28 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 })
 export class PropertyTableComponent implements OnInit, OnDestroy {
   public properties: Property[] = [];
+  public suburbs: Suburb[] = [];
+  public filteredSuburbs: Suburb[] = [];
+  public states: State[] = [];
   public propertiesLoaded = false;
+  public filter = { stateId: -1, suburbId: -1, available: false };
   
-  private _getPropertiesSubscription = new Subscription();
+  private _propertiesSubscription = new Subscription();
+  private _suburbsSubscription = new Subscription();
+  private _statesSubscription = new Subscription();
   private _deletePropertySubscription = new Subscription();
 
   public faCheckCircle = faCheckCircle;
   public faTimesCircle = faTimesCircle;
 
-  constructor(private _propertyService: PropertyService, private _toastService: ToastService) { }
+  constructor(
+    private _propertyService: PropertyService, 
+    private _suburbService: SuburbService,
+    private _toastService: ToastService) { }
 
   ngOnInit() {
     this.propertiesLoaded = false;
-    this._getPropertiesSubscription = this._propertyService.getAllProperties()
+    this._propertiesSubscription = this._propertyService.getAllProperties()
       .subscribe(
         (properties) => {
           this.properties = properties;
@@ -32,10 +44,24 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
         },
         (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
       );
+    this._suburbsSubscription = this._suburbService.getSuburbs()
+      .subscribe(
+        (suburbs: Suburb[]) => {
+          this.suburbs = suburbs;
+          this.filteredSuburbs = [...suburbs];
+        },
+        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+      );
+    this._statesSubscription = this._suburbService.getStates()
+      .subscribe(
+        (states: State[]) => this.states = states,
+        (error) => this._toastService.onErrorCall(error, 'States fetching error')
+      );
   }
 
   ngOnDestroy() {
-    this._getPropertiesSubscription.unsubscribe();
+    this._propertiesSubscription.unsubscribe();
+    this._suburbsSubscription.unsubscribe();
     this._deletePropertySubscription.unsubscribe();
   }
 
@@ -54,6 +80,14 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           },
           (error) => this._toastService.onErrorCall(error, 'Property deletion error')
         );
+    }
+  }
+
+  onStateChange() {
+    console.log(this.filter);
+    this.filteredSuburbs = [...this.suburbs];
+    if(this.filter.stateId) {
+      this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.filter.stateId)];
     }
   }
 }

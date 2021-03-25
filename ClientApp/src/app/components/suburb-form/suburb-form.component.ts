@@ -13,7 +13,7 @@ import { State } from './../../models/state';
   styleUrls: ['./suburb-form.component.css']
 })
 export class SuburbFormComponent implements OnInit, OnDestroy {
-  public selectedSuburb:Suburb = { name: '', postcode: -1, state: { name: '', acronym: '', id: -1 }, stateId: -1, id: -1 };
+  public selectedSuburb:Suburb = { name: '', postcode: '', state: { name: '', acronym: '', id: -1 }, stateId: -1, id: -1 };
   public states: State[] = [];
 
   private _selectedSuburbSubscription = new Subscription();
@@ -78,7 +78,7 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   private clearForm() {
     this.selectedSuburb.id = -1;
     this.selectedSuburb.name = '';
-    this.selectedSuburb.postcode = -1;
+    this.selectedSuburb.postcode = '';
     this.selectedSuburb.stateId = -1;
   }
 }

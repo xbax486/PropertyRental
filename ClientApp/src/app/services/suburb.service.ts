@@ -10,7 +10,7 @@ import { State } from '../models/state';
 export class SuburbService {
   public selectedSuburbSubject = new BehaviorSubject({ 
     name: '', 
-    postcode: -1, 
+    postcode: '', 
     state: { 
       name: '', 
       acronym: '', 

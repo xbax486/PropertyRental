@@ -26,21 +26,22 @@
     <div class="form-group col-xl-4">
       <label for="postcode">Postcode</label>
       <input
-        type="number"
+        type="string"
         class="form-control"
         id="postcode"
         placeholder="Please enter the postcode of the suburb"
         name="postcode"
         [(ngModel)]="selectedSuburb.postcode"
         required
-        pattern="^[0-9]{4}$"
+        pattern="(0[289][0-9]{2})|([1-9][0-9]{3})$"
         #postcode="ngModel"
       />
       <div
         class="alert alert-danger"
         *ngIf="postcode.touched && postcode.invalid"
       >
-        Please enter the postcode of the suburb! [1000-9999]
+        Please enter the postcode of the suburb! [0200–0299,
+        0800-0999,1000-9999]
       </div>
     </div>
     <div class="form-group col-xl-4">
