@@ -35,11 +35,30 @@
           id="suburb"
           class="form-control"
           placeholder="Filter properties by suburb"
+          [(ngModel)]="filter.suburbId"
+          (change)="onSuburbChange()"
         >
           <option value=""></option>
-          <option value="suburb.id" *ngFor="let suburb of filteredSuburbs">
+          <option
+            value="{{ suburb.id }}"
+            *ngFor="let suburb of filteredSuburbs"
+          >
             {{ suburb.name }}
           </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="available">Available</label>
+        <select
+          name="available"
+          id="available"
+          class="form-control"
+          placeholder="Filter properties by available"
+          [(ngModel)]="filter.available"
+          (change)="onAvailableChange()"
+        >
+          <option [ngValue]="true">TRUE</option>
+          <option [ngValue]="false">FALSE</option>
         </select>
       </div>
     </div>

@@ -84,10 +84,20 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onStateChange() {
-    console.log(this.filter);
+    this.filter.stateId = +this.filter.stateId;
     this.filteredSuburbs = [...this.suburbs];
     if(this.filter.stateId) {
       this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.filter.stateId)];
     }
+    console.log(this.filter);
+  }
+
+  onSuburbChange() {
+    this.filter.suburbId = +this.filter.suburbId;
+    console.log(this.filter);
+  }
+
+  onAvailableChange() {
+    console.log(this.filter);
   }
 }
