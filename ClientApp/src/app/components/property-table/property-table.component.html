@@ -22,7 +22,7 @@
           [(ngModel)]="filter.stateId"
           (change)="onStateChange()"
         >
-          <option value=""></option>
+          <option value="-1"></option>
           <option value="{{ state.id }}" *ngFor="let state of states">
             {{ state.acronym }}
           </option>
@@ -38,7 +38,7 @@
           [(ngModel)]="filter.suburbId"
           (change)="onSuburbChange()"
         >
-          <option value=""></option>
+          <option value="-1"></option>
           <option
             value="{{ suburb.id }}"
             *ngFor="let suburb of filteredSuburbs"
@@ -57,8 +57,9 @@
           [(ngModel)]="filter.available"
           (change)="onAvailableChange()"
         >
-          <option [ngValue]="true">TRUE</option>
-          <option [ngValue]="false">FALSE</option>
+          <option value="-1">All</option>
+          <option value="0">False</option>
+          <option value="1">True</option>
         </select>
       </div>
     </div>

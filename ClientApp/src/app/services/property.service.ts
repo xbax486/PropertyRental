@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Property } from '../models/property';
 import { PropertyType } from '../models/propertyType';
+import { PropertyFilter } from "../models/propertyFilter";
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +34,8 @@ export class PropertyService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public getAllProperties() {
-    return this._httpClient.get<Property[]>(this._propertyEndpoint);
-  }
-
-  public getAvailableProperties() {
-    return this._httpClient.get<Property[]>(this._propertyEndpoint + '?available=true');
+  public getProperties(filter: PropertyFilter) {
+    return this._httpClient.get<Property[]>(this._propertyEndpoint + '?' + this.toQueryString(filter));
   }
 
   public createProperty(property: Property) {
@@ -55,5 +52,22 @@ export class PropertyService {
 
   public getPropertyTypes() {
     return this._httpClient.get<PropertyType[]>(this._propertyTypeEndpoint);
+  }
+
+  private toQueryString(filter: PropertyFilter) {
+    let parts = [];
+    for(let property in filter) {
+      let value = filter[property];
+      if(value != null && value != undefined && value != -1) {
+        if(property == 'available' && value == 0) {
+          value = 'false';
+        }
+        else if(property == 'available' && value == 1) {
+          value = 'true';
+        }
+        parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+      }
+    }
+    return parts.join('&');
   }
 }

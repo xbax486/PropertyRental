@@ -6,6 +6,7 @@ import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { State } from './../../models/state';
+import { PropertyFilter } from "./../../models/propertyFilter";
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -19,7 +20,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   public filteredSuburbs: Suburb[] = [];
   public states: State[] = [];
   public propertiesLoaded = false;
-  public filter = { stateId: -1, suburbId: -1, available: false };
+  public filter: PropertyFilter = { stateId: -1, suburbId: -1, available: -1 };
   
   private _propertiesSubscription = new Subscription();
   private _suburbsSubscription = new Subscription();
@@ -36,14 +37,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.propertiesLoaded = false;
-    this._propertiesSubscription = this._propertyService.getAllProperties()
-      .subscribe(
-        (properties) => {
-          this.properties = properties;
-          this.propertiesLoaded = true;
-        },
-        (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
-      );
+    this.getFilteredProperties();
     this._suburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => {
@@ -62,6 +56,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._propertiesSubscription.unsubscribe();
     this._suburbsSubscription.unsubscribe();
+    this._statesSubscription.unsubscribe();
     this._deletePropertySubscription.unsubscribe();
   }
 
@@ -84,20 +79,34 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onStateChange() {
+    this.filter.suburbId = -1;
     this.filter.stateId = +this.filter.stateId;
     this.filteredSuburbs = [...this.suburbs];
     if(this.filter.stateId) {
       this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.filter.stateId)];
     }
     console.log(this.filter);
+    this.getFilteredProperties();
   }
 
   onSuburbChange() {
     this.filter.suburbId = +this.filter.suburbId;
-    console.log(this.filter);
+    this.getFilteredProperties();
   }
 
   onAvailableChange() {
-    console.log(this.filter);
+    this.filter.available = +this.filter.available;
+    this.getFilteredProperties();
+  }
+
+  private getFilteredProperties() {
+    this._propertiesSubscription = this._propertyService.getProperties(this.filter)
+      .subscribe(
+        (properties) => {
+          this.properties = properties;
+          this.propertiesLoaded = true;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
+      );
   }
 }
