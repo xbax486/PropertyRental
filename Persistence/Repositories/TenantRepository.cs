@@ -17,25 +17,20 @@ namespace PropertyRental.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Tenant>> GetTenants(bool available = false)
+        public async Task<IEnumerable<Tenant>> GetTenants(TenantFilter filter = null)
         {
-            if (!available)
-            {
-                return await context.Tenants.ToListAsync();
-            }
-            else
+            var query = context.Tenants.AsQueryable();
+            if (filter.Available.HasValue && filter.Available == true)
             {
                 var unavailableTenants = new List<int>();
-                var rentals = await context.Rentals
-                    .Include(rental => rental.Tenant)
-                    .ToListAsync();
+                var rentals = await context.Rentals.Include(rental => rental.Tenant).ToListAsync();
                 foreach (var rental in rentals)
                 {
                     unavailableTenants.Add(rental.Tenant.Id);
                 }
-                var tenants = await context.Tenants.ToListAsync();
-                return tenants.Where(tenant => !unavailableTenants.Any(unavailableTenantId => unavailableTenantId == tenant.Id));
+                query = query.Where(tenant => !unavailableTenants.Any(unavailableTenantId => unavailableTenantId == tenant.Id));
             }
+            return await query.ToListAsync();
         }
         public async Task<Tenant> GetTenant(int id)
         {

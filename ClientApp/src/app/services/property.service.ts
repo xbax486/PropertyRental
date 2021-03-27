@@ -35,7 +35,7 @@ export class PropertyService {
   constructor(private _httpClient: HttpClient) { }
 
   public getProperties(filter: PropertyFilter) {
-    return this._httpClient.get<Property[]>(this._propertyEndpoint + '?' + this.toQueryString(filter));
+    return this._httpClient.get<Property[]>(this._propertyEndpoint + this.toQueryString(filter));
   }
 
   public createProperty(property: Property) {
@@ -68,6 +68,6 @@ export class PropertyService {
         parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
       }
     }
-    return parts.join('&');
+    return parts.length == 0 ? '' : '?' + parts.join('&');
   }
 }

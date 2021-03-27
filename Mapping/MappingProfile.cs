@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Models;
-using System.Linq;
 
 namespace PropertyRental.Mapping
 {
@@ -32,6 +31,7 @@ namespace PropertyRental.Mapping
             CreateMap<RentalResource, Rental>()
                 .ForMember(rental => rental.Id, opt => opt.Ignore());
             CreateMap<PropertyFilterResource, PropertyFilter>();
+            CreateMap<TenantFilterResource, TenantFilter>();
         }
     }
 }

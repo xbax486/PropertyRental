@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Tenant } from 'src/app/models/tenant';
+import { TenantFilter } from "../../models/tenantFilter";
 import { TenantService } from 'src/app/services/tenant.service';
 import { ToastService } from "../../services/toast.service";
 
@@ -12,6 +13,7 @@ import { ToastService } from "../../services/toast.service";
 export class TenantTableComponent implements OnInit, OnDestroy {
   public tenants: Tenant[] = [];
   public tenantsLoaded = false;
+  public filter: TenantFilter = { available: -1 };
   
   private _getTenantsSubscription = new Subscription();
   private _deleteTenantSubscription = new Subscription();
@@ -20,7 +22,7 @@ export class TenantTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.tenantsLoaded = false;
-    this._getTenantsSubscription = this._tenantService.getTenants()
+    this._getTenantsSubscription = this._tenantService.getTenants(this.filter)
       .subscribe(
         (tenants: Tenant[]) => {
           this.tenants = tenants;

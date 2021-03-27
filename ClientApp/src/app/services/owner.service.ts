@@ -15,10 +15,6 @@ export class OwnerService {
     return this._httpClient.get<Owner[]>('/api/owners');
   }
 
-  public getOwner(id: number) {
-    return this._httpClient.get<Owner>('/api/owners/' + id);
-  }
-
   public createOwner(owner: Owner) {
     return this._httpClient.post<Owner>('/api/owners', owner);
   }
