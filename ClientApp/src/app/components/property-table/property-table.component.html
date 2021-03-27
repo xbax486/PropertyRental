@@ -12,7 +12,7 @@
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Filter by</legend>
     <div class="form-row">
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="state">State</label>
         <select
           name="state"
@@ -28,12 +28,12 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="suburb">Suburb</label>
         <select
           name="suburb"
           id="suburb"
-          class="form-control"
+          class="form-control custom-select"
           placeholder="Filter properties by suburb"
           [(ngModel)]="filter.suburbId"
           (change)="onSuburbChange()"
@@ -47,12 +47,12 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="available">Available</label>
         <select
           name="available"
           id="available"
-          class="form-control"
+          class="form-control custom-select"
           placeholder="Filter properties by available"
           [(ngModel)]="filter.available"
           (change)="onAvailableChange()"
@@ -61,6 +61,14 @@
           <option value="0">False</option>
           <option value="1">True</option>
         </select>
+      </div>
+      <div class="form-group col-md-3">
+        <button
+          class="btn btn-primary form-control reset-button"
+          (click)="onResetFilter()"
+        >
+          Reset
+        </button>
       </div>
     </div>
   </fieldset>

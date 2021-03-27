@@ -99,6 +99,11 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
     this.getFilteredProperties();
   }
 
+  onResetFilter() {
+    this.filter = { stateId: -1, suburbId: -1, available: -1 };
+    this.getFilteredProperties();
+  }
+
   private getFilteredProperties() {
     this._propertiesSubscription = this._propertyService.getProperties(this.filter)
       .subscribe(
