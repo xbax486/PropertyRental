@@ -33,12 +33,8 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(property => property.SuburbId == queryObject.SuburbId.Value);
             if (queryObject.StateId.HasValue)
                 query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
-            var columnsMap = new Dictionary<string, Expression<Func<Property, object>>>()
-            {
-                ["state"] = property => property.Suburb.State.Name,
-                ["suburb"] = property => property.Suburb.Name
-            };
-            query = query.ApplyOrdering(queryObject, columnsMap);
+
+            query = this.SortByRequired(query, queryObject);
             return await query.ToListAsync();
         }
 
@@ -74,6 +70,19 @@ namespace PropertyRental.Persistence.Repositories
             context.Properties.Remove(property);
         }
 
-
+        private IQueryable<Property> SortByRequired(IQueryable<Property> query, PropertyQuery queryObject)
+        {
+            if (!String.IsNullOrWhiteSpace(queryObject.SortBy))
+            {
+                var columnsMap = new Dictionary<string, Expression<Func<Property, object>>>()
+                {
+                    ["state"] = property => property.Suburb.State.Name,
+                    ["suburb"] = property => property.Suburb.Name
+                };
+                return query.ApplyOrdering(queryObject, columnsMap);
+            }
+            else
+                return query;
+        }
     }
 }
