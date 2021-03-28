@@ -35,6 +35,7 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
 
             query = this.SortByRequired(query, queryObject);
+            query = this.PagingRequired(query, queryObject);
             return await query.ToListAsync();
         }
 
@@ -81,8 +82,16 @@ namespace PropertyRental.Persistence.Repositories
                 };
                 return query.ApplyOrdering(queryObject, columnsMap);
             }
-            else
-                return query;
+            return query;
+        }
+
+        private IQueryable<Property> PagingRequired(IQueryable<Property> query, PropertyQuery queryObject)
+        {
+            if (queryObject.Page != 0 || queryObject.PageSize != 0)
+            {
+                return query.ApplyPaging(queryObject);
+            }
+            return query;
         }
     }
 }

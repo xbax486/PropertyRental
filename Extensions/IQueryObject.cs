@@ -4,5 +4,7 @@ namespace PropertyRental.Extensions
     {
         string SortBy { get; set; }
         bool isSortedAscending { get; set; }
+        int Page { get; set; }
+        int PageSize { get; set; }
     }
 }
