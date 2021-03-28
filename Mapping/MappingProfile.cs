@@ -30,7 +30,7 @@ namespace PropertyRental.Mapping
                 .ForMember(tenant => tenant.Id, opt => opt.Ignore());
             CreateMap<RentalResource, Rental>()
                 .ForMember(rental => rental.Id, opt => opt.Ignore());
-            CreateMap<PropertyFilterResource, PropertyFilter>();
+            CreateMap<PropertyQueryResource, PropertyQuery>();
             CreateMap<TenantFilterResource, TenantFilter>();
         }
     }

@@ -16,7 +16,7 @@ namespace PropertyRental.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Property>> GetProperties(PropertyFilter filter = null)
+        public async Task<IEnumerable<Property>> GetProperties(PropertyQuery queryObject = null)
         {
             var query = context.Properties
                 .Include(property => property.Owner)
@@ -24,12 +24,12 @@ namespace PropertyRental.Persistence.Repositories
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
                 .AsQueryable();
-            if (filter.Available.HasValue)
-                query = query.Where(property => property.Available == filter.Available);
-            if (filter.SuburbId.HasValue)
-                query = query.Where(property => property.SuburbId == filter.SuburbId.Value);
-            if (filter.StateId.HasValue)
-                query = query.Where(property => property.Suburb.StateId == filter.StateId.Value);
+            if (queryObject.Available.HasValue)
+                query = query.Where(property => property.Available == queryObject.Available);
+            if (queryObject.SuburbId.HasValue)
+                query = query.Where(property => property.SuburbId == queryObject.SuburbId.Value);
+            if (queryObject.StateId.HasValue)
+                query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
             return await query.ToListAsync();
         }
 
