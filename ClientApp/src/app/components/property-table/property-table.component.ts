@@ -6,8 +6,8 @@ import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { State } from './../../models/state';
-import { PropertyFilter } from "./../../models/propertyFilter";
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { PropertyQuery } from "../../models/propertyQuery";
+import { faCheckCircle, faTimesCircle, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-property-table',
@@ -20,7 +20,21 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   public filteredSuburbs: Suburb[] = [];
   public states: State[] = [];
   public propertiesLoaded = false;
-  public filter: PropertyFilter = { stateId: -1, suburbId: -1, available: -1 };
+  public query: PropertyQuery = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true };
+  public columns = [
+    { title: 'Suburb', key: 'suburb', isSortable: true },
+    { title: 'State', key: 'state', isSortable: true },
+    { title: 'Bedroom' },
+    { title: 'Bathroom' },
+    { title: 'Parking' },
+    { title: 'Pets Allowed' },
+    { title: 'Built-in Wardrobe' },
+    { title: 'Gas Available' },
+    { title: 'Has Study Room' },
+    { title: 'Furnished' },
+    { title: 'Available' },
+    { title: 'Actions' }
+  ];
   
   private _propertiesSubscription = new Subscription();
   private _suburbsSubscription = new Subscription();
@@ -29,6 +43,8 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   public faCheckCircle = faCheckCircle;
   public faTimesCircle = faTimesCircle;
+  public faSortUp = faSortUp;
+  public faSortDown = faSortDown;
 
   constructor(
     private _propertyService: PropertyService, 
@@ -79,33 +95,46 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onStateChange() {
-    this.filter.suburbId = -1;
-    this.filter.stateId = +this.filter.stateId;
+    this.query.suburbId = -1;
+    this.query.stateId = +this.query.stateId;
     this.filteredSuburbs = [...this.suburbs];
-    if(this.filter.stateId) {
-      this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.filter.stateId)];
+    if(this.query.stateId) {
+      this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.query.stateId)];
     }
-    console.log(this.filter);
+    console.log(this.query);
     this.getFilteredProperties();
   }
 
   onSuburbChange() {
-    this.filter.suburbId = +this.filter.suburbId;
+    this.query.suburbId = +this.query.suburbId;
     this.getFilteredProperties();
   }
 
   onAvailableChange() {
-    this.filter.available = +this.filter.available;
+    this.query.available = +this.query.available;
     this.getFilteredProperties();
   }
 
   onResetFilter() {
-    this.filter = { stateId: -1, suburbId: -1, available: -1 };
+    this.query = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true };
+    this.getFilteredProperties();
+  }
+
+  sortBy(column) {
+    console.log('column', column);
+    
+    if(this.query.sortBy === column) {
+      this.query.isSortedAscending = !this.query.isSortedAscending;
+    }
+    else {
+      this.query.sortBy = column;
+      this.query.isSortedAscending = true;
+    }
     this.getFilteredProperties();
   }
 
   private getFilteredProperties() {
-    this._propertiesSubscription = this._propertyService.getProperties(this.filter)
+    this._propertiesSubscription = this._propertyService.getProperties(this.query)
       .subscribe(
         (properties) => {
           this.properties = properties;
@@ -114,4 +143,5 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
         (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
       );
   }
+
 }

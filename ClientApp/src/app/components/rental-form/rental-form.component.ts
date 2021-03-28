@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Rental } from "../../models/rental";
 import { Property } from "../../models/property";
 import { Tenant } from "../../models/tenant";
-import { PropertyFilter } from "./../../models/propertyFilter";
+import { PropertyQuery } from "../../models/propertyQuery";
 import { TenantFilter } from "./../../models/tenantFilter";
 import { RentalService } from './../../services/rental.service';
 import { PropertyService } from './../../services/property.service';
@@ -36,7 +36,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   public availableProperties: Property[] = [];
   public tenants: Tenant[] = [];
   public rentalEditingMode = false;
-  public propertyFilter: PropertyFilter = { stateId: -1, suburbId: -1, available: 1 };
+  public propertyQuery: PropertyQuery = { stateId: -1, suburbId: -1, available: 1, sortBy: '', isSortedAscending: true };
   public tenantFilter: TenantFilter = { available: 1 };
 
   private _selectedRentalSubscription = new Subscription();
@@ -63,7 +63,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
         (error) => this._toastService.onErrorCall(error, 'Selected rental fetching error')
       );
     
-    this._getAvailablePropertiesSubscription = this._propertyService.getProperties(this.propertyFilter)
+    this._getAvailablePropertiesSubscription = this._propertyService.getProperties(this.propertyQuery)
       .subscribe(
         (availableProperties: Property[]) => this.availableProperties = availableProperties,
         (error) => this._toastService.onErrorCall(error, 'Available properties fetching error')

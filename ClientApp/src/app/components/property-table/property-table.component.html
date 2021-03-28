@@ -19,7 +19,7 @@
           id="state"
           class="form-control custom-select"
           placeholder="Filter properties by state"
-          [(ngModel)]="filter.stateId"
+          [(ngModel)]="query.stateId"
           (change)="onStateChange()"
         >
           <option value="-1"></option>
@@ -35,7 +35,7 @@
           id="suburb"
           class="form-control custom-select"
           placeholder="Filter properties by suburb"
-          [(ngModel)]="filter.suburbId"
+          [(ngModel)]="query.suburbId"
           (change)="onSuburbChange()"
         >
           <option value="-1"></option>
@@ -54,7 +54,7 @@
           id="available"
           class="form-control custom-select"
           placeholder="Filter properties by available"
-          [(ngModel)]="filter.available"
+          [(ngModel)]="query.available"
           (change)="onAvailableChange()"
         >
           <option value="-1">All</option>
@@ -78,18 +78,28 @@
   >
     <thead>
       <tr>
-        <th scope="col">Suburb</th>
-        <th scope="col">State</th>
-        <th scope="col">Bedroom</th>
-        <th scope="col">Bathroom</th>
-        <th scope="col">Parking</th>
-        <th scope="col">Pets Allowed</th>
-        <th scope="col">Built-in Wardrobe</th>
-        <th scope="col">Gas Available</th>
-        <th scope="col">Has Study Room</th>
-        <th scope="col">Furnished</th>
-        <th scope="col">Available</th>
-        <th scope="col">Actions</th>
+        <th
+          *ngFor="let column of columns"
+          scope="col"
+          [class.sortable]="column.isSortable"
+        >
+          <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+            {{ column.title }}
+            <fa-icon
+              [icon]="faSortUp"
+              size="xs"
+              *ngIf="query.sortBy === column.key && query.isSortedAscending"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faSortDown"
+              size="xs"
+              *ngIf="query.sortBy === column.key && !query.isSortedAscending"
+            ></fa-icon>
+          </div>
+          <div *ngIf="!column.isSortable">
+            {{ column.title }}
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody>

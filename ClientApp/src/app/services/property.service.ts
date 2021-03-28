@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Property } from '../models/property';
 import { PropertyType } from '../models/propertyType';
-import { PropertyFilter } from "../models/propertyFilter";
+import { PropertyQuery } from "../models/propertyQuery";
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,8 @@ export class PropertyService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public getProperties(filter: PropertyFilter) {
-    return this._httpClient.get<Property[]>(this._propertyEndpoint + this.toQueryString(filter));
+  public getProperties(query: PropertyQuery) {
+    return this._httpClient.get<Property[]>(this._propertyEndpoint + this.toQueryString(query));
   }
 
   public createProperty(property: Property) {
@@ -54,10 +54,10 @@ export class PropertyService {
     return this._httpClient.get<PropertyType[]>(this._propertyTypeEndpoint);
   }
 
-  private toQueryString(filter: PropertyFilter) {
+  private toQueryString(query: PropertyQuery) {
     let parts = [];
-    for(let property in filter) {
-      let value = filter[property];
+    for(let property in query) {
+      let value = query[property];
       if(value != null && value != undefined && value != -1) {
         if(property == 'available' && value == 0) {
           value = 'false';
