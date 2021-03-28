@@ -224,5 +224,10 @@
       </tr>
     </tbody>
   </table>
+  <pagination
+    [total-items]="10"
+    [page-size]="query.pageSize"
+    (page-changed)="onPageChanged($event)"
+  ></pagination>
 </div>
 <h2 *ngIf="!propertiesLoaded">Properties loading...</h2>

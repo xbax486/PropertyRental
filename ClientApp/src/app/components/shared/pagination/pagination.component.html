@@ -1,0 +1,32 @@
+<nav *ngIf="totalItems > pageSize">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage == 1">
+      <a class="page-link" (click)="firstPage()" aria-label="First page">
+        <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == 1">
+      <a class="page-link" (click)="previousPage()" aria-label="Previous page">
+        <fa-icon [icon]="faChevronLeft"></fa-icon>
+      </a>
+    </li>
+    <li
+      class="page-item"
+      [class.active]="currentPage == page"
+      *ngFor="let page of pages"
+      (click)="changePage(page)"
+    >
+      <a class="page-link">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == pages.length">
+      <a class="page-link" (click)="nextPage()" aria-label="Next page">
+        <fa-icon [icon]="faChevronRight"></fa-icon>
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == pages.length">
+      <a class="page-link" (click)="lastPage()" aria-label="Last page">
+        <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
+      </a>
+    </li>
+  </ul>
+</nav>

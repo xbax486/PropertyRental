@@ -21,6 +21,7 @@ import { TenantTableComponent } from './components/tenant-table/tenant-table.com
 import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
 import { RentalTableComponent } from './components/rental-table/rental-table.component';
 import { RentalFormComponent } from './components/rental-form/rental-form.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 /* Services */
 import { OwnerService } from './services/owner.service';
@@ -44,7 +45,8 @@ import { ToastService } from "./services/toast.service";
     TenantTableComponent,
     TenantFormComponent,
     RentalTableComponent,
-    RentalFormComponent
+    RentalFormComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

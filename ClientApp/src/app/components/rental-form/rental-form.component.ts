@@ -36,7 +36,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   public availableProperties: Property[] = [];
   public tenants: Tenant[] = [];
   public rentalEditingMode = false;
-  public propertyQuery: PropertyQuery = { stateId: -1, suburbId: -1, available: 1, sortBy: '', isSortedAscending: true };
+  public propertyQuery: PropertyQuery = { stateId: -1, suburbId: -1, available: 1, sortBy: '', isSortedAscending: true, page: 1, pageSize: 3 };
   public tenantFilter: TenantFilter = { available: 1 };
 
   private _selectedRentalSubscription = new Subscription();

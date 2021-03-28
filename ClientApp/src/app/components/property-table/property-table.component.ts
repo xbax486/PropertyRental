@@ -20,7 +20,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   public filteredSuburbs: Suburb[] = [];
   public states: State[] = [];
   public propertiesLoaded = false;
-  public query: PropertyQuery = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true };
+  public query: PropertyQuery = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true, page: 1, pageSize: 3 };
   public columns = [
     { title: 'Suburb', key: 'suburb', isSortable: true },
     { title: 'State', key: 'state', isSortable: true },
@@ -116,7 +116,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   }
 
   onResetFilter() {
-    this.query = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true };
+    this.query = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true, page: 1, pageSize: 3 };
     this.getFilteredProperties();
   }
 
@@ -133,6 +133,11 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
     this.getFilteredProperties();
   }
 
+  onPageChanged(page) {
+    this.query.page = page;
+    this.getFilteredProperties();
+  }
+
   private getFilteredProperties() {
     this._propertiesSubscription = this._propertyService.getProperties(this.query)
       .subscribe(
@@ -143,5 +148,4 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
         (error) => this._toastService.onErrorCall(error, 'Properties fetching error')
       );
   }
-
 }
