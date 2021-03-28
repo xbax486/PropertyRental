@@ -7,6 +7,6 @@ namespace PropertyRental.Controllers.Resources
         public int? StateId { get; set; }
 
         public string SortBy { get; set; }
-        public bool? isSortedAscending { get; set; }
+        public bool isSortedAscending { get; set; }
     }
 }

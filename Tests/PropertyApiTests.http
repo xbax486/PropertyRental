@@ -18,6 +18,18 @@ GET https://localhost:5001/api/properties?stateId=2 HTTP/1.1
 ### Get all unavailable properties that is in state whose stateId is 2 (New South Wales)
 GET https://localhost:5001/api/properties?available=false&stateId=2 HTTP/1.1
 
+### Get all properties sorting by suburb in ascending order
+GET https://localhost:5001/api/properties?sortBy=suburb&isSortedAscending=true HTTP/1.1
+
+### Get all properties sorting by suburb in descending order
+GET https://localhost:5001/api/properties?sortBy=suburb&isSortedAscending=false HTTP/1.1
+
+### Get all properties sorting by state in ascending order
+GET https://localhost:5001/api/properties?sortBy=state&isSortedAscending=true HTTP/1.1
+
+### Get all properties sorting by state in descending order
+GET https://localhost:5001/api/properties?sortBy=state&isSortedAscending=false HTTP/1.1
+
 ### GET a property
 GET https://localhost:5001/api/properties/12 HTTP/1.1
 

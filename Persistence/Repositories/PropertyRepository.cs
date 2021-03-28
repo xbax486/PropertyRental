@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Core.Interfaces;
+using System.Linq.Expressions;
+using PropertyRental.Extensions;
 
 namespace PropertyRental.Persistence.Repositories
 {
@@ -30,6 +33,12 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(property => property.SuburbId == queryObject.SuburbId.Value);
             if (queryObject.StateId.HasValue)
                 query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
+            var columnsMap = new Dictionary<string, Expression<Func<Property, object>>>()
+            {
+                ["state"] = property => property.Suburb.State.Name,
+                ["suburb"] = property => property.Suburb.Name
+            };
+            query = query.ApplyOrdering(queryObject, columnsMap);
             return await query.ToListAsync();
         }
 
@@ -64,5 +73,7 @@ namespace PropertyRental.Persistence.Repositories
         {
             context.Properties.Remove(property);
         }
+
+
     }
 }
