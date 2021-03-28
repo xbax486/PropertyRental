@@ -36,11 +36,11 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PropertyResource>> GetProperties(PropertyQueryResource propertyQueryResource = null)
+        public async Task<QueryResultResource<PropertyResource>> GetProperties(PropertyQueryResource propertyQueryResource = null)
         {
             var queryObject = mapper.Map<PropertyQueryResource, PropertyQuery>(propertyQueryResource);
-            var allProperties = await propertyRepository.GetProperties(queryObject);
-            return mapper.Map<List<Property>, List<PropertyResource>>(allProperties.ToList());
+            var queryResult = await propertyRepository.GetProperties(queryObject);
+            return mapper.Map<QueryResult<Property>, QueryResultResource<PropertyResource>>(queryResult);
         }
 
         [HttpGet("{id}")]

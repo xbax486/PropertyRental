@@ -35,7 +35,7 @@ export class PropertyService {
   constructor(private _httpClient: HttpClient) { }
 
   public getProperties(query: PropertyQuery) {
-    return this._httpClient.get<Property[]>(this._propertyEndpoint + this.toQueryString(query));
+    return this._httpClient.get<any>(this._propertyEndpoint + this.toQueryString(query));
   }
 
   public createProperty(property: Property) {

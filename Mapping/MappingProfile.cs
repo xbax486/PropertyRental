@@ -16,6 +16,7 @@ namespace PropertyRental.Mapping
             CreateMap<PropertyType, PropertyTypeResource>();
             CreateMap<Tenant, TenantResource>();
             CreateMap<Rental, RentalResource>();
+            CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
 
             // API resource to domain class
             CreateMap<StateResource, State>()

@@ -225,7 +225,7 @@
     </tbody>
   </table>
   <pagination
-    [total-items]="10"
+    [total-items]="queryResult.totalItems"
     [page-size]="query.pageSize"
     (page-changed)="onPageChanged($event)"
   ></pagination>

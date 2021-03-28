@@ -19,8 +19,9 @@ namespace PropertyRental.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Property>> GetProperties(PropertyQuery queryObject = null)
+        public async Task<QueryResult<Property>> GetProperties(PropertyQuery queryObject = null)
         {
+            var queryResult = new QueryResult<Property>();
             var query = context.Properties
                 .Include(property => property.Owner)
                 .Include(property => property.Suburb)
@@ -35,8 +36,10 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
 
             query = this.SortByRequired(query, queryObject);
+            queryResult.TotalItems = await query.CountAsync();
             query = this.PagingRequired(query, queryObject);
-            return await query.ToListAsync();
+            queryResult.Items = await query.ToListAsync();
+            return queryResult;
         }
 
         public async Task<Property> GetProperty(int id, bool includeRelated = true)
