@@ -124,6 +124,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     propertyDetails.ownerId = +this.selectedProperty.ownerId;
     propertyDetails.suburbId = +this.selectedProperty.suburbId;
     propertyDetails.propertyTypeId = +this.selectedProperty.propertyTypeId;
+    propertyDetails.available = this.selectedProperty.available;
     if(propertyDetails.id == -1) {
       this._createPropertySubscription = this._propertyService.createProperty(propertyDetails)
         .subscribe(

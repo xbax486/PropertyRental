@@ -91,7 +91,7 @@ namespace PropertyRental.Controllers
             var existingProperty = await propertyRepository.FindProperty(propertyResource);
             if (existingProperty != null)
             {
-                ModelState.AddModelError("Message", "Property creation error. Sorry, this property already exists!");
+                ModelState.AddModelError("Message", "Property update error. Sorry, this property already exists!");
                 return BadRequest(ModelState);
             }
             mapper.Map<PropertyResource, Property>(propertyResource, property);
