@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs';
 import { Tenant } from "../models/tenant";
-import { TenantFilter } from "../models/tenantFilter";
+import { TenantQuery } from "../models/queries/tenantQuery";
+import { QueryResult } from '../models/queries/queryResult';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class TenantService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public getTenants(filter: TenantFilter) {
-    return this._httpClient.get<Tenant[]>(this._tenantEndpoint + this.toQueryString(filter));
+  public getTenants(query) {
+    return this._httpClient.get<QueryResult<Tenant>>(this._tenantEndpoint + this.toQueryString(query));
   }
 
   public getAvailableTenants() {
@@ -33,12 +34,17 @@ export class TenantService {
     return this._httpClient.delete<Tenant>(this._tenantEndpoint + '/' +  id);
   }
 
-  private toQueryString(filter: TenantFilter) {
+  private toQueryString(query: TenantQuery) {
     let parts = [];
-    for(let property in filter) {
-      let value = filter[property];
-      if(value == 1) {
-        value = 'true';
+    for(let property in query) {
+      let value = query[property];
+      if(value != null && value != undefined && value != -1) {
+        if(property == 'available' && value == 0) {
+          value = 'false';
+        }
+        else if(property == 'available' && value == 1) {
+          value = 'true';
+        }
         parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
       }
     }

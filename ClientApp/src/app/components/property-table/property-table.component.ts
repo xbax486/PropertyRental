@@ -6,7 +6,8 @@ import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { State } from './../../models/state';
-import { PropertyQuery } from "../../models/propertyQuery";
+import { PropertyQuery } from "../../models/queries/propertyQuery";
+import { QueryResult } from '../../models/queries/queryResult';
 import { faCheckCircle, faTimesCircle, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -58,6 +59,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.propertiesLoaded = false;
     this.getFilteredProperties();
+
     this._suburbsSubscription = this._suburbService.getSuburbs()
       .subscribe(
         (suburbs: Suburb[]) => {
@@ -66,6 +68,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
         },
         (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
       );
+      
     this._statesSubscription = this._suburbService.getStates()
       .subscribe(
         (states: State[]) => this.states = states,
@@ -147,7 +150,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   private getFilteredProperties() {
     this._propertiesSubscription = this._propertyService.getProperties(this.query)
       .subscribe(
-        (queryResult) => {
+        (queryResult: QueryResult<Property>) => {
           this.queryResult = queryResult;
           this.properties = queryResult.items;
           this.propertiesLoaded = true;

@@ -74,7 +74,8 @@ namespace PropertyRental.Persistence.Repositories
             {
                 var columnsMap = new Dictionary<string, Expression<Func<Tenant, object>>>()
                 {
-                    ["name"] = tenant => tenant.Name
+                    ["name"] = tenant => tenant.Name,
+                    ["email"] = tenant => tenant.Email
                 };
                 return query.ApplyOrdering(queryObject, columnsMap);
             }

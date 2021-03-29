@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Tenant } from 'src/app/models/tenant';
-import { TenantFilter } from "../../models/tenantFilter";
 import { TenantService } from 'src/app/services/tenant.service';
 import { ToastService } from "../../services/toast.service";
+import { TenantQuery } from "../../models/queries/tenantQuery";
+import { QueryResult } from 'src/app/models/queries/queryResult';
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-tenant-table',
@@ -11,9 +13,23 @@ import { ToastService } from "../../services/toast.service";
   styleUrls: ['./tenant-table.component.css']
 })
 export class TenantTableComponent implements OnInit, OnDestroy {
+  private readonly DEFAULT_PAGE = 1;
+  private readonly DEFAULT_PAGE_SIZE = 5;
+
   public tenants: Tenant[] = [];
   public tenantsLoaded = false;
-  public filter: TenantFilter = { available: -1 };
+  public query: TenantQuery = { available: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+  public queryResult = {};
+
+  public columns = [
+    { title: 'Name', key: 'name', isSortable: true },
+    { title: 'Email', key: 'email', isSortable: true },
+    { title: 'Mobile' },
+    { title: 'Actions' }
+  ];
+
+  public faSortUp = faSortUp;
+  public faSortDown = faSortDown;
   
   private _getTenantsSubscription = new Subscription();
   private _deleteTenantSubscription = new Subscription();
@@ -22,14 +38,7 @@ export class TenantTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.tenantsLoaded = false;
-    this._getTenantsSubscription = this._tenantService.getTenants(this.filter)
-      .subscribe(
-        (tenants: Tenant[]) => {
-          this.tenants = tenants;
-          this.tenantsLoaded = true;
-        },
-        (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
-      );
+    this.getTenants();
   }
 
   ngOnDestroy() {
@@ -53,5 +62,33 @@ export class TenantTableComponent implements OnInit, OnDestroy {
           (error) => this._toastService.onErrorCall(error, 'Tenant deletion error')
         );
     }
+  }
+
+  sortBy(column) {
+    if(this.query.sortBy === column) {
+      this.query.isSortedAscending = !this.query.isSortedAscending;
+    }
+    else {
+      this.query.sortBy = column;
+      this.query.isSortedAscending = true;
+    }
+    this.getTenants();
+  }
+
+  onPageChanged(page) {
+    this.query.page = page;
+    this.getTenants();
+  }
+
+  private getTenants() {
+    this._getTenantsSubscription = this._tenantService.getTenants(this.query)
+      .subscribe(
+        (queryResult: QueryResult<Tenant>) => {
+          this.queryResult = queryResult;
+          this.tenants = queryResult.items;
+          this.tenantsLoaded = true;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
+      );
   }
 }

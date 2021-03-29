@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Property } from '../models/property';
 import { PropertyType } from '../models/propertyType';
-import { PropertyQuery } from "../models/propertyQuery";
+import { PropertyQuery } from "../models/queries/propertyQuery";
+import { QueryResult } from '../models/queries/queryResult';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,8 @@ export class PropertyService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public getProperties(query: PropertyQuery) {
-    return this._httpClient.get<any>(this._propertyEndpoint + this.toQueryString(query));
+  public getProperties(query) {
+    return this._httpClient.get<QueryResult<Property>>(this._propertyEndpoint + this.toQueryString(query));
   }
 
   public createProperty(property: Property) {

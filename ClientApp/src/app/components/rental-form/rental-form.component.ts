@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { Rental } from "../../models/rental";
 import { Property } from "../../models/property";
 import { Tenant } from "../../models/tenant";
-import { PropertyQuery } from "../../models/propertyQuery";
-import { TenantFilter } from "./../../models/tenantFilter";
+import { QueryResult } from '../../models/queries/queryResult';
 import { RentalService } from './../../services/rental.service';
 import { PropertyService } from './../../services/property.service';
 import { TenantService } from './../../services/tenant.service';
@@ -36,8 +35,8 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   public availableProperties: Property[] = [];
   public tenants: Tenant[] = [];
   public rentalEditingMode = false;
-  public propertyQuery: PropertyQuery = { stateId: -1, suburbId: -1, available: 1, sortBy: '', isSortedAscending: true, page: 1, pageSize: 3 };
-  public tenantFilter: TenantFilter = { available: 1 };
+  public propertyQuery = { stateId: -1, suburbId: -1, available: 1, sortBy: '', isSortedAscending: true };
+  public tenantFilter = { available: 1, sortBy: '', isSortedAscending: true };
 
   private _selectedRentalSubscription = new Subscription();
   private _getAllStatesSubscription = new Subscription();
@@ -65,13 +64,13 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     
     this._getAvailablePropertiesSubscription = this._propertyService.getProperties(this.propertyQuery)
       .subscribe(
-        (availableProperties: Property[]) => this.availableProperties = availableProperties,
+        (queryResult: QueryResult<Property>) => this.availableProperties = queryResult.items,
         (error) => this._toastService.onErrorCall(error, 'Available properties fetching error')
       );
     
     this._getTenantsSubscription = this._tenantService.getTenants(this.tenantFilter)
       .subscribe(
-        (tenants: Tenant[]) => this.tenants = tenants,
+        (queryResult: QueryResult<Tenant>) => this.tenants = queryResult.items,
         (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
       );
   }

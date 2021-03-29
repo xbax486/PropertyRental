@@ -16,9 +16,12 @@
     >
       <option
         value="{{ availableProperty.id }}"
-        *ngFor="let availableProperty of availableProperties; index as i"
+        *ngFor="let availableProperty of availableProperties"
       >
-        Property {{ i + 1 }}
+        {{ availableProperty.unit }}/{{ availableProperty.street }},
+        {{ availableProperty.suburb.name }}
+        {{ availableProperty.suburb.state.acronym }}
+        {{ availableProperty.suburb.postcode }}
       </option>
     </select>
     <div

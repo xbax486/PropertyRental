@@ -12,6 +12,12 @@ GET https://localhost:5001/api/tenants?sortBy=name&isSortedAscending=true HTTP/1
 ### Get all tenants sorting by name in descending order
 GET https://localhost:5001/api/tenants?sortBy=name&isSortedAscending=false HTTP/1.1
 
+### Get all tenants sorting by email in ascending order
+GET https://localhost:5001/api/tenants?sortBy=email&isSortedAscending=true HTTP/1.1
+
+### Get all tenants sorting by email in descending order
+GET https://localhost:5001/api/tenants?sortBy=email&isSortedAscending=false HTTP/1.1
+
 ### Get all tenants on page 1 and page size is 3
 GET https://localhost:5001/api/tenants?page=1&pageSize=3 HTTP/1.1
 
