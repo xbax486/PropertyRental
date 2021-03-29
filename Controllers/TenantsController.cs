@@ -28,11 +28,11 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TenantResource>> GetTenants(TenantFilterResource filterResource = null)
+        public async Task<QueryResultResource<TenantResource>> GetTenants(TenantQueryResource tenantQueryResource = null)
         {
-            var filter = mapper.Map<TenantFilterResource, TenantFilter>(filterResource);
-            var availableTenants = await repository.GetTenants(filter);
-            return mapper.Map<List<Tenant>, List<TenantResource>>(availableTenants.ToList());
+            var queryObject = mapper.Map<TenantQueryResource, TenantQuery>(tenantQueryResource);
+            var queryResult = await repository.GetTenants(queryObject);
+            return mapper.Map<QueryResult<Tenant>, QueryResultResource<TenantResource>>(queryResult);
         }
 
         [HttpGet("{id}")]

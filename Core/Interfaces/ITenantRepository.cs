@@ -7,7 +7,7 @@ namespace PropertyRental.Core.Interfaces
 {
     public interface ITenantRepository
     {
-        Task<IEnumerable<Tenant>> GetTenants(TenantFilter filter = null);
+        Task<QueryResult<Tenant>> GetTenants(TenantQuery queryObject = null);
         Task<Tenant> GetTenant(int id);
         Task<Tenant> FindTenant(TenantResource tenantResource);
         void Add(Tenant tenant);

@@ -6,6 +6,15 @@ GET https://localhost:5001/api/tenants HTTP/1.1
 ### Get all available tenants
 GET https://localhost:5001/api/tenants?available=true HTTP/1.1
 
+### Get all tenants sorting by name in ascending order
+GET https://localhost:5001/api/tenants?sortBy=name&isSortedAscending=true HTTP/1.1
+
+### Get all tenants sorting by name in descending order
+GET https://localhost:5001/api/tenants?sortBy=name&isSortedAscending=false HTTP/1.1
+
+### Get all tenants on page 1 and page size is 3
+GET https://localhost:5001/api/tenants?page=1&pageSize=3 HTTP/1.1
+
 ### Get a tenant
 GET https://localhost:5001/api/tenants/1 HTTP/1.1
 

@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Core.Interfaces;
-using System.Linq.Expressions;
 using PropertyRental.Extensions;
 
 namespace PropertyRental.Persistence.Repositories
@@ -28,13 +28,7 @@ namespace PropertyRental.Persistence.Repositories
                     .ThenInclude(suburb => suburb.State)
                 .Include(property => property.PropertyType)
                 .AsQueryable();
-            if (queryObject.Available.HasValue)
-                query = query.Where(property => property.Available == queryObject.Available);
-            if (queryObject.SuburbId.HasValue)
-                query = query.Where(property => property.SuburbId == queryObject.SuburbId.Value);
-            if (queryObject.StateId.HasValue)
-                query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
-
+            query = this.FilteredRequired(query, queryObject);
             query = this.SortByRequired(query, queryObject);
             queryResult.TotalItems = await query.CountAsync();
             query = this.PagingRequired(query, queryObject);
@@ -72,6 +66,17 @@ namespace PropertyRental.Persistence.Repositories
         public void Remove(Property property)
         {
             context.Properties.Remove(property);
+        }
+
+        private IQueryable<Property> FilteredRequired(IQueryable<Property> query, PropertyQuery queryObject)
+        {
+            if (queryObject.Available.HasValue)
+                query = query.Where(property => property.Available == queryObject.Available);
+            if (queryObject.SuburbId.HasValue)
+                query = query.Where(property => property.SuburbId == queryObject.SuburbId.Value);
+            if (queryObject.StateId.HasValue)
+                query = query.Where(property => property.Suburb.StateId == queryObject.StateId.Value);
+            return query;
         }
 
         private IQueryable<Property> SortByRequired(IQueryable<Property> query, PropertyQuery queryObject)
