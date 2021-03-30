@@ -76,19 +76,14 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
           },
           (error) => this._toastService.onErrorCall(error, 'Selected property fetching error')
       );
-    
-    // this._suburbsSubscription = this._suburbService.getSuburbs()
-    //   .subscribe(
-    //     (suburbs: Suburb[]) => this.suburbs = suburbs,
-    //     (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
-    //   );
 
     this._propertyTypesSubscription = this._propertyService.getPropertyTypes()
       .subscribe(
         (propertyTypes: PropertyType[]) => this.propertyTypes = propertyTypes,
         (error) => this._toastService.onErrorCall(error, 'Property types fetching error')
       );
-
+    
+    this.getSuburbs();
     this.getOwners();
   }
 
@@ -165,6 +160,17 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.selectedProperty.available = true;
     this.selectedProperty.street = '';
     this.selectedProperty.unit = '';
+  }
+
+  private getSuburbs() {
+    this._suburbsSubscription = this._suburbService.getSuburbs(this.query)
+      .subscribe(
+        (queryResult: QueryResult<Suburb>) => {
+          this.queryResult = queryResult;
+          this.suburbs = queryResult.items;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+      );
   }
 
   private getOwners() {
