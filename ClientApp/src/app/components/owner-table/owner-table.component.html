@@ -15,10 +15,28 @@
   >
     <thead>
       <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Mobile</th>
-        <th scope="col">Actions</th>
+        <th
+          *ngFor="let column of columns"
+          scope="col"
+          [class.sortable]="column.isSortable"
+        >
+          <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+            {{ column.title }}
+            <fa-icon
+              [icon]="faSortUp"
+              size="xs"
+              *ngIf="query.sortBy === column.key && query.isSortedAscending"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faSortDown"
+              size="xs"
+              *ngIf="query.sortBy === column.key && !query.isSortedAscending"
+            ></fa-icon>
+          </div>
+          <div *ngIf="!column.isSortable">
+            {{ column.title }}
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -45,5 +63,10 @@
       </tr>
     </tbody>
   </table>
+  <pagination
+    [total-items]="queryResult.totalItems"
+    [page-size]="query.pageSize"
+    (page-changed)="onPageChanged($event)"
+  ></pagination>
 </div>
 <h2 *ngIf="!ownersLoaded">Owners loading...</h2>

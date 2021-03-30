@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { Owner } from 'src/app/models/owner';
 import { OwnerService } from 'src/app/services/owner.service';
 import { ToastService } from "../../services/toast.service";
+import { OwnerQuery } from "../../models/query/ownerQuery";
+import { QueryResult } from 'src/app/models/query/queryResult';
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-owner-table',
@@ -10,8 +13,23 @@ import { ToastService } from "../../services/toast.service";
   styleUrls: ['./owner-table.component.css']
 })
 export class OwnerTableComponent implements OnInit, OnDestroy {
-  public owners: Owner[] = [];
+  private readonly DEFAULT_PAGE = 1;
+  private readonly DEFAULT_PAGE_SIZE = 3;
+  public query: OwnerQuery = { sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+  public queryResult = {};
   public ownersLoaded = false;
+
+  public owners: Owner[] = [];
+
+  public columns = [
+    { title: 'Name', key: 'name', isSortable: true },
+    { title: 'Email', key: 'email', isSortable: true },
+    { title: 'Mobile' },
+    { title: 'Actions' }
+  ];
+
+  public faSortUp = faSortUp;
+  public faSortDown = faSortDown;
   
   private _getOwnersSubscription = new Subscription();
   private _deleteOwnerSubscription = new Subscription();
@@ -20,14 +38,7 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ownersLoaded = false;
-    this._getOwnersSubscription = this._ownerService.getOwners()
-      .subscribe(
-        (owners: Owner[]) => {
-          this.owners = owners;
-          this.ownersLoaded = true;
-        },
-        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
-      );
+    this.getTenants();
   }
 
   ngOnDestroy() {
@@ -51,5 +62,33 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
           (error) => this._toastService.onErrorCall(error, 'Owner deletion error')
         );
     }
+  }
+
+  sortBy(column) {
+    if(this.query.sortBy === column) {
+      this.query.isSortedAscending = !this.query.isSortedAscending;
+    }
+    else {
+      this.query.sortBy = column;
+      this.query.isSortedAscending = true;
+    }
+    this.getTenants();
+  }
+
+  onPageChanged(page) {
+    this.query.page = page;
+    this.getTenants();
+  }
+
+  private getTenants() {
+    this._getOwnersSubscription = this._ownerService.getOwners(this.query)
+      .subscribe(
+        (queryResult: QueryResult<Owner>) => {
+          this.queryResult = queryResult;
+          this.owners = queryResult.items;
+          this.ownersLoaded = true;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
+      );
   }
 }

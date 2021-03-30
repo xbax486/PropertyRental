@@ -15,11 +15,11 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 export class TenantTableComponent implements OnInit, OnDestroy {
   private readonly DEFAULT_PAGE = 1;
   private readonly DEFAULT_PAGE_SIZE = 5;
-
-  public tenants: Tenant[] = [];
-  public tenantsLoaded = false;
   public query: TenantQuery = { available: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
   public queryResult = {};
+  public tenantsLoaded = false;
+  
+  public tenants: Tenant[] = [];
 
   public columns = [
     { title: 'Name', key: 'name', isSortable: true },

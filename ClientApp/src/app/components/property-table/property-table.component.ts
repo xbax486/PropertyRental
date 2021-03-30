@@ -18,14 +18,15 @@ import { faCheckCircle, faTimesCircle, faSortUp, faSortDown } from '@fortawesome
 export class PropertyTableComponent implements OnInit, OnDestroy {
   private readonly DEFAULT_PAGE = 1;
   private readonly DEFAULT_PAGE_SIZE = 5;
-
+  public query: PropertyQuery = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+  public queryResult = {};
+  public propertiesLoaded = false;
+  
   public properties: Property[] = [];
   public suburbs: Suburb[] = [];
   public filteredSuburbs: Suburb[] = [];
   public states: State[] = [];
-  public propertiesLoaded = false;
-  public query: PropertyQuery = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
-  public queryResult = {};
+  
   public columns = [
     { title: 'Suburb', key: 'suburb', isSortable: true },
     { title: 'State', key: 'state', isSortable: true },
