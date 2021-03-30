@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Rental } from "../../models/rental";
 import { Property } from "../../models/property";
 import { Tenant } from "../../models/tenant";
-import { QueryResult } from '../../models/queries/queryResult';
+import { QueryResult } from '../../models/query/queryResult';
 import { RentalService } from './../../services/rental.service';
 import { PropertyService } from './../../services/property.service';
 import { TenantService } from './../../services/tenant.service';

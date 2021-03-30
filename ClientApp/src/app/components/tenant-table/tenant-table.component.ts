@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import { Tenant } from 'src/app/models/tenant';
 import { TenantService } from 'src/app/services/tenant.service';
 import { ToastService } from "../../services/toast.service";
-import { TenantQuery } from "../../models/queries/tenantQuery";
-import { QueryResult } from 'src/app/models/queries/queryResult';
+import { TenantQuery } from "../../models/query/tenantQuery";
+import { QueryResult } from 'src/app/models/query/queryResult';
 import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

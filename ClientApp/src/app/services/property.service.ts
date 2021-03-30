@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Property } from '../models/property';
 import { PropertyType } from '../models/propertyType';
-import { PropertyQuery } from "../models/queries/propertyQuery";
-import { QueryResult } from '../models/queries/queryResult';
+import { PropertyQuery } from "../models/query/propertyQuery";
+import { QueryResult } from '../models/query/queryResult';
 
 @Injectable({
   providedIn: 'root'

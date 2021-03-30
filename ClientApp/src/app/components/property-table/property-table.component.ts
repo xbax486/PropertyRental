@@ -6,8 +6,8 @@ import { ToastService } from "../../services/toast.service";
 import { Property } from './../../models/property';
 import { Suburb } from './../../models/suburb';
 import { State } from './../../models/state';
-import { PropertyQuery } from "../../models/queries/propertyQuery";
-import { QueryResult } from '../../models/queries/queryResult';
+import { PropertyQuery } from "../../models/query/propertyQuery";
+import { QueryResult } from '../../models/query/queryResult';
 import { faCheckCircle, faTimesCircle, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

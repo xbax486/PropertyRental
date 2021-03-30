@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs';
 import { Tenant } from "../models/tenant";
-import { TenantQuery } from "../models/queries/tenantQuery";
-import { QueryResult } from '../models/queries/queryResult';
+import { TenantQuery } from "../models/query/tenantQuery";
+import { QueryResult } from '../models/query/queryResult';
 
 @Injectable({
   providedIn: 'root'
