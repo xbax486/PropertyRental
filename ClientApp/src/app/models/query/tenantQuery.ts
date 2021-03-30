@@ -1,7 +1,5 @@
-export interface TenantQuery {
+import { Query } from './query';
+
+export interface TenantQuery extends Query {
     available: number;
-    sortBy: string;
-    isSortedAscending: boolean;
-    page: number;
-    pageSize: number;
 }

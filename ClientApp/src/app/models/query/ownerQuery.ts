@@ -1,6 +1,3 @@
-export interface OwnerQuery {
-    sortBy: string;
-    isSortedAscending: boolean;
-    page: number;
-    pageSize: number;
-}
+import { Query } from "./query";
+
+export interface OwnerQuery extends Query {}

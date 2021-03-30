@@ -1,9 +1,7 @@
-export interface PropertyQuery {
+import { Query } from "./query";
+
+export interface PropertyQuery extends Query {
     stateId: number;
     suburbId: number;
     available: number;
-    sortBy: string;
-    isSortedAscending: boolean;
-    page: number;
-    pageSize: number;
 }

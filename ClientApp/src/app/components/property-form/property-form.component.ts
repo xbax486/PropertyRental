@@ -10,6 +10,8 @@ import { PropertyService } from './../../services/property.service';
 import { SuburbService } from './../../services/suburb.service';
 import { OwnerService } from './../../services/owner.service';
 import { ToastService } from "../../services/toast.service";
+import { OwnerQuery } from "../../models/query/ownerQuery";
+import { QueryResult } from 'src/app/models/query/queryResult';
 
 @Component({
   selector: 'app-property-form',
@@ -17,6 +19,11 @@ import { ToastService } from "../../services/toast.service";
   styleUrls: ['./property-form.component.css']
 })
 export class PropertyFormComponent implements OnInit, OnDestroy {
+  private readonly DEFAULT_PAGE = 1;
+  private readonly DEFAULT_PAGE_SIZE = 3;
+  public query = {};
+  public queryResult = {};
+
   public selectedProperty = { 
     owner: { name: '' },
     ownerId: -1,
@@ -42,6 +49,8 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   public suburbs: Suburb[] = [];
   public propertyTypes: PropertyType[] = [];
   public owners: Owner[] = [];
+
+  public ownersLoaded = false;
   
   private _selectedPropertySubscription = new Subscription();
   private _createPropertySubscription = new Subscription();
@@ -68,11 +77,11 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
           (error) => this._toastService.onErrorCall(error, 'Selected property fetching error')
       );
     
-    this._suburbsSubscription = this._suburbService.getSuburbs()
-      .subscribe(
-        (suburbs: Suburb[]) => this.suburbs = suburbs,
-        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
-      );
+    // this._suburbsSubscription = this._suburbService.getSuburbs()
+    //   .subscribe(
+    //     (suburbs: Suburb[]) => this.suburbs = suburbs,
+    //     (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+    //   );
 
     this._propertyTypesSubscription = this._propertyService.getPropertyTypes()
       .subscribe(
@@ -80,11 +89,7 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         (error) => this._toastService.onErrorCall(error, 'Property types fetching error')
       );
 
-    this._ownersSubscription = this._ownerService.getOwners()
-      .subscribe(
-        (owners: Owner[]) => this.owners = owners,
-        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
-      );
+    this.getOwners();
   }
 
   ngOnDestroy() {
@@ -160,5 +165,17 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.selectedProperty.available = true;
     this.selectedProperty.street = '';
     this.selectedProperty.unit = '';
+  }
+
+  private getOwners() {
+    this._ownersSubscription = this._ownerService.getOwners(this.query)
+      .subscribe(
+        (queryResult: QueryResult<Owner>) => {
+          this.queryResult = queryResult;
+          this.owners = queryResult.items;
+          this.ownersLoaded = true;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Owners fetching error')
+      );
   }
 }

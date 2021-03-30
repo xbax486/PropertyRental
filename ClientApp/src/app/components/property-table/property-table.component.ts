@@ -61,14 +61,14 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
     this.propertiesLoaded = false;
     this.getFilteredProperties();
 
-    this._suburbsSubscription = this._suburbService.getSuburbs()
-      .subscribe(
-        (suburbs: Suburb[]) => {
-          this.suburbs = suburbs;
-          this.filteredSuburbs = [...suburbs];
-        },
-        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
-      );
+    // this._suburbsSubscription = this._suburbService.getSuburbs()
+    //   .subscribe(
+    //     (suburbs: Suburb[]) => {
+    //       this.suburbs = suburbs;
+    //       this.filteredSuburbs = [...suburbs];
+    //     },
+    //     (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+    //   );
       
     this._statesSubscription = this._suburbService.getStates()
       .subscribe(

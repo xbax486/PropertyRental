@@ -38,7 +38,7 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ownersLoaded = false;
-    this.getTenants();
+    this.getOwners();
   }
 
   ngOnDestroy() {
@@ -72,15 +72,15 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
       this.query.sortBy = column;
       this.query.isSortedAscending = true;
     }
-    this.getTenants();
+    this.getOwners();
   }
 
   onPageChanged(page) {
     this.query.page = page;
-    this.getTenants();
+    this.getOwners();
   }
 
-  private getTenants() {
+  private getOwners() {
     this._getOwnersSubscription = this._ownerService.getOwners(this.query)
       .subscribe(
         (queryResult: QueryResult<Owner>) => {
