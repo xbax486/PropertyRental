@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using PropertyRental.Controllers.Resources;
 using PropertyRental.Models;
+using PropertyRental.Controllers.Resources;
+using PropertyRental.Controllers.Resources.Query;
+using PropertyRental.Models.Query;
 
 namespace PropertyRental.Mapping
 {

@@ -8,6 +8,7 @@ using PropertyRental.Models;
 using PropertyRental.Core.Interfaces;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Extensions;
+using PropertyRental.Models.Query;
 
 namespace PropertyRental.Persistence.Repositories
 {

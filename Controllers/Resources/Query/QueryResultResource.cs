@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace PropertyRental.Models
+namespace PropertyRental.Controllers.Resources.Query
 {
-    public class QueryResult<T>
+    public class QueryResultResource<T>
     {
         public int TotalItems { get; set; }
         public IEnumerable<T> Items { get; set; }
