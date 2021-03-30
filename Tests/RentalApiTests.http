@@ -3,6 +3,21 @@
 ### Get all rentals
 GET https://localhost:5001/api/rentals HTTP/1.1
 
+### Get all rentals sorting by owner in ascending order
+GET https://localhost:5001/api/rentals?sortBy=owner&isSortedAscending=true HTTP/1.1
+
+### Get all rentals sorting by owner in descending order
+GET https://localhost:5001/api/rentals?sortBy=owner&isSortedAscending=false HTTP/1.1
+
+### Get all rentals sorting by tenant in ascending order
+GET https://localhost:5001/api/rentals?sortBy=tenant&isSortedAscending=true HTTP/1.1
+
+### Get all rentals sorting by tenant in descending order
+GET https://localhost:5001/api/rentals?sortBy=tenant&isSortedAscending=false HTTP/1.1
+
+### Get all rentals on page 1 and page size is 3
+GET https://localhost:5001/api/rentals?page=1&pageSize=3 HTTP/1.1
+
 ### GET a rental
 GET https://localhost:5001/api/rentals/1 HTTP/1.1
 

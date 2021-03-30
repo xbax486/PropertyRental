@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PropertyRental.Models;
-using PropertyRental.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using PropertyRental.Controllers.Resources;
-using PropertyRental.Core.Interfaces;
 using PropertyRental.Core;
+using PropertyRental.Core.Interfaces;
+using PropertyRental.Controllers.Resources;
+using PropertyRental.Controllers.Resources.Query;
+using PropertyRental.Models.Query;
 
 namespace RentalRental.Controllers
 {
@@ -30,10 +27,11 @@ namespace RentalRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RentalResource>> GetRentals()
+        public async Task<QueryResultResource<RentalResource>> GetRentals(RentalQueryResource rentalQueryResource = null)
         {
-            var rentals = await rentalRepository.GetRentals();
-            return mapper.Map<List<Rental>, List<RentalResource>>(rentals.ToList());
+            var queryObject = mapper.Map<RentalQueryResource, RentalQuery>(rentalQueryResource);
+            var queryResult = await rentalRepository.GetRentals(queryObject);
+            return mapper.Map<QueryResult<Rental>, QueryResultResource<RentalResource>>(queryResult);
         }
 
         [HttpGet("{id}")]

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Models.Query;
 using PropertyRental.Controllers.Resources;
