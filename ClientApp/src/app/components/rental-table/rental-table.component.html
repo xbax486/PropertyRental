@@ -15,12 +15,28 @@
   >
     <thead>
       <tr>
-        <th scope="col">Owner</th>
-        <th scope="col">Tenant</th>
-        <th scope="col">Payment per week(AU$)</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Actions</th>
+        <th
+          *ngFor="let column of columns"
+          scope="col"
+          [class.sortable]="column.isSortable"
+        >
+          <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+            {{ column.title }}
+            <fa-icon
+              [icon]="faSortUp"
+              size="xs"
+              *ngIf="query.sortBy === column.key && query.isSortedAscending"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faSortDown"
+              size="xs"
+              *ngIf="query.sortBy === column.key && !query.isSortedAscending"
+            ></fa-icon>
+          </div>
+          <div *ngIf="!column.isSortable">
+            {{ column.title }}
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -49,5 +65,10 @@
       </tr>
     </tbody>
   </table>
+  <pagination
+    [total-items]="queryResult.totalItems"
+    [page-size]="query.pageSize"
+    (page-changed)="onPageChanged($event)"
+  ></pagination>
 </div>
 <h2 *ngIf="!rentalsLoaded">Rental records loading...</h2>

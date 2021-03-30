@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { Rental } from 'src/app/models/rental';
 import { RentalService } from 'src/app/services/rental.service';
 import { ToastService } from "../../services/toast.service";
+import { RentalQuery } from "../../models/query/rentalQuery";
+import { QueryResult } from 'src/app/models/query/queryResult';
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-rental-table',
@@ -10,8 +13,26 @@ import { ToastService } from "../../services/toast.service";
   styleUrls: ['./rental-table.component.css']
 })
 export class RentalTableComponent implements OnInit, OnDestroy {
-  public rentals: Rental[] = [];
+  private readonly DEFAULT_PAGE = 1;
+  private readonly DEFAULT_PAGE_SIZE = 5;
+  public query: RentalQuery = { sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+  public queryResult = {};
   public rentalsLoaded = false;
+
+  public rentals: Rental[] = [];
+
+  public columns = [
+    { title: 'Owner', key: 'owner', isSortable: true },
+    { title: 'Tenant', key: 'email', isSortable: true },
+    { title: 'Payment per week(AU$)' },
+    { title: 'Start Date' },
+    { title: 'End Date' },
+    { title: 'Actions' }
+  ];
+
+  public faSortUp = faSortUp;
+  public faSortDown = faSortDown;
+  
   private _getRentalsSubscription = new Subscription();
   private _deleteRentalSubscription = new Subscription();
 
@@ -19,18 +40,7 @@ export class RentalTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.rentalsLoaded = false;
-    this._getRentalsSubscription = this._rentalService.getRentals()
-      .subscribe(
-        (rentals: Rental[]) => {
-          this.rentals = rentals;
-          this.rentals.forEach(rental => {
-            rental.startDate = this.updateDateTimeFormat(rental.startDate);
-            rental.endDate = this.updateDateTimeFormat(rental.endDate);
-          });
-          this.rentalsLoaded = true;
-        },
-        (error) => this._toastService.onErrorCall(error, 'Rentals fetching error')
-      );
+    this.getRentals();
   }
 
   public ngOnDestroy() {
@@ -56,7 +66,39 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  sortBy(column) {
+    if(this.query.sortBy === column) {
+      this.query.isSortedAscending = !this.query.isSortedAscending;
+    }
+    else {
+      this.query.sortBy = column;
+      this.query.isSortedAscending = true;
+    }
+    this.getRentals();
+  }
+
+  onPageChanged(page) {
+    this.query.page = page;
+    this.getRentals();
+  }
+
   private updateDateTimeFormat(datetime: string) {
     return datetime.substr(0, 10);
+  }
+
+  private getRentals() {
+    this._getRentalsSubscription = this._rentalService.getRentals(this.query)
+      .subscribe(
+        (queryResult: QueryResult<Rental>) => {
+          this.queryResult = queryResult;
+          this.rentals = queryResult.items;
+          this.rentals.forEach(rental => {
+            rental.startDate = this.updateDateTimeFormat(rental.startDate);
+            rental.endDate = this.updateDateTimeFormat(rental.endDate);
+          });
+          this.rentalsLoaded = true;
+        },
+        (error) => this._toastService.onErrorCall(error, 'Rentals fetching error')
+      );
   }
 }
