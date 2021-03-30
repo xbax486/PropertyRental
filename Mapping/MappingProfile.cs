@@ -35,6 +35,7 @@ namespace PropertyRental.Mapping
                 .ForMember(rental => rental.Id, opt => opt.Ignore());
             CreateMap<PropertyQueryResource, PropertyQuery>();
             CreateMap<TenantQueryResource, TenantQuery>();
+            CreateMap<OwnerQueryResource, OwnerQuery>();
         }
     }
 }

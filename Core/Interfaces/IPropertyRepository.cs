@@ -7,7 +7,7 @@ namespace PropertyRental.Core.Interfaces
 {
     public interface IPropertyRepository
     {
-        Task<QueryResult<Property>> GetProperties(PropertyQuery queryObject = null);
+        Task<QueryResult<Property>> GetProperties(PropertyQuery queryObject);
         Task<Property> GetProperty(int id, bool includeRelated = true);
         Task<Property> FindProperty(PropertyResource propertyResource);
         void Add(Property property);
