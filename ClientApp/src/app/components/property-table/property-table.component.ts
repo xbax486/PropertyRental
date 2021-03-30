@@ -61,13 +61,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
     this.propertiesLoaded = false;
     this.getFilteredProperties();
     this.getSuburbs();
-      
-    this._statesSubscription = this._suburbService.getStates()
-      .subscribe(
-        (states: State[]) => this.states = states,
-        (error) => this._toastService.onErrorCall(error, 'States fetching error')
-      );
-      
+    this.getStates();
   }
 
   ngOnDestroy() {
@@ -162,6 +156,14 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
           this.filteredSuburbs = [...this.suburbs];
         },
         (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+      );
+  }
+
+  private getStates() {
+    this._statesSubscription = this._suburbService.getStates()
+      .subscribe(
+        (states: State[]) => this.states = states,
+        (error) => this._toastService.onErrorCall(error, 'States fetching error')
       );
   }
 }

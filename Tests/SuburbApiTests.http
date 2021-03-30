@@ -3,9 +3,6 @@
 ### Get all suburbs
 GET https://localhost:5001/api/suburbs HTTP/1.1
 
-### Get all properties that is in suburb whose suburbId is 5 (Abbotsford)
-GET https://localhost:5001/api/suburbs?postcode=2000 HTTP/1.1
-
 ### Get all properties that is in state whose stateId is 2 (New South Wales)
 GET https://localhost:5001/api/suburbs?stateId=2 HTTP/1.1
 
