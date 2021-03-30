@@ -3,6 +3,33 @@
 ### Get all suburbs
 GET https://localhost:5001/api/suburbs HTTP/1.1
 
+### Get all properties that is in suburb whose suburbId is 5 (Abbotsford)
+GET https://localhost:5001/api/suburbs?postcode=2000 HTTP/1.1
+
+### Get all properties that is in state whose stateId is 2 (New South Wales)
+GET https://localhost:5001/api/suburbs?stateId=2 HTTP/1.1
+
+### Get all suburbs sorting by name in ascending order
+GET https://localhost:5001/api/suburbs?sortBy=name&isSortedAscending=true HTTP/1.1
+
+### Get all suburbs sorting by name in descending order
+GET https://localhost:5001/api/suburbs?sortBy=name&isSortedAscending=false HTTP/1.1
+
+### Get all suburbs sorting by postcode in ascending order
+GET https://localhost:5001/api/suburbs?sortBy=postcode&isSortedAscending=true HTTP/1.1
+
+### Get all suburbs sorting by postcode in descending order
+GET https://localhost:5001/api/suburbs?sortBy=postcode&isSortedAscending=false HTTP/1.1
+
+### Get all suburbs sorting by state in ascending order
+GET https://localhost:5001/api/suburbs?sortBy=state&isSortedAscending=true HTTP/1.1
+
+### Get all suburbs sorting by state in descending order
+GET https://localhost:5001/api/suburbs?sortBy=state&isSortedAscending=false HTTP/1.1
+
+### Get all suburbs on page 1 and page size is 3
+GET https://localhost:5001/api/suburbs?page=1&pageSize=3 HTTP/1.1
+
 ### GET a suburb
 GET https://localhost:5001/api/suburbs/6 HTTP/1.1
 

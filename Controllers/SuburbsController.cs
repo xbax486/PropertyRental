@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PropertyRental.Models;
-using PropertyRental.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using PropertyRental.Controllers.Resources;
-using PropertyRental.Core.Interfaces;
 using PropertyRental.Core;
+using PropertyRental.Core.Interfaces;
+using PropertyRental.Controllers.Resources;
+using PropertyRental.Controllers.Resources.Query;
+using PropertyRental.Models.Query;
 
 namespace PropertyRental.Controllers
 {
@@ -29,10 +25,11 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SuburbResource>> GetSuburbs()
+        public async Task<QueryResultResource<SuburbResource>> GetSuburbs(SuburbQueryResource suburbQueryResource = null)
         {
-            var suburbs = await repository.GetSuburbs();
-            return mapper.Map<List<Suburb>, List<SuburbResource>>(suburbs.ToList());
+            var queryObject = mapper.Map<SuburbQueryResource, SuburbQuery>(suburbQueryResource);
+            var queryResult = await repository.GetSuburbs(queryObject);
+            return mapper.Map<QueryResult<Suburb>, QueryResultResource<SuburbResource>>(queryResult);
         }
 
         [HttpGet("{id}")]

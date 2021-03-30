@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PropertyRental.Models;
 using PropertyRental.Core.Interfaces;
 using PropertyRental.Controllers.Resources;
+using PropertyRental.Extensions;
+using PropertyRental.Models.Query;
 
 namespace PropertyRental.Persistence.Repositories
 {
@@ -16,9 +21,16 @@ namespace PropertyRental.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Suburb>> GetSuburbs()
+        public async Task<QueryResult<Suburb>> GetSuburbs(SuburbQuery queryObject = null)
         {
-            return await context.Suburbs.Include(suburb => suburb.State).ToListAsync();
+            var queryResult = new QueryResult<Suburb>();
+            var query = context.Suburbs.Include(suburb => suburb.State).AsQueryable();
+            query = this.FilteredRequired(query, queryObject, this.context);
+            query = this.SortByRequired(query, queryObject);
+            queryResult.TotalItems = await query.CountAsync();
+            query = this.PagingRequired(query, queryObject);
+            queryResult.Items = await query.ToListAsync();
+            return queryResult;
         }
 
         public async Task<Suburb> GetSuburb(int id, bool includeRelated = true)
@@ -52,6 +64,38 @@ namespace PropertyRental.Persistence.Repositories
         public void Remove(Suburb suburb)
         {
             context.Suburbs.Remove(suburb);
+        }
+
+        private IQueryable<Suburb> FilteredRequired(IQueryable<Suburb> query, SuburbQuery queryObject, PropertyRentalContext context)
+        {
+            if (!String.IsNullOrWhiteSpace(queryObject.Postcode))
+                query = query.Where(suburb => suburb.Postcode == queryObject.Postcode);
+            if (queryObject.StateId.HasValue)
+                query = query.Where(suburb => suburb.StateId == queryObject.StateId);
+            return query;
+        }
+        private IQueryable<Suburb> SortByRequired(IQueryable<Suburb> query, SuburbQuery queryObject)
+        {
+            if (!String.IsNullOrWhiteSpace(queryObject.SortBy))
+            {
+                var columnsMap = new Dictionary<string, Expression<Func<Suburb, object>>>()
+                {
+                    ["name"] = suburb => suburb.Name,
+                    ["postcode"] = suburb => suburb.Postcode,
+                    ["state"] = suburb => suburb.State.Name
+                };
+                return query.ApplyOrdering(queryObject, columnsMap);
+            }
+            return query;
+        }
+
+        private IQueryable<Suburb> PagingRequired(IQueryable<Suburb> query, SuburbQuery queryObject)
+        {
+            if (queryObject.Page != 0 || queryObject.PageSize != 0)
+            {
+                return query.ApplyPaging(queryObject);
+            }
+            return query;
         }
     }
 }

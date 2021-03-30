@@ -36,6 +36,7 @@ namespace PropertyRental.Mapping
             CreateMap<PropertyQueryResource, PropertyQuery>();
             CreateMap<TenantQueryResource, TenantQuery>();
             CreateMap<OwnerQueryResource, OwnerQuery>();
+            CreateMap<SuburbQueryResource, SuburbQuery>();
         }
     }
 }
