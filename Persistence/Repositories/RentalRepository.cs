@@ -84,6 +84,8 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(rental => rental.Property.SuburbId == queryObject.SuburbId.Value);
             if (queryObject.StateId.HasValue)
                 query = query.Where(rental => rental.Property.Suburb.StateId == queryObject.StateId.Value);
+            if (queryObject.MinimumRent.HasValue && queryObject.MaximumRent.HasValue)
+                query = query.Where(rental => rental.Payment >= queryObject.MinimumRent && rental.Payment <= queryObject.MaximumRent);
             return query;
         }
 
@@ -97,6 +99,7 @@ namespace PropertyRental.Persistence.Repositories
                     ["tenant"] = rental => rental.Tenant.Name,
                     ["suburb"] = rental => rental.Property.Suburb.Name,
                     ["state"] = rental => rental.Property.Suburb.State.Acronym,
+                    ["payment"] = rental => rental.Payment
                 };
                 return query.ApplyOrdering(queryObject, columnsMap);
             }

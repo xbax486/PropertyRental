@@ -18,7 +18,18 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 export class RentalTableComponent implements OnInit, OnDestroy {
   private readonly DEFAULT_PAGE = 1;
   private readonly DEFAULT_PAGE_SIZE = 5;
-  public query: RentalQuery = { stateId: -1, suburbId: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+
+  public ranges = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+  public query: RentalQuery = { 
+    stateId: -1, 
+    suburbId: -1, 
+    minimumRent: -1, 
+    maximumRent: -1, 
+    sortBy: '', 
+    isSortedAscending: true, 
+    page: this.DEFAULT_PAGE, 
+    pageSize: this.DEFAULT_PAGE_SIZE 
+  };
   public queryResult = {};
   public rentalsLoaded = false;
 
@@ -32,7 +43,7 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     { title: 'Tenant', key: 'email', isSortable: true },
     { title: 'Suburb', key: 'suburb', isSortable: true },
     { title: 'State', key: 'state', isSortable: true },
-    { title: 'Payment per week(AU$)' },
+    { title: 'Payment per week(AU$)', key: 'payment', isSortable: true },
     { title: 'Start Date' },
     { title: 'End Date' },
     { title: 'Actions' }
@@ -95,14 +106,34 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     this.onFilterChanged();
   }
 
+  onRangeChange() {
+    this.query.minimumRent = +this.query.minimumRent;
+    this.query.maximumRent = +this.query.maximumRent;
+    if(this.query.minimumRent != -1 && this.query.maximumRent != -1 && this.query.minimumRent <= this.query.maximumRent) {
+      this.sortBy('payment', true);
+    }
+    else {
+      this._toastService.onErrorCall({ status: 400, error: { Message: '' } }, 'Payment minimum value cannot be greater than maximum value!');
+    }
+  }
+
   onResetFilter() {
-    this.query = { stateId: -1, suburbId: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+    this.query = { 
+      stateId: -1, 
+      suburbId: -1, 
+      minimumRent: -1, 
+      maximumRent: -1, 
+      sortBy: '', 
+      isSortedAscending: true, 
+      page: this.DEFAULT_PAGE, 
+      pageSize: this.DEFAULT_PAGE_SIZE 
+    };
     this.onStateChange();
   }
 
-  sortBy(column) {
+  sortBy(column, isSortedAscending?: boolean) {
     if(this.query.sortBy === column) {
-      this.query.isSortedAscending = !this.query.isSortedAscending;
+      this.query.isSortedAscending = isSortedAscending ? isSortedAscending : !this.query.isSortedAscending;
     }
     else {
       this.query.sortBy = column;

@@ -12,7 +12,7 @@
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Filter by</legend>
     <div class="form-row">
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="state">State</label>
         <select
           name="state"
@@ -28,7 +28,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="suburb">Suburb</label>
         <select
           name="suburb"
@@ -47,7 +47,75 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-2">
+        <label for="range">Minimum rent</label>
+        <select
+          name="minimum"
+          id="minimum"
+          class="form-control custom-select"
+          [class.ng-invalid]="
+            minimum.touched &&
+            ((query.minimumRent != -1 && query.maximumRent == -1) ||
+              (query.minimumRent == -1 && query.maximumRent != -1) ||
+              query.minimumRent > query.maximumRent)
+          "
+          placeholder="Filter rentals by minimum payment"
+          [(ngModel)]="query.minimumRent"
+          (change)="onRangeChange()"
+          #minimum="ngModel"
+        >
+          <option value="-1"></option>
+          <option value="{{ range }}" *ngFor="let range of ranges">
+            ${{ range }}
+          </option>
+        </select>
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            minimum.touched &&
+            ((query.minimumRent != -1 && query.maximumRent == -1) ||
+              (query.minimumRent == -1 && query.maximumRent != -1) ||
+              query.minimumRent > query.maximumRent)
+          "
+        >
+          Please make the minimum rent smaller than maximum one!
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="range">Maximum rent</label>
+        <select
+          name="maximum"
+          id="maximum"
+          class="form-control custom-select"
+          [class.ng-invalid]="
+            maximum.touched &&
+            ((query.minimumRent != -1 && query.maximumRent == -1) ||
+              (query.minimumRent == -1 && query.maximumRent != -1) ||
+              query.minimumRent > query.maximumRent)
+          "
+          placeholder="Filter rentals by maximum payment"
+          [(ngModel)]="query.maximumRent"
+          (change)="onRangeChange()"
+          #maximum="ngModel"
+        >
+          <option value="-1"></option>
+          <option value="{{ range }}" *ngFor="let range of ranges">
+            ${{ range }}
+          </option>
+        </select>
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            maximum.touched &&
+            ((query.minimumRent != -1 && query.maximumRent == -1) ||
+              (query.minimumRent == -1 && query.maximumRent != -1) ||
+              query.minimumRent > query.maximumRent)
+          "
+        >
+          Please make the minimum rent smaller than maximum one!
+        </div>
+      </div>
+      <div class="form-group col-md-2">
         <button
           class="btn btn-primary form-control reset-button"
           (click)="onResetFilter()"
