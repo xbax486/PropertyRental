@@ -30,6 +30,7 @@ namespace PropertyRental.Persistence.Repositories
                     .ThenInclude(property => property.Suburb)
                         .ThenInclude(suburb => suburb.State)
                 .AsQueryable();
+            query = this.FilteredRequired(query, queryObject);
             query = this.SortByRequired(query, queryObject);
             queryResult.TotalItems = await query.CountAsync();
             query = this.PagingRequired(query, queryObject);
@@ -76,6 +77,16 @@ namespace PropertyRental.Persistence.Repositories
         {
             context.Rentals.Remove(rental);
         }
+
+        private IQueryable<Rental> FilteredRequired(IQueryable<Rental> query, RentalQuery queryObject)
+        {
+            if (queryObject.SuburbId.HasValue)
+                query = query.Where(rental => rental.Property.SuburbId == queryObject.SuburbId.Value);
+            if (queryObject.StateId.HasValue)
+                query = query.Where(rental => rental.Property.Suburb.StateId == queryObject.StateId.Value);
+            return query;
+        }
+
         private IQueryable<Rental> SortByRequired(IQueryable<Rental> query, RentalQuery queryObject)
         {
             if (!String.IsNullOrWhiteSpace(queryObject.SortBy))

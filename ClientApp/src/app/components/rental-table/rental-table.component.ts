@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Suburb } from 'src/app/models/suburb';
+import { State } from './../../models/state';
 import { Rental } from 'src/app/models/rental';
 import { RentalService } from 'src/app/services/rental.service';
+import { SuburbService } from './../../services/suburb.service';
 import { ToastService } from "../../services/toast.service";
 import { RentalQuery } from "../../models/query/rentalQuery";
 import { QueryResult } from 'src/app/models/query/queryResult';
@@ -15,11 +18,14 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 export class RentalTableComponent implements OnInit, OnDestroy {
   private readonly DEFAULT_PAGE = 1;
   private readonly DEFAULT_PAGE_SIZE = 5;
-  public query: RentalQuery = { sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+  public query: RentalQuery = { stateId: -1, suburbId: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
   public queryResult = {};
   public rentalsLoaded = false;
 
   public rentals: Rental[] = [];
+  public suburbs: Suburb[] = [];
+  public states: State[] = [];
+  public filteredSuburbs: Suburb[] = [];
 
   public columns = [
     { title: 'Owner', key: 'owner', isSortable: true },
@@ -37,17 +43,23 @@ export class RentalTableComponent implements OnInit, OnDestroy {
   
   private _getRentalsSubscription = new Subscription();
   private _deleteRentalSubscription = new Subscription();
+  private _suburbsSubscription = new Subscription();
+  private _statesSubscription = new Subscription();
 
-  constructor(private _rentalService: RentalService, private _toastService: ToastService) { }
+  constructor(private _rentalService: RentalService, private _suburbService: SuburbService, private _toastService: ToastService) { }
 
   ngOnInit() {
     this.rentalsLoaded = false;
-    this.getRentals();
+    this.getFilteredRentals();
+    this.getSuburbs();
+    this.getStates();
   }
 
   public ngOnDestroy() {
     this._getRentalsSubscription.unsubscribe();
     this._deleteRentalSubscription.unsubscribe();
+    this._suburbsSubscription.unsubscribe();
+    this._statesSubscription.unsubscribe();
   }
 
   public onEditRental(rental) {
@@ -68,6 +80,26 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  onStateChange() {
+    this.query.suburbId = -1;
+    this.query.stateId = +this.query.stateId;
+    this.filteredSuburbs = [...this.suburbs];
+    if(this.query.stateId && this.query.stateId != -1) {
+      this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.query.stateId)];
+    }
+    this.onFilterChanged();
+  }
+
+  onSuburbChange() {
+    this.query.suburbId = +this.query.suburbId;
+    this.onFilterChanged();
+  }
+
+  onResetFilter() {
+    this.query = { stateId: -1, suburbId: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
+    this.onStateChange();
+  }
+
   sortBy(column) {
     if(this.query.sortBy === column) {
       this.query.isSortedAscending = !this.query.isSortedAscending;
@@ -76,19 +108,24 @@ export class RentalTableComponent implements OnInit, OnDestroy {
       this.query.sortBy = column;
       this.query.isSortedAscending = true;
     }
-    this.getRentals();
+    this.getFilteredRentals();
   }
 
   onPageChanged(page) {
     this.query.page = page;
-    this.getRentals();
+    this.getFilteredRentals();
+  }
+
+  private onFilterChanged() {
+    this.query.page = 1;
+    this.getFilteredRentals();
   }
 
   private updateDateTimeFormat(datetime: string) {
     return datetime.substr(0, 10);
   }
 
-  private getRentals() {
+  private getFilteredRentals() {
     this._getRentalsSubscription = this._rentalService.getRentals(this.query)
       .subscribe(
         (queryResult: QueryResult<Rental>) => {
@@ -101,6 +138,26 @@ export class RentalTableComponent implements OnInit, OnDestroy {
           this.rentalsLoaded = true;
         },
         (error) => this._toastService.onErrorCall(error, 'Rentals fetching error')
+      );
+  }
+
+  private getSuburbs() {
+    this._suburbsSubscription = this._suburbService.getSuburbs({})
+      .subscribe(
+        (queryResult: QueryResult<Suburb>) => {
+          this.queryResult = queryResult;
+          this.suburbs = queryResult.items;
+          this.filteredSuburbs = [...this.suburbs];
+        },
+        (error) => this._toastService.onErrorCall(error, 'Suburbs fetching error')
+      );
+  }
+
+  private getStates() {
+    this._statesSubscription = this._suburbService.getStates()
+      .subscribe(
+        (states: State[]) => this.states = states,
+        (error) => this._toastService.onErrorCall(error, 'States fetching error')
       );
   }
 }

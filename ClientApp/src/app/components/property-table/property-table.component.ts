@@ -24,8 +24,8 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   
   public properties: Property[] = [];
   public suburbs: Suburb[] = [];
-  public filteredSuburbs: Suburb[] = [];
   public states: State[] = [];
+  public filteredSuburbs: Suburb[] = [];
   
   public columns = [
     { title: 'Suburb', key: 'suburb', isSortable: true },
@@ -93,7 +93,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
     this.query.suburbId = -1;
     this.query.stateId = +this.query.stateId;
     this.filteredSuburbs = [...this.suburbs];
-    if(this.query.stateId) {
+    if(this.query.stateId && this.query.stateId != -1) {
       this.filteredSuburbs = [...this.filteredSuburbs.filter((suburb: Suburb) => suburb.stateId == this.query.stateId)];
     }
     this.onFilterChanged();
@@ -111,7 +111,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
 
   onResetFilter() {
     this.query = { stateId: -1, suburbId: -1, available: -1, sortBy: '', isSortedAscending: true, page: this.DEFAULT_PAGE, pageSize: this.DEFAULT_PAGE_SIZE };
-    this.onFilterChanged();
+    this.onStateChange();
   }
 
   sortBy(column) {
