@@ -44,7 +44,7 @@
       pattern="^[1-9][0-9]*$"
       required
     >
-      <option value="{{ tenant.id }}" *ngFor="let tenant of tenants">
+      <option value="{{ tenant.id }}" *ngFor="let tenant of availableTenants">
         {{ tenant.name }}
       </option>
     </select>

@@ -60,8 +60,11 @@ namespace PropertyRental.Persistence.Repositories
         public async Task<Rental> FindRental(RentalResource rentalResource)
         {
             return await context.Rentals.SingleOrDefaultAsync(record =>
-                record.PropertyId == rentalResource.PropertyId ||
-                record.TenantId == rentalResource.TenantId);
+                record.PropertyId == rentalResource.PropertyId &&
+                record.TenantId == rentalResource.TenantId &&
+                record.Payment == rentalResource.Payment &&
+                record.StartDate == rentalResource.StartDate &&
+                record.EndDate == rentalResource.EndDate);
         }
 
         public void Add(Rental rental)

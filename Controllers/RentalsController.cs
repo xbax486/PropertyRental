@@ -16,13 +16,20 @@ namespace RentalRental.Controllers
         private readonly IMapper mapper;
         private readonly IRentalRepository rentalRepository;
         private readonly IPropertyRepository propertyRepository;
+        private readonly ITenantRepository tenantRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public RentalsController(IMapper mapper, IRentalRepository rentalRepository, IPropertyRepository propertyRepository, IUnitOfWork unitOfWork)
+        public RentalsController(
+            IMapper mapper,
+            IRentalRepository rentalRepository,
+            IPropertyRepository propertyRepository,
+            ITenantRepository tenantRepository,
+            IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
             this.rentalRepository = rentalRepository;
             this.propertyRepository = propertyRepository;
+            this.tenantRepository = tenantRepository;
             this.unitOfWork = unitOfWork;
         }
 
@@ -60,11 +67,6 @@ namespace RentalRental.Controllers
                 return BadRequest(ModelState);
             }
             var property = await propertyRepository.GetProperty(rentalResource.PropertyId);
-            if (property == null)
-            {
-                ModelState.AddModelError("Message", "Rental creation error. Sorry, this property does not exist!");
-                return BadRequest(ModelState);
-            }
             property.Available = false;
             if (rentalResource.StartDate >= rentalResource.EndDate)
             {
@@ -73,6 +75,7 @@ namespace RentalRental.Controllers
             }
             rental = mapper.Map<RentalResource, Rental>(rentalResource);
             rental.Property = await propertyRepository.GetProperty(rentalResource.PropertyId);
+            rental.Tenant = await tenantRepository.GetTenant(rentalResource.TenantId);
             rentalRepository.Add(rental);
             await unitOfWork.CompleteAsync();
             return Ok(rental);
@@ -90,12 +93,20 @@ namespace RentalRental.Controllers
             {
                 return NotFound();
             }
+            var existingRental = await rentalRepository.FindRental(rentalResource);
+            if (existingRental != null)
+            {
+                ModelState.AddModelError("Message", "Rental update error. Sorry, this rental record already exists!");
+                return BadRequest(ModelState);
+            }
             if (rentalResource.StartDate >= rentalResource.EndDate)
             {
                 ModelState.AddModelError("Message", "Rental creation error. Sorry, start date must be eailier than end date!");
                 return BadRequest(ModelState);
             }
             mapper.Map<RentalResource, Rental>(rentalResource, rental);
+            rental.Property = await propertyRepository.GetProperty(rentalResource.PropertyId);
+            rental.Tenant = await tenantRepository.GetTenant(rentalResource.TenantId);
             await unitOfWork.CompleteAsync();
             return Ok(rental);
         }
