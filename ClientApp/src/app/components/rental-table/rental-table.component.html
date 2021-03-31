@@ -41,8 +41,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let rental of rentals">
-        <td scope="row">{{ rental.property.owner?.name }}</td>
+        <td scope="row">{{ rental.property.owner.name }}</td>
         <td scope="row">{{ rental.tenant.name }}</td>
+        <td scope="row">{{ rental.property.suburb.name }}</td>
+        <td scope="row">{{ rental.property.suburb.state.acronym }}</td>
         <td scope="row">{{ rental.payment }}</td>
         <td scope="row">{{ rental.startDate }}</td>
         <td scope="row">{{ rental.endDate }}</td>

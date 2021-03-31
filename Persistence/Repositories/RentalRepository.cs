@@ -83,7 +83,9 @@ namespace PropertyRental.Persistence.Repositories
                 var columnsMap = new Dictionary<string, Expression<Func<Rental, object>>>()
                 {
                     ["owner"] = rental => rental.Property.Owner.Name,
-                    ["tenant"] = rental => rental.Tenant.Name
+                    ["tenant"] = rental => rental.Tenant.Name,
+                    ["suburb"] = rental => rental.Property.Suburb.Name,
+                    ["state"] = rental => rental.Property.Suburb.State.Acronym,
                 };
                 return query.ApplyOrdering(queryObject, columnsMap);
             }

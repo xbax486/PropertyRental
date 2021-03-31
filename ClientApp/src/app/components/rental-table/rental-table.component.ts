@@ -24,6 +24,8 @@ export class RentalTableComponent implements OnInit, OnDestroy {
   public columns = [
     { title: 'Owner', key: 'owner', isSortable: true },
     { title: 'Tenant', key: 'email', isSortable: true },
+    { title: 'Suburb', key: 'suburb', isSortable: true },
+    { title: 'State', key: 'state', isSortable: true },
     { title: 'Payment per week(AU$)' },
     { title: 'Start Date' },
     { title: 'End Date' },
