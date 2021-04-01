@@ -28,6 +28,14 @@ select.ng-invalid.ng-touched {
   border: 1px solid #dc3545;
 }
 
+input[type="range"].range-invalid {
+  box-shadow: 0 0 0 0.1px #dc3545;
+}
+
+input[type="range"].range-invalid + .alert {
+  margin-top: 1px;
+}
+
 fa-icon[ng-reflect-classes="icon-true"] svg {
   color: #28a745;
 }
@@ -39,10 +47,6 @@ fa-icon[ng-reflect-classes="icon-false"] svg {
 .actions a,
 .actions button {
   width: 75px;
-}
-
-.reset-button {
-  margin-top: 32px;
 }
 
 .sortable {

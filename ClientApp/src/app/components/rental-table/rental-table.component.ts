@@ -18,13 +18,16 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 export class RentalTableComponent implements OnInit, OnDestroy {
   private readonly DEFAULT_PAGE = 1;
   private readonly DEFAULT_PAGE_SIZE = 5;
+  private readonly DEFAULT_MIN_RENT = 100;
+  private readonly DEFAULT_MAX_RENT = 1000;
 
-  public ranges = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
   public query: RentalQuery = { 
     stateId: -1, 
     suburbId: -1, 
-    minimumRent: -1, 
-    maximumRent: -1, 
+    minimumRent: this.DEFAULT_MIN_RENT, 
+    maximumRent: this.DEFAULT_MAX_RENT, 
+    startDate: '',
+    endDate: '',
     sortBy: '', 
     isSortedAscending: true, 
     page: this.DEFAULT_PAGE, 
@@ -106,14 +109,25 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     this.onFilterChanged();
   }
 
-  onRangeChange() {
+  onRentChange() {
     this.query.minimumRent = +this.query.minimumRent;
     this.query.maximumRent = +this.query.maximumRent;
-    if(this.query.minimumRent != -1 && this.query.maximumRent != -1 && this.query.minimumRent <= this.query.maximumRent) {
+    if(this.query.minimumRent != 0 && this.query.maximumRent != 0 && this.query.minimumRent <= this.query.maximumRent) {
       this.sortBy('payment', true);
     }
     else {
-      this._toastService.onErrorCall({ status: 400, error: { Message: '' } }, 'Payment minimum value cannot be greater than maximum value!');
+      this._toastService.onErrorCall({ status: 400, error: { Message: '' } }, 'Payment range minimum cannot be greater than its maximum!');
+    }
+  }
+
+  onDateChange() {
+    let startDate: Date = new Date(this.query.startDate);
+    let endDate: Date = new Date(this.query.endDate);
+    if(this.query.startDate != '' && this.query.endDate != '' && startDate.getTime() <= endDate.getTime()) {
+      this.sortBy('payment', true);
+    }
+    else {
+      this._toastService.onErrorCall({ status: 400, error: { Message: '' } }, 'Rental start date cannot be later than its end date!');
     }
   }
 
@@ -121,8 +135,10 @@ export class RentalTableComponent implements OnInit, OnDestroy {
     this.query = { 
       stateId: -1, 
       suburbId: -1, 
-      minimumRent: -1, 
-      maximumRent: -1, 
+      minimumRent: this.DEFAULT_MIN_RENT, 
+      maximumRent: this.DEFAULT_MAX_RENT,
+      startDate: '',
+      endDate: '',
       sortBy: '', 
       isSortedAscending: true, 
       page: this.DEFAULT_PAGE, 

@@ -86,6 +86,8 @@ namespace PropertyRental.Persistence.Repositories
                 query = query.Where(rental => rental.Property.Suburb.StateId == queryObject.StateId.Value);
             if (queryObject.MinimumRent.HasValue && queryObject.MaximumRent.HasValue)
                 query = query.Where(rental => rental.Payment >= queryObject.MinimumRent && rental.Payment <= queryObject.MaximumRent);
+            if (queryObject.StartDate.HasValue && queryObject.EndDate.HasValue)
+                query = query.Where(rental => rental.StartDate >= queryObject.StartDate.Value && rental.EndDate <= queryObject.EndDate.Value);
             return query;
         }
 

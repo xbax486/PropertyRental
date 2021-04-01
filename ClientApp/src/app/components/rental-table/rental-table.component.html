@@ -12,7 +12,7 @@
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Filter by</legend>
     <div class="form-row">
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label for="state">State</label>
         <select
           name="state"
@@ -28,7 +28,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label for="suburb">Suburb</label>
         <select
           name="suburb"
@@ -48,27 +48,26 @@
         </select>
       </div>
       <div class="form-group col-md-2">
-        <label for="range">Minimum rent</label>
-        <select
-          name="minimum"
+        <label for="range">Rent from ${{ query.minimumRent }}</label>
+        <input
+          type="range"
+          class="form-control"
           id="minimum"
-          class="form-control custom-select"
-          [class.ng-invalid]="
+          name="minimum"
+          [(ngModel)]="query.minimumRent"
+          min="100"
+          max="1000"
+          step="100"
+          [class.range-invalid]="
             minimum.touched &&
             ((query.minimumRent != -1 && query.maximumRent == -1) ||
               (query.minimumRent == -1 && query.maximumRent != -1) ||
               query.minimumRent > query.maximumRent)
           "
-          placeholder="Filter rentals by minimum payment"
           [(ngModel)]="query.minimumRent"
-          (change)="onRangeChange()"
+          (change)="onRentChange()"
           #minimum="ngModel"
-        >
-          <option value="-1"></option>
-          <option value="{{ range }}" *ngFor="let range of ranges">
-            ${{ range }}
-          </option>
-        </select>
+        />
         <div
           class="alert alert-danger"
           *ngIf="
@@ -82,27 +81,26 @@
         </div>
       </div>
       <div class="form-group col-md-2">
-        <label for="range">Maximum rent</label>
-        <select
-          name="maximum"
-          id="maximum"
-          class="form-control custom-select"
-          [class.ng-invalid]="
-            maximum.touched &&
+        <label for="range">Rent to ${{ query.maximumRent }}</label>
+        <input
+          type="range"
+          class="form-control"
+          id="maximumRent"
+          name="maximumRent"
+          [(ngModel)]="query.maximumRent"
+          min="100"
+          max="1000"
+          step="100"
+          [class.range-invalid]="
+            minimum.touched &&
             ((query.minimumRent != -1 && query.maximumRent == -1) ||
               (query.minimumRent == -1 && query.maximumRent != -1) ||
               query.minimumRent > query.maximumRent)
           "
-          placeholder="Filter rentals by maximum payment"
           [(ngModel)]="query.maximumRent"
-          (change)="onRangeChange()"
+          (change)="onRentChange()"
           #maximum="ngModel"
-        >
-          <option value="-1"></option>
-          <option value="{{ range }}" *ngFor="let range of ranges">
-            ${{ range }}
-          </option>
-        </select>
+        />
         <div
           class="alert alert-danger"
           *ngIf="
@@ -115,6 +113,46 @@
           Please make the minimum rent smaller than maximum one!
         </div>
       </div>
+      <div class="form-group col-md-2">
+        <label for="startDate">Start Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="startDate"
+          placeholder="Please select the start date of the rental"
+          name="startDate"
+          [(ngModel)]="query.startDate"
+          #startDate="ngModel"
+          (change)="onDateChange()"
+        />
+        <div
+          class="alert alert-danger"
+          *ngIf="startDate.touched && startDate.invalid"
+        >
+          Please select the start date of the rental!
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="endDate">End Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="endDate"
+          placeholder="Please select the end date of the rental"
+          name="endDate"
+          [(ngModel)]="query.endDate"
+          #endDate="ngModel"
+          (change)="onDateChange()"
+        />
+        <div
+          class="alert alert-danger"
+          *ngIf="endDate.touched && endDate.invalid"
+        >
+          Please select the end date of the rental!
+        </div>
+      </div>
+    </div>
+    <div class="form-row d-flex flex-row-reverse">
       <div class="form-group col-md-2">
         <button
           class="btn btn-primary form-control reset-button"

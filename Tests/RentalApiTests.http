@@ -6,11 +6,14 @@ GET https://localhost:5001/api/rentals HTTP/1.1
 ### Get all rentals that is in suburb whose suburbId is 5 (Abbotsford)
 GET https://localhost:5001/api/rentals?suburbId=5 HTTP/1.1
 
-### Get all rentals that is in state whose stateId is 2 (New South Wales)
+### Get all rentals whose stateId is 2 (New South Wales)
 GET https://localhost:5001/api/rentals?stateId=2 HTTP/1.1
 
-### Get all rentals that is in state whose stateId is 2 (New South Wales)
+### Get all rentals whose minimum rent is $400 and maximum rent is $500
 GET https://localhost:5001/api/rentals?minimumRent=400&maximumRent=550 HTTP/1.1
+
+### Get all rentals whose start date is 2020-04-01 and start date is 2021-07-30
+GET https://localhost:5001/api/rentals?startDate=2020-04-01&endDate=2021-07-30 HTTP/1.1
 
 ### Get all rentals sorting by owner in ascending order
 GET https://localhost:5001/api/rentals?sortBy=owner&isSortedAscending=true HTTP/1.1

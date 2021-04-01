@@ -5,4 +5,6 @@ export interface RentalQuery extends Query {
     suburbId: number;
     minimumRent: number;
     maximumRent: number;
+    startDate: string,
+    endDate: string,
 }
