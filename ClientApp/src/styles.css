@@ -20,7 +20,13 @@ code {
 }
 
 .btn-create {
-  line-height: 34px;
+  margin-right: 1rem;
+  height: 38px;
+  width: 228px;
+}
+
+.button-aligned {
+  margin-top: 2rem;
 }
 
 input.ng-invalid.ng-touched,

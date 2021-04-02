@@ -68,6 +68,8 @@ namespace PropertyRental.Persistence.Repositories
 
         private IQueryable<Suburb> FilteredRequired(IQueryable<Suburb> query, SuburbQuery queryObject, PropertyRentalContext context)
         {
+            if (!String.IsNullOrWhiteSpace(queryObject.Postcode))
+                query = query.Where(suburb => suburb.Postcode == queryObject.Postcode);
             if (queryObject.StateId.HasValue)
                 query = query.Where(suburb => suburb.StateId == queryObject.StateId);
             return query;

@@ -12,7 +12,7 @@
   <fieldset class="border p-3 mb-4">
     <legend class="w-auto">Filter by</legend>
     <div class="form-row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <label for="state">State</label>
         <select
           name="state"
@@ -28,9 +28,28 @@
           </option>
         </select>
       </div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
+        <label for="postcode">Postcode</label>
+        <select
+          name="postcode"
+          id="postcode"
+          class="form-control custom-select"
+          placeholder="Filter properties by postcode"
+          [(ngModel)]="query.postcode"
+          (change)="onPostcodeChange()"
+        >
+          <option value="-1"></option>
+          <option
+            value="{{ suburb.postcode }}"
+            *ngFor="let suburb of filteredSuburbs"
+          >
+            {{ suburb.postcode }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
         <button
-          class="btn btn-primary form-control reset-button"
+          class="btn btn-primary form-control reset-button button-aligned"
           (click)="onResetFilter()"
         >
           Reset

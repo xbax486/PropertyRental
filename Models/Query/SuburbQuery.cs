@@ -4,6 +4,7 @@ namespace PropertyRental.Models.Query
 {
     public class SuburbQuery : IQueryObject
     {
+        public string Postcode { get; set; }
         public int? StateId { get; set; }
         public string SortBy { get; set; }
         public bool isSortedAscending { get; set; }

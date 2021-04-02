@@ -60,7 +60,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.propertiesLoaded = false;
     this.getFilteredProperties();
-    this.getSuburbs();
+    this.getFilteredSuburbs();
     this.getStates();
   }
 
@@ -147,7 +147,7 @@ export class PropertyTableComponent implements OnInit, OnDestroy {
       );
   }
 
-  private getSuburbs() {
+  private getFilteredSuburbs() {
     this._suburbsSubscription = this._suburbService.getSuburbs({})
       .subscribe(
         (queryResult: QueryResult<Suburb>) => {
