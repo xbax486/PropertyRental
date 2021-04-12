@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RoutingModule } from "./modules/routing.module";
 import { ToastyModule } from 'ng2-toasty';
+import { AuthModule } from '@auth0/auth0-angular';
 
 /* Components */
 import { AppComponent } from './components/app.component';
@@ -50,6 +51,10 @@ import { ToastService } from "./services/toast.service";
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    AuthModule.forRoot({
+      domain: 'abvegaproject.au.auth0.com',
+      clientId: 'FcqswTpeGSNAygRAUtMQL1KcxP9ulsOQ'
+    }),
     ToastyModule.forRoot(),
     HttpClientModule,
     FormsModule,

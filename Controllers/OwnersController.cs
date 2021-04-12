@@ -7,6 +7,7 @@ using PropertyRental.Core.Interfaces;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Controllers.Resources.Query;
 using PropertyRental.Models.Query;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PropertyRental.Controllers
 {
@@ -45,6 +46,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
@@ -64,6 +66,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
@@ -87,6 +90,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteOwner(int id)
         {
             var owner = await repository.GetOwner(id);

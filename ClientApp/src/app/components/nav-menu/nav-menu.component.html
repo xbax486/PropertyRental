@@ -3,7 +3,7 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="['/']">PropertyRental</a>
+      <a class="navbar-brand" [routerLink]="['/']">Property Rental</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -27,6 +27,18 @@
           >
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
+          <ng-container
+            *ngIf="authService.isAuthenticated$ | async; else loggedOut"
+          >
+            <li class="nav-item">
+              <a class="nav-link text-dark" (click)="onLogout()">Log out</a>
+            </li>
+          </ng-container>
+          <ng-template #loggedOut>
+            <li class="nav-item">
+              <a class="nav-link text-dark" (click)="onLogin()">Log in</a>
+            </li>
+          </ng-template>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/owners']">
               Owners

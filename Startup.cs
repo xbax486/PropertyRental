@@ -11,6 +11,7 @@ using PropertyRental.Core.Interfaces;
 using PropertyRental.Core;
 using PropertyRental.Persistence.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace PropertyRental
 {
@@ -43,6 +44,17 @@ namespace PropertyRental
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<PropertyRentalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PropertyRentalContext")));
+
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://abvegaproject.au.auth0.com/";
+                options.Audience = "https://api.propertyrental.com";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,13 +73,16 @@ namespace PropertyRental
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
 
             app.UseRouting();
-
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
