@@ -9,11 +9,7 @@ import { AuthService } from '@auth0/auth0-angular';
 export class NavMenuComponent {
   isExpanded = false;
 
-  constructor(public authService: AuthService) {
-    this.authService.isAuthenticated$.subscribe(result => {
-      console.log('result', result);
-    });
-  }
+  constructor(public authService: AuthService) {}
 
   collapse() {
     this.isExpanded = false;

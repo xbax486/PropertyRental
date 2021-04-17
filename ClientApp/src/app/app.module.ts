@@ -1,34 +1,35 @@
 /* Modules */
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { RoutingModule } from "./modules/routing.module";
-import { ToastyModule } from 'ng2-toasty';
-import { AuthModule } from '@auth0/auth0-angular';
+import { ToastyModule } from "ng2-toasty";
+import { AuthModule, AuthHttpInterceptor } from "@auth0/auth0-angular";
+import { environment as env } from "../environments/environment";
 
 /* Components */
-import { AppComponent } from './components/app.component';
-import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
-import { HomeComponent } from './components/home/home.component';
-import { PropertyTableComponent } from './components/property-table/property-table.component';
-import { PropertyFormComponent } from './components/property-form/property-form.component';
-import { SuburbTableComponent } from './components/suburb-table/suburb-table.component';
-import { SuburbFormComponent } from './components/suburb-form/suburb-form.component';
-import { OwnerTableComponent } from './components/owner-table/owner-table.component';
-import { OwnerFormComponent } from './components/owner-form/owner-form.component';
-import { TenantTableComponent } from './components/tenant-table/tenant-table.component';
-import { TenantFormComponent } from './components/tenant-form/tenant-form.component';
-import { RentalTableComponent } from './components/rental-table/rental-table.component';
-import { RentalFormComponent } from './components/rental-form/rental-form.component';
-import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { AppComponent } from "./components/app.component";
+import { NavMenuComponent } from "./components/nav-menu/nav-menu.component";
+import { HomeComponent } from "./components/home/home.component";
+import { PropertyTableComponent } from "./components/property-table/property-table.component";
+import { PropertyFormComponent } from "./components/property-form/property-form.component";
+import { SuburbTableComponent } from "./components/suburb-table/suburb-table.component";
+import { SuburbFormComponent } from "./components/suburb-form/suburb-form.component";
+import { OwnerTableComponent } from "./components/owner-table/owner-table.component";
+import { OwnerFormComponent } from "./components/owner-form/owner-form.component";
+import { TenantTableComponent } from "./components/tenant-table/tenant-table.component";
+import { TenantFormComponent } from "./components/tenant-form/tenant-form.component";
+import { RentalTableComponent } from "./components/rental-table/rental-table.component";
+import { RentalFormComponent } from "./components/rental-form/rental-form.component";
+import { PaginationComponent } from "./components/shared/pagination/pagination.component";
 
 /* Services */
-import { OwnerService } from './services/owner.service';
-import { TenantService } from './services/tenant.service';
-import { SuburbService } from './services/suburb.service';
-import { PropertyService } from './services/property.service';
+import { OwnerService } from "./services/owner.service";
+import { TenantService } from "./services/tenant.service";
+import { SuburbService } from "./services/suburb.service";
+import { PropertyService } from "./services/property.service";
 import { RentalService } from "./services/rental.service";
 import { ToastService } from "./services/toast.service";
 
@@ -47,28 +48,35 @@ import { ToastService } from "./services/toast.service";
     TenantFormComponent,
     RentalTableComponent,
     RentalFormComponent,
-    PaginationComponent
+    PaginationComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    AuthModule.forRoot({
-      domain: 'abvegaproject.au.auth0.com',
-      clientId: 'FcqswTpeGSNAygRAUtMQL1KcxP9ulsOQ'
-    }),
+    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     ToastyModule.forRoot(),
     HttpClientModule,
+    AuthModule.forRoot({
+      ...env.auth,
+      httpInterceptor: {
+        ...env.httpInterceptor,
+      },
+    }),
     FormsModule,
     FontAwesomeModule,
-    RoutingModule
+    RoutingModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    },
     OwnerService,
     TenantService,
     SuburbService,
     PropertyService,
     RentalService,
-    ToastService
+    ToastService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

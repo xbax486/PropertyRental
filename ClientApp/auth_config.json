@@ -1,0 +1,6 @@
+{
+  "domain": "abvegaproject.au.auth0.com",
+  "clientId": "FcqswTpeGSNAygRAUtMQL1KcxP9ulsOQ",
+  "audience": "https://api.propertyrental.com",
+  "apiUri": "/api/*"
+}

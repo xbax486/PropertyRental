@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace PropertyRental.Controllers
 {
     [Route("/api/owners")]
+    [Authorize]
     public class OwnersController : Controller
     {
         private readonly IMapper mapper;
@@ -46,7 +47,6 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
@@ -66,7 +66,6 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
