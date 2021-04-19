@@ -15,7 +15,7 @@
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
 
-import { domain, clientId, audience, apiUri } from '../../auth_config.json';
+import { domain, clientId, audience, apiUri, scope } from '../../auth_config.json';
 
 export const environment = {
   production: false,
@@ -23,16 +23,7 @@ export const environment = {
     domain,
     clientId,
     redirectUri: window.location.origin,
-    audience
-  },
-  httpInterceptor: {
-    allowedList: [
-      {
-        uri: `${apiUri}`,
-        tokenOptions: {
-          audience: `${audience}`
-        },
-      },
-    ],
-  },
+    audience,
+    scope
+  }
 };

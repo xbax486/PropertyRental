@@ -7,11 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using PropertyRental.Persistence;
-using PropertyRental.Core.Interfaces;
 using PropertyRental.Core;
+using PropertyRental.Core.Interfaces;
+using PropertyRental.Core.Auth;
 using PropertyRental.Persistence.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PropertyRental
 {
@@ -52,9 +54,12 @@ namespace PropertyRental
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = "https://abvegaproject.au.auth0.com/";
-                options.Audience = "https://api.propertyrental.com";
+                options.Authority = PropertyRentalAuthDetails.Domain;
+                options.Audience = PropertyRentalAuthDetails.Audience;
             });
+
+            services.AddAuthorization(options => AddOwnersPolicies.AddPolicies(options));
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

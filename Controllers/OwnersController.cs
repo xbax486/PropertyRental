@@ -7,12 +7,12 @@ using PropertyRental.Core.Interfaces;
 using PropertyRental.Controllers.Resources;
 using PropertyRental.Controllers.Resources.Query;
 using PropertyRental.Models.Query;
+using PropertyRental.Core.Auth;
 using Microsoft.AspNetCore.Authorization;
 
 namespace PropertyRental.Controllers
 {
     [Route("/api/owners")]
-    [Authorize]
     public class OwnersController : Controller
     {
         private readonly IMapper mapper;
@@ -27,6 +27,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet]
+        [Authorize("get:owners")]
         public async Task<QueryResultResource<OwnerResource>> GetOwners(OwnerQueryResource ownerQueryResource = null)
         {
             var queryObject = mapper.Map<OwnerQueryResource, OwnerQuery>(ownerQueryResource);
@@ -35,6 +36,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize("get:owner")]
         public async Task<IActionResult> GetOwner(int id)
         {
             var owner = await repository.GetOwner(id);
@@ -47,6 +49,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPost]
+        [Authorize("create:owner")]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
@@ -66,6 +69,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize("update:owner")]
         public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
@@ -89,7 +93,7 @@ namespace PropertyRental.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize("delete:owner")]
         public async Task<IActionResult> DeleteOwner(int id)
         {
             var owner = await repository.GetOwner(id);

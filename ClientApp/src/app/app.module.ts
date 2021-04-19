@@ -4,10 +4,9 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { RoutingModule } from "./modules/routing.module";
 import { ToastyModule } from "ng2-toasty";
-import { AuthModule, AuthHttpInterceptor } from "@auth0/auth0-angular";
-import { environment as env } from "../environments/environment";
+import { RoutingModule } from "./modules/routing.module";
+import { CustomAuthModule } from "./modules/custom-auth.module";
 
 /* Components */
 import { AppComponent } from "./components/app.component";
@@ -54,22 +53,12 @@ import { ToastService } from "./services/toast.service";
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     ToastyModule.forRoot(),
     HttpClientModule,
-    AuthModule.forRoot({
-      ...env.auth,
-      httpInterceptor: {
-        ...env.httpInterceptor,
-      },
-    }),
+    CustomAuthModule,
     FormsModule,
     FontAwesomeModule,
     RoutingModule,
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpInterceptor,
-      multi: true,
-    },
     OwnerService,
     TenantService,
     SuburbService,
