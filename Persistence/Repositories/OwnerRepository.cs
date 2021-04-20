@@ -25,9 +25,13 @@ namespace PropertyRental.Persistence.Repositories
         {
             var queryResult = new QueryResult<Owner>();
             var query = context.Owners.AsQueryable();
-            query = this.SortByRequired(query, queryObject);
             queryResult.TotalItems = await query.CountAsync();
-            query = this.PagingRequired(query, queryObject);
+            if (queryObject != null)
+            {
+                query = this.SortByRequired(query, queryObject);
+                queryResult.TotalItems = await query.CountAsync();
+                query = this.PagingRequired(query, queryObject);
+            }
             queryResult.Items = await query.ToListAsync();
             return queryResult;
         }

@@ -25,10 +25,14 @@ namespace PropertyRental.Persistence.Repositories
         {
             var queryResult = new QueryResult<Suburb>();
             var query = context.Suburbs.Include(suburb => suburb.State).AsQueryable();
-            query = this.FilteredRequired(query, queryObject, this.context);
-            query = this.SortByRequired(query, queryObject);
             queryResult.TotalItems = await query.CountAsync();
-            query = this.PagingRequired(query, queryObject);
+            if (queryObject != null)
+            {
+                query = this.FilteredRequired(query, queryObject, this.context);
+                query = this.SortByRequired(query, queryObject);
+                queryResult.TotalItems = await query.CountAsync();
+                query = this.PagingRequired(query, queryObject);
+            }
             queryResult.Items = await query.ToListAsync();
             return queryResult;
         }
