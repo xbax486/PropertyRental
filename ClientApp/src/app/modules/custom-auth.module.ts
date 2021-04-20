@@ -24,14 +24,14 @@ import {
               scope: "get:owners",
             },
           },
-          {
-            uri: "/api/owners*",
-            httpMethod: HttpMethod.Post,
-            tokenOptions: {
-              audience: env.auth.audience,
-              scope: "create:owner",
-            },
-          },
+          // {
+          //   uri: "/api/owners*",
+          //   httpMethod: HttpMethod.Post,
+          //   tokenOptions: {
+          //     audience: env.auth.audience,
+          //     scope: "create:owner",
+          //   },
+          // },
           {
             uri: "/api/owners*",
             httpMethod: HttpMethod.Put,
@@ -40,14 +40,14 @@ import {
               scope: "update:owner",
             },
           },
-          {
-            uri: "/api/owners*",
-            httpMethod: HttpMethod.Delete,
-            tokenOptions: {
-              audience: env.auth.audience,
-              scope: "delete:owner",
-            },
-          },
+          // {
+          //   uri: "/api/owners*",
+          //   httpMethod: HttpMethod.Delete,
+          //   tokenOptions: {
+          //     audience: env.auth.audience,
+          //     scope: "delete:owner",
+          //   },
+          // },
         ],
       },
     }),

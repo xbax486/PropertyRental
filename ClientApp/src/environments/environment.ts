@@ -24,6 +24,6 @@ export const environment = {
     clientId,
     redirectUri: window.location.origin,
     audience,
-    scope
+    //scope
   }
 };

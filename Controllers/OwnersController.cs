@@ -16,30 +16,31 @@ namespace PropertyRental.Controllers
     public class OwnersController : Controller
     {
         private readonly IMapper mapper;
-        private readonly IOwnerRepository repository;
+        private readonly IOwnerRepository ownerRepository;
+        private readonly IPropertyRepository propertyRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public OwnersController(IMapper mapper, IOwnerRepository repository, IUnitOfWork unitOfWork)
+        public OwnersController(IMapper mapper, IOwnerRepository ownerRepository, IPropertyRepository propertyRepository, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
-            this.repository = repository;
+            this.ownerRepository = ownerRepository;
+            this.propertyRepository = propertyRepository;
             this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        [Authorize("get:owners")]
+        [Authorize(Policy = "NormalUser")]
         public async Task<QueryResultResource<OwnerResource>> GetOwners(OwnerQueryResource ownerQueryResource = null)
         {
             var queryObject = mapper.Map<OwnerQueryResource, OwnerQuery>(ownerQueryResource);
-            var queryResult = await repository.GetOwners(queryObject);
+            var queryResult = await ownerRepository.GetOwners(queryObject);
             return mapper.Map<QueryResult<Owner>, QueryResultResource<OwnerResource>>(queryResult);
         }
 
         [HttpGet("{id}")]
-        [Authorize("get:owner")]
         public async Task<IActionResult> GetOwner(int id)
         {
-            var owner = await repository.GetOwner(id);
+            var owner = await ownerRepository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
@@ -49,39 +50,38 @@ namespace PropertyRental.Controllers
         }
 
         [HttpPost]
-        [Authorize("create:owner")]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var owner = await repository.FindOwner(ownerResource);
+            var owner = await ownerRepository.FindOwner(ownerResource);
             if (owner != null)
             {
                 ModelState.AddModelError("Message", "Owner creation error. Sorry, this owner already exists!");
                 return BadRequest(ModelState);
             }
             owner = mapper.Map<OwnerResource, Owner>(ownerResource);
-            repository.Add(owner);
+            ownerRepository.Add(owner);
             await unitOfWork.CompleteAsync();
             return Ok(owner);
         }
 
         [HttpPut("{id}")]
-        [Authorize("update:owner")]
+        [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerResource ownerResource)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var owner = await repository.GetOwner(id);
+            var owner = await ownerRepository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
             }
-            var existingOwner = await repository.FindOwner(ownerResource);
+            var existingOwner = await ownerRepository.FindOwner(ownerResource);
             if (existingOwner != null)
             {
                 ModelState.AddModelError("Message", "Owner update error. Sorry, this owner already exists!");
@@ -93,15 +93,23 @@ namespace PropertyRental.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize("delete:owner")]
         public async Task<IActionResult> DeleteOwner(int id)
         {
-            var owner = await repository.GetOwner(id);
+            var owner = await ownerRepository.GetOwner(id);
             if (owner == null)
             {
                 return NotFound();
             }
-            repository.Remove(owner);
+            var properties = await propertyRepository.GetProperties(null);
+            foreach (var property in properties.Items)
+            {
+                if (property.Owner.Id == id)
+                {
+                    ModelState.AddModelError("Message", "Owner update error. Sorry, this owner still has at least one property!");
+                    return BadRequest(ModelState);
+                }
+            }
+            ownerRepository.Remove(owner);
             await unitOfWork.CompleteAsync();
             return Ok();
         }

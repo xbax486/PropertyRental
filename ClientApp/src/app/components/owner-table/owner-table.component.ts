@@ -59,7 +59,7 @@ export class OwnerTableComponent implements OnInit, OnDestroy {
             this.owners.splice(index, 1);
             this._toastService.onSuccessCall('Successfully delete an owner');
           },
-          (error) => this._toastService.onErrorCall(error, 'Owner deletion error')
+          (error) => this._toastService.onErrorCall(error)
         );
     }
   }
