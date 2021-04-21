@@ -60,7 +60,17 @@ namespace PropertyRental.Persistence.Repositories
             return await context.Properties.SingleOrDefaultAsync(record =>
                 record.Unit == propertyResource.Unit &&
                 record.Street == propertyResource.Street &&
-                record.SuburbId == propertyResource.SuburbId);
+                record.SuburbId == propertyResource.SuburbId &&
+                record.Bedroom == propertyResource.Bedroom &&
+                record.Bathroom == propertyResource.Bathroom &&
+                record.Parking == propertyResource.Parking &&
+                record.PetsAllowed == propertyResource.PetsAllowed &&
+                record.BuiltInWardrobe == propertyResource.BuiltInWardrobe &&
+                record.GasAvailable == propertyResource.GasAvailable &&
+                record.HasStudyRoom == propertyResource.HasStudyRoom &&
+                record.Furnished == propertyResource.Furnished &&
+                record.OwnerId == propertyResource.OwnerId &&
+                record.PropertyTypeId == propertyResource.PropertyTypeId);
         }
 
         public void Add(Property property)
