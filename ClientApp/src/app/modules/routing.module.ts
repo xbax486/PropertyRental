@@ -16,13 +16,17 @@ import { TenantFormComponent } from '../components/tenant-form/tenant-form.compo
 import { RentalTableComponent } from '../components/rental-table/rental-table.component';
 import { RentalFormComponent } from '../components/rental-form/rental-form.component';
 
+/* Others */
+import { AuthGuard } from '@auth0/auth0-angular';
+
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     RouterModule.forRoot([
       {
-        path: 'owners', component: OwnerTableComponent
+        path: 'owners', component: OwnerTableComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'owner',
@@ -33,7 +37,8 @@ import { RentalFormComponent } from '../components/rental-form/rental-form.compo
           {
             path: ':id', component: OwnerFormComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
         path: 'tenants', component: TenantTableComponent
