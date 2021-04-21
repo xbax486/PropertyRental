@@ -1,19 +1,25 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { SuburbService } from './../../services/suburb.service';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { Suburb } from "./../../models/suburb";
+import { State } from "./../../models/state";
+import { SuburbService } from "./../../services/suburb.service";
 import { ToastService } from "../../services/toast.service";
-import { Suburb } from './../../models/suburb';
-import { State } from './../../models/state';
+import { CustomAuthService } from "../../services/custom.auth.service";
 
 @Component({
-  selector: 'app-suburb-form',
-  templateUrl: './suburb-form.component.html',
-  styleUrls: ['./suburb-form.component.css']
+  selector: "app-suburb-form",
+  templateUrl: "./suburb-form.component.html",
+  styleUrls: ["./suburb-form.component.css"],
 })
 export class SuburbFormComponent implements OnInit, OnDestroy {
-  public selectedSuburb:Suburb = { name: '', postcode: '', state: { name: '', acronym: '', id: -1 }, stateId: -1, id: -1 };
+  public selectedSuburb: Suburb = {
+    name: "",
+    postcode: "",
+    state: { name: "", acronym: "", id: -1 },
+    stateId: -1,
+    id: -1,
+  };
   public states: State[] = [];
 
   private _selectedSuburbSubscription = new Subscription();
@@ -22,21 +28,15 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   private _updateSuburbSubscription = new Subscription();
 
   constructor(
-    private _suburbService: SuburbService, 
-    private _toastService: ToastService, 
-    private _router: Router) { }
+    private _suburbService: SuburbService,
+    private _toastService: ToastService,
+    private _customAuthService: CustomAuthService
+  ) {}
 
   ngOnInit() {
-    this._selectedSuburbSubscription = this._suburbService.selectedSuburbSubject
-      .subscribe(
-        (selectedSuburb: Suburb) => this.selectedSuburb = selectedSuburb,
-        (error) => this._toastService.onErrorCall(error, 'Selected suburb fetching error')
-      );
-    this._getAllStatesSubscription = this._suburbService.getStates()
-      .subscribe(
-        (states: State[]) => this.states = states,
-        (error) => this._toastService.onErrorCall(error, 'States fetching error')
-      );
+    this.getSelectedSuburb();
+    this.getAllStates();
+    this.navigateBackIfSelectedSuburbIsNull();
   }
 
   ngOnDestroy() {
@@ -51,24 +51,35 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
     let suburbDetails = suburbForm.form.value;
     suburbDetails.id = this.selectedSuburb.id;
     suburbDetails.stateId = +suburbDetails.stateId;
-    if(suburbDetails.id == -1) {
-      this._createSuburbSubscription = this._suburbService.createSuburb(suburbDetails)
+    if (suburbDetails.id == -1) {
+      this._createSuburbSubscription = this._suburbService
+        .createSuburb(suburbDetails)
         .subscribe(
-          (message) => this._toastService.onSuccessCall('Successfully created a suburb', suburbForm, 'suburbs'),
+          (message) =>
+            this._toastService.onSuccessCall(
+              "Successfully created a suburb",
+              suburbForm,
+              "suburbs"
+            ),
           (error) => this._toastService.onErrorCall(error)
         );
-    }
-    else {
-      this._updateSuburbSubscription = this._suburbService.updateSuburb(suburbDetails)
+    } else {
+      this._updateSuburbSubscription = this._suburbService
+        .updateSuburb(suburbDetails)
         .subscribe(
-          (message) => this._toastService.onSuccessCall('Successfully updated a suburb', suburbForm, 'suburbs'),
+          (message) =>
+            this._toastService.onSuccessCall(
+              "Successfully updated a suburb",
+              suburbForm,
+              "suburbs"
+            ),
           (error) => this._toastService.onErrorCall(error)
         );
     }
   }
 
   public onCancel() {
-    this._router.navigate(['suburbs']);
+    this._customAuthService.navigateTo("suburbs");
   }
 
   public onClear(suburbForm: NgForm) {
@@ -77,8 +88,29 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
 
   private clearForm() {
     this.selectedSuburb.id = -1;
-    this.selectedSuburb.name = '';
-    this.selectedSuburb.postcode = '';
+    this.selectedSuburb.name = "";
+    this.selectedSuburb.postcode = "";
     this.selectedSuburb.stateId = -1;
+  }
+
+  private getSelectedSuburb() {
+    this._selectedSuburbSubscription = this._suburbService.selectedSuburbSubject.subscribe(
+      (selectedSuburb: Suburb) => (this.selectedSuburb = selectedSuburb),
+      (error) =>
+        this._toastService.onErrorCall(error, "Selected suburb fetching error")
+    );
+  }
+
+  private getAllStates() {
+    this._getAllStatesSubscription = this._suburbService.getStates().subscribe(
+      (states: State[]) => (this.states = states),
+      (error) => this._toastService.onErrorCall(error, "States fetching error")
+    );
+  }
+
+  private navigateBackIfSelectedSuburbIsNull() {
+    if (this.selectedSuburb.id == -1) {
+      this.onCancel();
+    }
   }
 }

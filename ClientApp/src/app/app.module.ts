@@ -31,6 +31,7 @@ import { SuburbService } from "./services/suburb.service";
 import { PropertyService } from "./services/property.service";
 import { RentalService } from "./services/rental.service";
 import { ToastService } from "./services/toast.service";
+import { CustomAuthService } from "./services/custom.auth.service";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { ToastService } from "./services/toast.service";
     PropertyService,
     RentalService,
     ToastService,
+    CustomAuthService
   ],
   bootstrap: [AppComponent],
 })

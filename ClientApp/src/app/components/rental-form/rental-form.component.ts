@@ -10,6 +10,7 @@ import { RentalService } from './../../services/rental.service';
 import { PropertyService } from './../../services/property.service';
 import { TenantService } from './../../services/tenant.service';
 import { ToastService } from "../../services/toast.service";
+import { CustomAuthService } from "../../services/custom.auth.service";
 
 @Component({
   selector: 'app-rental-form',
@@ -52,32 +53,13 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     private _propertyService: PropertyService,
     private _tenantService: TenantService,
     private _toastService: ToastService,
-    private _router: Router) { }
+    private _customAuthService: CustomAuthService) { }
 
   ngOnInit() {
-    // this._selectedRentalSubscription = this._rentalService.selectedRentalSubject
-    //   .subscribe(
-    //     (selectedRental: Rental) => {
-    //       this.selectedRental = selectedRental;
-    //       this.rentalEditingMode = this.selectedRental.id == -1 ? false : true;
-    //     },
-    //     (error) => this._toastService.onErrorCall(error, 'Selected rental fetching error')
-    //   );
-    
-    // this._getAvailablePropertiesSubscription = this._propertyService.getProperties(this.propertyQuery)
-    //   .subscribe(
-    //     (queryResult: QueryResult<Property>) => this.availableProperties = queryResult.items,
-    //     (error) => this._toastService.onErrorCall(error, 'Available properties fetching error')
-    //   );
-    
-    // this._getTenantsSubscription = this._tenantService.getTenants(this.tenantQuery)
-    //   .subscribe(
-    //     (queryResult: QueryResult<Tenant>) => this.tenants = queryResult.items,
-    //     (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
-    //   );
     this.getSelectedRental();
     this.getAvailableProperties();
     this.getAvailableTenants();
+    this.navigateBackIfSelectedRentalIsNull();
   }
 
   ngOnDestroy() {
@@ -101,7 +83,7 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   }
 
   public onCancel() {
-    this._router.navigate(['rentals']);
+    this._customAuthService.navigateTo("rentals");
   }
 
   public onClear(rentalForm: NgForm) {
@@ -179,6 +161,12 @@ export class RentalFormComponent implements OnInit, OnDestroy {
         },
         (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
       );
+  }
+
+  private navigateBackIfSelectedRentalIsNull() {
+    if (this.selectedRental.id == -1) {
+      this.onCancel();
+    }
   }
 
   private updateDateTimeFormat(datetime: string) {

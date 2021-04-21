@@ -41,7 +41,8 @@ import { AuthGuard } from '@auth0/auth0-angular';
         canActivate: [AuthGuard]
       },
       {
-        path: 'tenants', component: TenantTableComponent
+        path: 'tenants', component: TenantTableComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'tenant',
@@ -52,10 +53,12 @@ import { AuthGuard } from '@auth0/auth0-angular';
           {
             path: ':id', component: TenantFormComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
-        path: 'properties', component: PropertyTableComponent
+        path: 'properties', component: PropertyTableComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'property',
@@ -66,10 +69,12 @@ import { AuthGuard } from '@auth0/auth0-angular';
           {
             path: ':id', component: PropertyFormComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
-        path: 'suburbs', component: SuburbTableComponent
+        path: 'suburbs', component: SuburbTableComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'suburb',
@@ -80,10 +85,12 @@ import { AuthGuard } from '@auth0/auth0-angular';
           {
             path: ':id', component: SuburbFormComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
-        path: 'rentals', component: RentalTableComponent
+        path: 'rentals', component: RentalTableComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'rental',
@@ -94,7 +101,8 @@ import { AuthGuard } from '@auth0/auth0-angular';
           {
             path: ':id', component: RentalFormComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
         path: '', component: HomeComponent, pathMatch: 'full'

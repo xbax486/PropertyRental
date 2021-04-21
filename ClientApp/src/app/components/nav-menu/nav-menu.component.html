@@ -39,27 +39,47 @@
               <a class="nav-link text-dark" (click)="onLogin()">Log in</a>
             </li>
           </ng-template>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            *ngIf="customAuthService.isAdmin()"
+          >
             <a class="nav-link text-dark" [routerLink]="['/owners']">
               Owners
             </a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            *ngIf="customAuthService.isLoggedIn()"
+          >
             <a class="nav-link text-dark" [routerLink]="['/tenants']">
               Tenants
             </a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            *ngIf="customAuthService.isAdmin()"
+          >
             <a class="nav-link text-dark" [routerLink]="['/properties']">
               Properties
             </a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            *ngIf="customAuthService.isAdmin()"
+          >
             <a class="nav-link text-dark" [routerLink]="['/suburbs']">
               Suburbs
             </a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            *ngIf="customAuthService.isLoggedIn()"
+          >
             <a class="nav-link text-dark" [routerLink]="['/rentals']">
               Rentals
             </a>
