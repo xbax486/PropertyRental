@@ -16,8 +16,9 @@ import { TenantFormComponent } from '../components/tenant-form/tenant-form.compo
 import { RentalTableComponent } from '../components/rental-table/rental-table.component';
 import { RentalFormComponent } from '../components/rental-form/rental-form.component';
 
-/* Others */
+/* Guards */
 import { AuthGuard } from '@auth0/auth0-angular';
+import { CustomAuthGuard } from "../services/custom.auth-guard.service";
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
     RouterModule.forRoot([
       {
         path: 'owners', component: OwnerTableComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'owner',
@@ -38,7 +39,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
             path: ':id', component: OwnerFormComponent
           }
         ],
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'tenants', component: TenantTableComponent,
@@ -58,7 +59,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
       },
       {
         path: 'properties', component: PropertyTableComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'property',
@@ -70,11 +71,11 @@ import { AuthGuard } from '@auth0/auth0-angular';
             path: ':id', component: PropertyFormComponent
           }
         ],
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'suburbs', component: SuburbTableComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'suburb',
@@ -86,7 +87,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
             path: ':id', component: SuburbFormComponent
           }
         ],
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, CustomAuthGuard]
       },
       {
         path: 'rentals', component: RentalTableComponent,
