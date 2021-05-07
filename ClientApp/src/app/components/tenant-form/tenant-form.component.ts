@@ -26,7 +26,6 @@ export class TenantFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getSelectedTenant();
-    this.navigateBackIfSelectedTenantIsNull();
   }
 
   ngOnDestroy() {
@@ -87,11 +86,5 @@ export class TenantFormComponent implements OnInit, OnDestroy {
       (error) =>
         this._toastService.onErrorCall(error, "Selected tenant fetching error")
     );
-  }
-
-  private navigateBackIfSelectedTenantIsNull() {
-    if (this.selectedTenant.id == -1) {
-      this.onCancel();
-    }
   }
 }

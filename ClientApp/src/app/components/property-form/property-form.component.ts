@@ -71,7 +71,6 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
     this.getSuburbs();
     this.getOwners();
     this.getPropertyTypes();
-    this.navigateBackIfSelectedPropertyIsNull();
   }
 
   ngOnDestroy() {
@@ -221,11 +220,5 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
         (error) =>
           this._toastService.onErrorCall(error, "Property types fetching error")
       );
-  }
-
-  private navigateBackIfSelectedPropertyIsNull() {
-    if (this.selectedProperty.id == -1) {
-      this.onCancel();
-    }
   }
 }

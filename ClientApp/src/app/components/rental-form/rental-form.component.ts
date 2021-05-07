@@ -59,7 +59,6 @@ export class RentalFormComponent implements OnInit, OnDestroy {
     this.getSelectedRental();
     this.getAvailableProperties();
     this.getAvailableTenants();
-    this.navigateBackIfSelectedRentalIsNull();
   }
 
   ngOnDestroy() {
@@ -161,12 +160,6 @@ export class RentalFormComponent implements OnInit, OnDestroy {
         },
         (error) => this._toastService.onErrorCall(error, 'Tenants fetching error')
       );
-  }
-
-  private navigateBackIfSelectedRentalIsNull() {
-    if (this.selectedRental.id == -1) {
-      this.onCancel();
-    }
   }
 
   private updateDateTimeFormat(datetime: string) {

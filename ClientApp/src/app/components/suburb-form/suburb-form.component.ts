@@ -36,7 +36,6 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getSelectedSuburb();
     this.getAllStates();
-    this.navigateBackIfSelectedSuburbIsNull();
   }
 
   ngOnDestroy() {
@@ -106,11 +105,5 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
       (states: State[]) => (this.states = states),
       (error) => this._toastService.onErrorCall(error, "States fetching error")
     );
-  }
-
-  private navigateBackIfSelectedSuburbIsNull() {
-    if (this.selectedSuburb.id == -1) {
-      this.onCancel();
-    }
   }
 }

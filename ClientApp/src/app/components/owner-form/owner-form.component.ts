@@ -26,7 +26,6 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getSelectedOwner();
-    this.navigateBackIfSelectedOwnerIsNull();
   }
 
   ngOnDestroy() {
@@ -87,11 +86,5 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
       (error) =>
         this._toastService.onErrorCall(error, "Selected owner fetching error")
     );
-  }
-
-  private navigateBackIfSelectedOwnerIsNull() {
-    if (this.selectedOwner.id == -1) {
-      this.onCancel();
-    }
   }
 }
