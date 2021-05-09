@@ -11,8 +11,8 @@ export class ToastService {
     this._toastyConfig.theme = 'bootstrap';
   }
 
-  public onSuccessCall(message: string, form?: NgForm, navigatPath?: string) {
-    this.addToast('Success', { status: 200, message: message }, form, navigatPath);
+  public onSuccessCall(message: string, form?: NgForm, navigateTo?: string) {
+    this.addToast('Success', { status: 200, message: message }, form, navigateTo);
   }
 
   public onErrorCall(error, message?: string) {
@@ -21,16 +21,16 @@ export class ToastService {
     this.addToast('Error', error);
   }
 
-  public addToast(title, httpResponse, form?: NgForm, navigatPath?: string) {
+  public addToast(title, httpResponse, form?: NgForm, navigateTo?: string) {
     var toastOptions:ToastOptions = {
       title: title,
       msg: '',
       showClose: true,
       timeout: 2000,
       onRemove: () => {
-        if(form && navigatPath) {
+        if(form && navigateTo) {
           form.reset();
-          this._router.navigate([navigatPath]);
+          this._router.navigate([navigateTo]);
         }
       }
     };
