@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { Owner } from "./../../models/owner";
@@ -17,6 +17,8 @@ export class OwnerFormComponent implements OnInit, OnDestroy {
   private _selectedOwnerSubscription = new Subscription();
   private _createOwnerSubscription = new Subscription();
   private _updateOwnerSubscription = new Subscription();
+
+  @ViewChild(NgForm) ngForm: NgForm;
 
   constructor(
     private _ownerService: OwnerService,
