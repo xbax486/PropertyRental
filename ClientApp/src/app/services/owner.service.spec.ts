@@ -81,7 +81,6 @@ describe("OwnerService", () => {
       expect(response.name).toEqual(passedOwner.name);
       expect(response.email).toEqual(passedOwner.email);
       expect(response.mobile).toEqual(passedOwner.mobile);
-      expect(response.id).toEqual(passedOwner.id);
     });
     const req = httpTestingController.expectOne(ownerEndpoint);
     expect(req.request.method).toBe("POST");
