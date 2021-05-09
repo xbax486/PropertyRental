@@ -49,7 +49,7 @@ fdescribe("OwnerFormComponent", () => {
   };
   const ownerCreationSuccessMessage = "Successfully created an owner";
   const ownerUpdateSuccessMessage = "Successfully updated an owner";
-  const navigatedTo = "owners";
+  const navigateTo = "owners";
 
   beforeEach(
     waitForAsync(() => {
@@ -124,7 +124,7 @@ fdescribe("OwnerFormComponent", () => {
     expect(formValue.mobile).toBe(component.selectedOwner.mobile);
 
     component.onSubmit(ngForm);
-    expect(toastService.onSuccessCall).toHaveBeenCalledWith(ownerCreationSuccessMessage, ngForm, navigatedTo);
+    expect(toastService.onSuccessCall).toHaveBeenCalledWith(ownerCreationSuccessMessage, ngForm, navigateTo);
   }));
 
   it("should navigate to 'owners' when cancel button is clicked", fakeAsync(() => {
@@ -133,7 +133,7 @@ fdescribe("OwnerFormComponent", () => {
     tick();
     const cancelButton = element.queryAll(By.css("fieldset button"))[1].nativeElement;
     cancelButton.click();
-    expect(customAuthServiceSpy.navigateTo).toHaveBeenCalledWith(navigatedTo);
+    expect(customAuthServiceSpy.navigateTo).toHaveBeenCalledWith(navigateTo);
   }));
 
   it("should clear the form when reset button is clicked", fakeAsync(() => {
