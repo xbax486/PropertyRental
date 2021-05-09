@@ -48,7 +48,7 @@ export class PropertyService {
   }
 
   public deleteProperty(id: number) {
-    return this._httpClient.delete<Property>(this._propertyEndpoint + '/' + id);
+    return this._httpClient.delete<any>(this._propertyEndpoint + '/' + id);
   }
 
   public getPropertyTypes() {
