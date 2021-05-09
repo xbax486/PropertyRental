@@ -7,7 +7,7 @@ import { TenantService } from "./tenant.service";
 import { QueryResult } from "../models/query/queryResult";
 import { Tenant } from "../models/tenant";
 
-fdescribe("TenantService", () => {
+describe("TenantService", () => {
   let tenantService: TenantService,
     httpTestingController: HttpTestingController,
     query = {};
