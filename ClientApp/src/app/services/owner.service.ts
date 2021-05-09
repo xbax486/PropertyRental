@@ -27,7 +27,7 @@ export class OwnerService {
   }
 
   public deleteOwner(id: number) {
-    return this._httpClient.delete<Owner>(this._ownerEndpoint + '/' + id);
+    return this._httpClient.delete<any>(this._ownerEndpoint + '/' + id);
   }
 
   private toQueryString(query: OwnerQuery) {
