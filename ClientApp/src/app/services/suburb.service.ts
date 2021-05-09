@@ -39,7 +39,7 @@ export class SuburbService {
   }
 
   public deleteSuburb(id: number) {
-    return this._httpClient.delete<Suburb>(this._suburbEndpoint + '/' + id);
+    return this._httpClient.delete<any>(this._suburbEndpoint + '/' + id);
   }
 
   public getStates() {
