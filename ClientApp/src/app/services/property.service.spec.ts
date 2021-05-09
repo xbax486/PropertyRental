@@ -7,7 +7,7 @@ import { PropertyService } from "./property.service";
 import { QueryResult } from "../models/query/queryResult";
 import { Property } from "../models/property";
 
-fdescribe("PropertyService", () => {
+describe("PropertyService", () => {
   let propertyService: PropertyService,
     httpTestingController: HttpTestingController,
     query = {};
