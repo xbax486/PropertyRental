@@ -31,7 +31,7 @@ export class TenantService {
   }
 
   public deleteTenant(id: number) {
-    return this._httpClient.delete<Tenant>(this._tenantEndpoint + '/' +  id);
+    return this._httpClient.delete<any>(this._tenantEndpoint + '/' +  id);
   }
 
   private toQueryString(query: TenantQuery) {
