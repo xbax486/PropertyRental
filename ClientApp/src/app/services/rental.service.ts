@@ -41,7 +41,7 @@ export class RentalService {
   }
 
   public deleteRental(id: number) {
-    return this._httpClient.delete<Rental>(this._propertyEndpoint + '/' + id);
+    return this._httpClient.delete<any>(this._propertyEndpoint + '/' + id);
   }
 
   private toQueryString(query: RentalQuery) {
