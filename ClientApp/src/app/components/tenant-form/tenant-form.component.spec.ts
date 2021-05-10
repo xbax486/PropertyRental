@@ -93,9 +93,11 @@ describe("TenantFormComponent", () => {
           toastService = TestBed.inject(ToastService);
           customAuthService = TestBed.inject(CustomAuthService);
           component.selectedTenant = tenantForCreation;
-          fixture.detectChanges();
+          
           tenantService.createTenant.and.returnValue(of(tenantCreationSuccessMessage));
           tenantService.updateTenant.and.returnValue(of(tenantUpdateSuccessMessage));
+          
+          fixture.detectChanges();
         });
     })
   );

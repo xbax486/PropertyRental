@@ -93,9 +93,11 @@ describe("OwnerFormComponent", () => {
           toastService = TestBed.inject(ToastService);
           customAuthService = TestBed.inject(CustomAuthService);
           component.selectedOwner = ownerForCreation;
-          fixture.detectChanges();
+          
           ownerService.createOwner.and.returnValue(of(ownerCreationSuccessMessage));
           ownerService.updateOwner.and.returnValue(of(ownerUpdateSuccessMessage));
+          
+          fixture.detectChanges();
         });
     })
   );

@@ -104,6 +104,7 @@ describe("SuburbFormComponent", () => {
           suburbService.createSuburb.and.returnValue(of(suburbCreationSuccessMessage));
           suburbService.updateSuburb.and.returnValue(of(suburbUpdateSuccessMessage));
           suburbService.getStates.and.returnValue(of(states));
+          
           fixture.detectChanges();
         });
     })

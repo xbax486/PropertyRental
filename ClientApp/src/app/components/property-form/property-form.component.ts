@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
@@ -58,6 +58,8 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   private _propertyTypesSubscription = new Subscription();
   private _ownersSubscription = new Subscription();
 
+  @ViewChild(NgForm) ngForm: NgForm;
+
   constructor(
     private _propertyService: PropertyService,
     private _suburbService: SuburbService,
@@ -84,27 +86,16 @@ export class PropertyFormComponent implements OnInit, OnDestroy {
   }
 
   public onSuburbChange(suburbId) {
-    this.selectedProperty.suburb = Object.assign(
-      {},
-      this.suburbs.find((suburb) => suburb.id == suburbId)
-    );
+    this.selectedProperty.suburb = Object.assign({}, this.suburbs.find((suburb) => suburb.id == suburbId));
     this.state = this.selectedProperty.suburb.state.name;
   }
 
   public onPropertyTypeChange(propertyTypeId) {
-    this.selectedProperty.propertyType = Object.assign(
-      {},
-      this.propertyTypes.find(
-        (propertyType) => propertyType.id == propertyTypeId
-      )
-    );
+    this.selectedProperty.propertyType = Object.assign({}, this.propertyTypes.find((propertyType) => propertyType.id == propertyTypeId));
   }
 
   public onOwnerChange(ownerId) {
-    this.selectedProperty.owner = Object.assign(
-      {},
-      this.owners.find((owner) => owner.id == ownerId)
-    );
+    this.selectedProperty.owner = Object.assign({}, this.owners.find((owner) => owner.id == ownerId));
   }
 
   public onCancel() {
