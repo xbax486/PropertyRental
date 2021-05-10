@@ -159,14 +159,12 @@ describe("TenantFormComponent", () => {
     expect(customAuthServiceSpy.navigateTo).toHaveBeenCalledWith(navigateTo);
   }));
 
-  it("should clear the form when reset button is clicked", fakeAsync(() => {
+  it("should clear the form when clear button is clicked", fakeAsync(() => {
     component.selectedTenant = tenantForCreation;
-    fixture.detectChanges();
-    tick();
     let ngForm = component.ngForm;
     let formValue = ngForm.form.value;
-    const resetButton = element.queryAll(By.css("fieldset button"))[2].nativeElement;
-    resetButton.click();
+    const clearButton = element.queryAll(By.css("fieldset button"))[2].nativeElement;
+    clearButton.click();
     fixture.detectChanges();
     expect(formValue.name).toEqual('');
     expect(formValue.email).toEqual('');
