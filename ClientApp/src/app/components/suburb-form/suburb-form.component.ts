@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { Suburb } from "./../../models/suburb";
@@ -26,6 +26,8 @@ export class SuburbFormComponent implements OnInit, OnDestroy {
   private _getAllStatesSubscription = new Subscription();
   private _createSuburbSubscription = new Subscription();
   private _updateSuburbSubscription = new Subscription();
+
+  @ViewChild(NgForm) ngForm: NgForm;
 
   constructor(
     private _suburbService: SuburbService,
