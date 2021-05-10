@@ -1,24 +1,22 @@
 import {
   ComponentFixture,
   fakeAsync,
-  flush,
   TestBed,
   tick,
   waitForAsync,
 } from "@angular/core/testing";
 import { DebugElement } from "@angular/core";
 import { By } from "@angular/platform-browser";
-import { BehaviorSubject, of } from "rxjs";
 import { CommonModule } from "@angular/common";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
+import { BehaviorSubject, of } from "rxjs";
 
 import { OwnerFormComponent } from "./owner-form.component";
 import { OwnerService } from "../../services/owner.service";
 import { ToastService } from "../../services/toast.service";
 import { CustomAuthService } from "../../services/custom.auth.service";
-import { Owner } from "src/app/models/owner";
 
-fdescribe("OwnerFormComponent", () => {
+describe("OwnerFormComponent", () => {
   let component: OwnerFormComponent;
   let fixture: ComponentFixture<OwnerFormComponent>;
   let element: DebugElement;

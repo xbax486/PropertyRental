@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { TenantService } from "./../../services/tenant.service";
@@ -17,6 +17,8 @@ export class TenantFormComponent implements OnInit, OnDestroy {
   private _selectedTenantSubscription = new Subscription();
   private _createTenantSubscription = new Subscription();
   private _updateTenantSubscription = new Subscription();
+
+  @ViewChild(NgForm) ngForm: NgForm;
 
   constructor(
     private _tenantService: TenantService,
