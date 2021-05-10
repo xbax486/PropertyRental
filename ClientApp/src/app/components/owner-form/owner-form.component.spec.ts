@@ -97,6 +97,7 @@ fdescribe("OwnerFormComponent", () => {
           component.selectedOwner = ownerForCreation;
           fixture.detectChanges();
           ownerService.createOwner.and.returnValue(of(ownerCreationSuccessMessage));
+          ownerService.updateOwner.and.returnValue(of(ownerUpdateSuccessMessage));
         });
     })
   );
@@ -125,6 +126,30 @@ fdescribe("OwnerFormComponent", () => {
 
     component.onSubmit(ngForm);
     expect(toastService.onSuccessCall).toHaveBeenCalledWith(ownerCreationSuccessMessage, ngForm, navigateTo);
+  }));
+
+  it("should update an owner if update operation succeeds", fakeAsync(() => {
+    component.selectedOwner = ownerForUpdate;
+    fixture.detectChanges();
+    tick();
+    
+    let name = fixture.debugElement.query(By.css('#name')).nativeElement;
+    let email = fixture.debugElement.query(By.css('#email')).nativeElement;
+    let mobile = fixture.debugElement.query(By.css('#mobile')).nativeElement;
+
+    expect(name.value).toBe(component.selectedOwner.name);
+    expect(email.value).toBe(component.selectedOwner.email);
+    expect(mobile.value).toBe(component.selectedOwner.mobile);
+    
+    let ngForm = component.ngForm;
+    let formValue = ngForm.form.value;
+    formValue.id = component.selectedOwner.id;
+    expect(formValue.name).toBe(component.selectedOwner.name);
+    expect(formValue.email).toBe(component.selectedOwner.email);
+    expect(formValue.mobile).toBe(component.selectedOwner.mobile);
+
+    component.onSubmit(ngForm);
+    expect(toastService.onSuccessCall).toHaveBeenCalledWith(ownerUpdateSuccessMessage, ngForm, navigateTo);
   }));
 
   it("should navigate to 'owners' when cancel button is clicked", fakeAsync(() => {
