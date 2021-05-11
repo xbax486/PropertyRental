@@ -21,7 +21,7 @@ import { Suburb } from "../../models/suburb";
 import { Owner } from "../../models/owner";
 import { PropertyType } from '../../models/propertyType';
 
-fdescribe('PropertyFormComponent', () => {
+describe('PropertyFormComponent', () => {
   let component: PropertyFormComponent;
   let fixture: ComponentFixture<PropertyFormComponent>;
   let element: DebugElement;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -25,13 +25,31 @@ export class RentalFormComponent implements OnInit, OnDestroy {
 
   public selectedRental = { 
     property: { 
-      suburb: { state: { name: '' }},
+      unit: '',
+      street: '',
+      suburb: { 
+        name: "",
+        postcode: "",
+        state: { 
+          name: "",
+          acronym: "",
+          id: -1
+        },
+        stateId: -1,
+        id: -1
+      },
       suburbId: -1,
-      owner: {},
+      owner: {
+        name: '',
+        id: -1
+      },
       ownerId: -1,
     },
     propertyId: -1,
-    tenant: { name: '' },
+    tenant: { 
+      name: '',
+      id: -1
+    },
     tenantId: -1,
     startDate: '',
     endDate: '',
@@ -47,6 +65,8 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   private _updateRentalSubscription = new Subscription();
   private _getAvailablePropertiesSubscription = new Subscription();
   private _getAvailableTenantsSubscription = new Subscription();
+
+  @ViewChild(NgForm) ngForm: NgForm;
 
   constructor(
     private _rentalService: RentalService,
@@ -116,17 +136,32 @@ export class RentalFormComponent implements OnInit, OnDestroy {
   private clearForm() {
     this.selectedRental.id = -1;
     this.selectedRental.property = {
-      suburb: { state: { name: '' }},
+      unit: '',
+      street: '',
+      suburb: { 
+        name: "",
+        postcode: "",
+        state: { 
+          name: "",
+          acronym: "",
+          id: -1
+        },
+        stateId: -1,
+        id: -1
+      },
       suburbId: -1,
-      owner: {},
+      owner: {
+        name: '',
+        id: -1
+      },
       ownerId: -1,
     };  
     this.selectedRental.propertyId = -1;
-    this.selectedRental.tenant = { name: '' };
+    this.selectedRental.tenant = { name: '', id: -1 };
     this.selectedRental.tenantId = -1;
     this.selectedRental.payment = 0;
     this.selectedRental.startDate = '';
-    this.selectedRental.startDate = '';
+    this.selectedRental.endDate = '';
   }
 
   private getSelectedRental() {
