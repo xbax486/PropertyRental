@@ -6,7 +6,6 @@ import {
   waitForAsync,
 } from "@angular/core/testing";
 import { DebugElement } from "@angular/core";
-import { By } from "@angular/platform-browser";
 import { CommonModule } from "@angular/common";
 import { ToastyModule } from "ng2-toasty";
 import { BehaviorSubject, of } from "rxjs";
@@ -15,10 +14,9 @@ import { OwnerService } from "../../services/owner.service";
 import { ToastService } from "../../services/toast.service";
 import { OwnerQuery } from './../../models/query/ownerQuery';
 
-fdescribe('OwnerTableComponent', () => {
+describe('OwnerTableComponent', () => {
   let component: OwnerTableComponent;
   let fixture: ComponentFixture<OwnerTableComponent>;
-  let element: DebugElement;
   let ownerServiceSpy: any;
   let toastServiceSpy: any;
   let ownerService: any;
