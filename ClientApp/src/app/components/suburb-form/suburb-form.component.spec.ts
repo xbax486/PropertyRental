@@ -8,6 +8,7 @@ import {
 import { DebugElement } from "@angular/core";
 import { By } from "@angular/platform-browser";
 import { CommonModule } from "@angular/common";
+import { ToastyModule } from "ng2-toasty";
 import { FormsModule } from "@angular/forms";
 import { BehaviorSubject, from, of, scheduled } from "rxjs";
 
@@ -75,7 +76,7 @@ describe("SuburbFormComponent", () => {
       ]);
 
       TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule],
+        imports: [CommonModule, ToastyModule, FormsModule],
         declarations: [SuburbFormComponent],
         providers: [
           {
@@ -120,17 +121,14 @@ describe("SuburbFormComponent", () => {
     tick();
     let name = fixture.debugElement.query(By.css('#name')).nativeElement;
     let postcode = fixture.debugElement.query(By.css('#postcode')).nativeElement;
-    let stateId = fixture.debugElement.query(By.css('#state')).nativeElement;
     
     expect(name.value).toBe(component.selectedSuburb.name);
     expect(postcode.value).toBe(component.selectedSuburb.postcode);
-    expect(+stateId.value).toBe(component.selectedSuburb.stateId);
 
     let ngForm = component.ngForm;
     let formValue = ngForm.form.value;
     expect(formValue.name).toBe(component.selectedSuburb.name);
     expect(formValue.postcode).toBe(component.selectedSuburb.postcode);
-    expect(formValue.stateId).toBe(component.selectedSuburb.stateId);
 
     component.onSubmit(ngForm);
     expect(toastService.onSuccessCall).toHaveBeenCalledWith(suburbCreationSuccessMessage, ngForm, navigateTo);
