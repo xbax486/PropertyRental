@@ -111,7 +111,7 @@ describe('OwnerTableComponent', () => {
     expect(component.owners).toEqual(ownersQueryResult.items);
   });
 
-  it("should delete a new owner if delete operation succeeds", fakeAsync(() => {
+  it("should delete an owner if delete operation succeeds", fakeAsync(() => {
     component.onDeleteOwner(ownerForDeletion);
     fixture.detectChanges();
     tick();
