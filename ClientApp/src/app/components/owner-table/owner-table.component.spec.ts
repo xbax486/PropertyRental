@@ -94,12 +94,10 @@ describe('OwnerTableComponent', () => {
     .then(() => {
       fixture = TestBed.createComponent(OwnerTableComponent);
       component = fixture.componentInstance;
-      element = fixture.debugElement;
       ownerService = TestBed.inject(OwnerService);
       toastService = TestBed.inject(ToastService);
       
       component.query = query;
-      
       ownerService.deleteOwner.and.returnValue(of(ownerDeletionSuccessMessage));
       ownerService.getOwners.and.returnValue(of(ownersQueryResult));
       
