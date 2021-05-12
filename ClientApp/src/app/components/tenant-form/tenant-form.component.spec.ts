@@ -8,6 +8,7 @@ import {
 import { DebugElement } from "@angular/core";
 import { By } from "@angular/platform-browser";
 import { CommonModule } from "@angular/common";
+import { ToastyModule } from "ng2-toasty";
 import { FormsModule } from "@angular/forms";
 import { BehaviorSubject, of } from "rxjs";
 
@@ -67,7 +68,7 @@ describe("TenantFormComponent", () => {
       ]);
 
       TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule],
+        imports: [CommonModule, ToastyModule, FormsModule],
         declarations: [TenantFormComponent],
         providers: [
           {
